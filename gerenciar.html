@@ -286,7 +286,7 @@
                 placeholder="Digite a senha de acesso..."
                 autocomplete="off"
             >
-            <button type="button" class="botao-olho" id="botaoOlho" onclick="alternarVisibilidade()">👁️</button>
+            <button type="button" class="botao-olho" id="botaoOlho" onclick="alternarVisibilidade()">🙈</button>
         </div>
 
         <p id="avisoErro" class="aviso-erro escondido">
@@ -294,7 +294,7 @@
         </p>
 
         <button class="btn-principal" onclick="verificarSenha()">
-            🔓 Entrar
+            🔐 Entrar
         </button>
 
         <div class="voltar">
@@ -352,7 +352,7 @@
 
     <script>
         // ==========================================
-        // SENHA — FICA APENAS AQUI NO CÓDIGO, NÃO EXIBE NA TELA
+        // SENHA — FICA APENAS NO CÓDIGO, NÃO EXIBE NA TELA
         // ==========================================
         const SENHA_ADMIN = "WJ321";
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
@@ -380,30 +380,35 @@
         }
 
         // ==========================================
-        // 👁️ OLHO — MOSTRA/ESCONDE A SENHA
+        // 👁️ OLHO — CORRIGIDO: começa FECHADO = senha escondida
         // ==========================================
-        let senhaVisivel = false;
+        let senhaVisivel = false; // COMEÇA ESCONDIDA ✅
         function alternarVisibilidade() {
             const campo = document.getElementById('campoSenha');
             const botao = document.getElementById('botaoOlho');
             
             senhaVisivel = !senhaVisivel;
-            campo.type = senhaVisivel ? 'text' : 'password';
-            botao.textContent = senhaVisivel ? '🙈' : '👁️';
+            
+            if (senhaVisivel) {
+                campo.type = 'text';   // Mostra a senha
+                botao.textContent = '👁️'; // Olho ABERTO
+            } else {
+                campo.type = 'password'; // Esconde a senha
+                botao.textContent = '🙈'; // Olho FECHADO
+            }
         }
 
         // ==========================================
-        // PROTEÇÃO — SEMPRE PEDIR SENHA PRIMEIRO
+        // SEMPRE PEDIR SENHA — NÃO ENTRA SOZINHO
         // ==========================================
-        if (localStorage.getItem(CHAVE_ACESSO) === VALOR_LIBERADO) {
-            acessoLiberado = true;
-            document.getElementById('telaLogin').classList.add('escondido');
-            document.getElementById('painelControle').classList.remove('escondido');
-            carregarMensagens();
-        }
+        // NÃO entra automaticamente — SEMPRE pede a senha ✅
+        // A tela de login SEMPRE aparece primeiro
+        acessoLiberado = false;
+        document.getElementById('telaLogin').classList.remove('escondido');
+        document.getElementById('painelControle').classList.add('escondido');
 
         // ==========================================
-        // LOGIN
+        // LOGIN — só entra com a senha correta
         // ==========================================
         function verificarSenha() {
             const digitada = document.getElementById('campoSenha').value.trim();
@@ -424,20 +429,23 @@
         }
 
         // ==========================================
-        // SAIR — LIMPA TUDO
+        // SAIR — limpa tudo e volta pedindo senha
         // ==========================================
         function sair() {
             if (!confirm("Sair da área administrativa?")) return;
             
             acessoLiberado = false;
-            localStorage.removeItem(CHAVE_ACESSO);
+            localStorage.removeItem(CHAVE_ACESSO); // Apaga o acesso
             
+            // Volta para a tela de login
             document.getElementById('painelControle').classList.add('escondido');
             document.getElementById('telaLogin').classList.remove('escondido');
             document.getElementById('avisoErro').classList.add('escondido');
             document.getElementById('campoSenha').value = '';
+            
+            // Reseta o olho para fechado
             senhaVisivel = false;
-            document.getElementById('botaoOlho').textContent = '👁️';
+            document.getElementById('botaoOlho').textContent = '🙈';
             document.getElementById('campoSenha').type = 'password';
             
             alert("🔒 Você saiu! Acesso protegido.");
