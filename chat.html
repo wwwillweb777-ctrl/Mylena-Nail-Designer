@@ -36,6 +36,15 @@
         }
         .cabecalho h1 { font-size: 1.4rem; }
         .cabecalho p { font-size: 0.9rem; opacity: 0.9; }
+        .meu-id {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            margin-top: 0.4rem;
+            background: rgba(255,255,255,.2);
+            padding: 0.25rem 0.8rem;
+            border-radius: 50px;
+            display: inline-block;
+        }
         .area-mensagens {
             flex: 1;
             padding: 1rem;
@@ -113,6 +122,7 @@
         <div class="cabecalho">
             <h1>💬 Conversar com Mylena</h1>
             <p>Encanto Nail Designer 💖</p>
+            <div class="meu-id">🆔 Seu ID: <span id="exibirMeuId">—</span></div>
         </div>
 
         <div id="areaMensagens" class="area-mensagens">
@@ -138,12 +148,38 @@
 
     <script>
         // ==========================================
-        // 🔧 CONFIGURAÇÕES — DADOS REAIS DO SEU PROJETO
+        // 🔑 SISTEMA DE ID ÚNICO — NINGUÉM MAIS SE CONFUNDE
         // ==========================================
         const NOME_REMETENTE_ADMIN = "Mylena — Encanto Nail Designer";
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
+        const CHAVE_ID = "idVisitante_encanto";
 
-        // 🔑 CHAVE DO FIREBASE — A MESMA QUE VOCÊ JÁ USA
+        // GERAR ID ÚNICO — EXEMPLO: usr_8x3k7z9q
+        function gerarIdUnico() {
+            const parte1 = Math.random().toString(36).substring(2, 6);
+            const parte2 = Math.random().toString(36).substring(2, 6);
+            return `usr_${parte1}${parte2}`;
+        }
+
+        // PEGAR OU CRIAR ID — PERMANECE SALVO
+        let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
+        if (!ID_VISITANTE) {
+            ID_VISITANTE = gerarIdUnico();
+            localStorage.setItem(CHAVE_ID, ID_VISITANTE);
+        }
+
+        // EXIBIR ID NO CABEÇALHO
+        document.getElementById('exibirMeuId').textContent = ID_VISITANTE;
+
+        let nomeUsuarioChat = "";
+
+        function dataAtual() {
+            return new Date().toLocaleString('pt-BR');
+        }
+
+        // ==========================================
+        // 🔧 FIREBASE — CONFIGURAÇÃO
+        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
             authDomain: "willobras.firebaseapp.com",
@@ -156,19 +192,6 @@
 
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-
-        // ID único — cada pessoa vê só suas mensagens
-        let ID_VISITANTE = localStorage.getItem("idVisitante_encanto");
-        if (!ID_VISITANTE) {
-            ID_VISITANTE = "usr_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem("idVisitante_encanto", ID_VISITANTE);
-        }
-
-        let nomeUsuarioChat = "";
-
-        function dataAtual() {
-            return new Date().toLocaleString('pt-BR');
-        }
 
         // ==========================================
         // 💬 FUNÇÕES DO CHAT
@@ -184,7 +207,7 @@
         }
 
         function limparSair() {
-            if (confirm("Tem certeza? Suas mensagens ficam salvas.")) {
+            if (confirm("Deseja trocar seu nome? Seu ID permanece o mesmo.")) {
                 nomeUsuarioChat = "";
                 document.getElementById('passoNome').classList.remove('escondido');
                 document.getElementById('passoMensagem').classList.add('escondido');
@@ -202,7 +225,7 @@
 
             try {
                 await db.ref(CAMINHO_BASE).push({
-                    idRemetente: ID_VISITANTE,
+                    idRemetente: ID_VISITANTE, // ✅ ID ÚNICO ENVIADO!
                     nomeRemetente: nomeUsuarioChat,
                     texto: texto,
                     data: dataAtual(),
