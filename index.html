@@ -34,27 +34,27 @@
             border: 3px solid #ff99cc;
         }
 
-        /* BANNER — PERFEITO: imagem nítida, sem rosa, mostrando corpo todo */
+        /* === BANNER — FOTO MAIOR, CANTOS ARREDONDADOS, LINK CORRETO === */
         .banner-topo {
             width: 100%;
-            height: 360px; /* Altura aumentada para mostrar mais */
+            height: 420px;
             overflow: hidden;
             position: relative;
             background: transparent;
+            border-bottom-left-radius: 32px;
+            border-bottom-right-radius: 32px;
         }
 
         .banner-topo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top; /* Mostra de cima para baixo */
+            object-position: center top;
             display: block;
-            /* Nítida */
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
         }
 
-        /* REMOVIDA a camada rosa que estragava a imagem */
         .banner-topo .sobreposicao {
             display: none;
         }
@@ -298,7 +298,7 @@
         /* CELULAR */
         @media (max-width: 400px) {
             .banner-topo {
-                height: 280px;
+                height: 340px;
             }
             .titulo-principal {
                 font-size: 2.2rem;
@@ -321,7 +321,7 @@
 <body>
     <div class="cartaz">
 
-        <!-- BANNER — LIMPO, SEM ROSA, MOSTRANDO TUDO -->
+        <!-- ✅ BANNER — LINK CORRIGIDO + ?raw=true para funcionar -->
         <div class="banner-topo">
             <img src="https://github.com/wwwillweb777-ctrl/fotos-da-myle/blob/main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
             <div class="sobreposicao"></div>
@@ -369,6 +369,7 @@
                 <p class="acrescimo">ACRÉSCIMO</p>
             </div>
 
+            <!-- ✅ IMAGEM DE BAIXO TAMBÉM COM O LINK CORRETO -->
             <div class="area-contato">
                 <div class="img-baixo">
                     <img src="https://github.com/wwwillweb777-ctrl/fotos-da-myle/blob/main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
@@ -388,7 +389,6 @@
 
             <div class="em-breve">
                 <p>📸 Instagram — em breve</p>
-                <p>📍 Endereço — em breve</p>
                 <p>⏰ Horários — em breve</p>
             </div>
 
