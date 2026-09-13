@@ -138,20 +138,20 @@
 
     <script>
         // ==========================================
-        // 🔧 CONFIGURAÇÕES — MESMAS DO SEU SISTEMA
+        // 🔧 CONFIGURAÇÕES — DADOS REAIS DO SEU PROJETO
         // ==========================================
         const NOME_REMETENTE_ADMIN = "Mylena — Encanto Nail Designer";
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
 
-        // 🔑 COLE AQUI A CHAVE DO FIREBASE (a mesma que você já usa!)
+        // 🔑 CHAVE DO FIREBASE — A MESMA QUE VOCÊ JÁ USA
         const firebaseConfig = {
-            apiKey: "COLE_SUA_CHAVE_AQUI",
-            authDomain: "SEU_PROJETO.firebaseapp.com",
-            databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
-            projectId: "SEU_PROJETO",
-            storageBucket: "SEU_PROJETO.appspot.com",
-            messagingSenderId: "XXXXXXXX",
-            appId: "XXXXXXXX"
+            apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
+            authDomain: "willobras.firebaseapp.com",
+            databaseURL: "https://willobras-default-rtdb.firebaseio.com",
+            projectId: "willobras",
+            storageBucket: "willobras.firebasestorage.app",
+            messagingSenderId: "66370500400",
+            appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
         };
 
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
@@ -167,15 +167,11 @@
         let nomeUsuarioChat = "";
 
         function dataAtual() {
-            const d = new Date();
-            return d.toLocaleString("pt-BR", {
-                day: "2-digit", month: "2-digit", year: "numeric",
-                hour: "2-digit", minute: "2-digit"
-            });
+            return new Date().toLocaleString('pt-BR');
         }
 
         // ==========================================
-        // 💬 FUNÇÕES
+        // 💬 FUNÇÕES DO CHAT
         // ==========================================
         function confirmarNome() {
             const nome = document.getElementById('nomeChat').value.trim();
@@ -220,7 +216,7 @@
             }
         }
 
-        // ✅ SÓ VÊ AS PRÓPRIAS MENSAGENS
+        // ✅ SÓ MOSTRA AS MENSAGENS DESSE USUÁRIO
         function carregarMensagensDoChat() {
             const area = document.getElementById('areaMensagens');
             db.ref(CAMINHO_BASE)
