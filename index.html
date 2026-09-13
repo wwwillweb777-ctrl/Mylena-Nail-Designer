@@ -34,7 +34,7 @@
             border: 3px solid #ff99cc;
         }
 
-        /* === BANNER — FOTO MAIOR, CANTOS ARREDONDADOS, LINK CORRETO === */
+        /* BANNER */
         .banner-topo {
             width: 100%;
             height: 420px;
@@ -51,12 +51,29 @@
             object-fit: cover;
             object-position: center top;
             display: block;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
         }
 
-        .banner-topo .sobreposicao {
-            display: none;
+        /* ✅ BOTÃO DO CHAT — ACIMA DO TÍTULO */
+        .botao-chat-topo {
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .botao-chat-topo a {
+            display: inline-block;
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            color: white;
+            padding: 0.7rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(37,211,102,.3);
+            transition: transform 0.2s;
+        }
+
+        .botao-chat-topo a:hover {
+            transform: scale(1.05);
         }
 
         .coracao {
@@ -82,7 +99,7 @@
             text-shadow: 2px 2px 0 #fff, 3px 3px 0 #ff99cc;
             font-family: 'Georgia', serif;
             font-style: italic;
-            margin-top: 1rem;
+            margin-top: 0;
         }
 
         .titulo-sub {
@@ -295,6 +312,18 @@
             font-size: 0.9rem;
         }
 
+        /* LINK ADMIN — só aparece no final */
+        .link-admin {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .link-admin a {
+            color: #cc99cc;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+
         /* CELULAR */
         @media (max-width: 400px) {
             .banner-topo {
@@ -321,13 +350,18 @@
 <body>
     <div class="cartaz">
 
-        <!-- ✅ BANNER — LINK CORRIGIDO + ?raw=true para funcionar -->
+        <!-- BANNER -->
         <div class="banner-topo">
             <img src="https://github.com/wwwillweb777-ctrl/fotos-da-myle/blob/main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
-            <div class="sobreposicao"></div>
         </div>
 
         <div class="conteudo-interno">
+
+            <!-- ✅ BOTÃO DO CHAT — LEVA PARA chat.html -->
+            <div class="botao-chat-topo">
+                <a href="chat.html">💬 Chat — fale comigo 😃</a>
+            </div>
+
             <div class="titulo">
                 <h1 class="titulo-principal">Encanto</h1>
                 <h2 class="titulo-sub">Nail Designer</h2>
@@ -369,14 +403,15 @@
                 <p class="acrescimo">ACRÉSCIMO</p>
             </div>
 
-            <!-- ✅ IMAGEM DE BAIXO TAMBÉM COM O LINK CORRETO -->
+            <!-- WhatsApp — só emergência -->
             <div class="area-contato">
                 <div class="img-baixo">
                     <img src="https://github.com/wwwillweb777-ctrl/fotos-da-myle/blob/main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
                 </div>
                 <div class="botao-wpp">
                     <a href="https://wa.me/553173449910" target="_blank">
-                        💬 WhatsApp<br>+55 31 7344-9910
+                        💬 WhatsApp<br>
+                        <small>Somente emergência<br>Use o chat acima ☺️</small>
                     </a>
                 </div>
             </div>
@@ -393,6 +428,11 @@
             </div>
 
             <p class="rodape">💖 Agradecemos sua preferência 💖</p>
+
+            <!-- ✅ Link discreto para o painel de administração -->
+            <div class="link-admin">
+                <a href="admin.html">🔐</a>
+            </div>
         </div>
     </div>
 </body>
