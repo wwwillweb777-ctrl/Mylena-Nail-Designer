@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin — Encanto Nail Designer</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #fff0f8 0%, #ffe6f2 100%);
+            font-family: 'Segoe UI', sans-serif;
+            padding: 1rem;
+        }
+        .caixa-login, .painel {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 24px;
+            border: 3px solid #ff99cc;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(255,102,178,.15);
+        }
+        h1 { text-align: center; color: #ff66b2; margin-bottom: 1.5rem; }
+        input, textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #ffd9e6;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            outline: none;
+        }
+        input:focus, textarea:focus { border-color: #ff66b2; }
+        button {
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: scale(1.02); }
+        .btn-principal {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            width: 100%;
+        }
+        .btn-verde {
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            color: white;
+        }
+        .btn-vermelho {
+            background: #e53935;
+            color: white;
+        }
+        .btn-roxo {
+            background: #993366;
+            color: white;
+        }
+        .escondido { display: none !important; }
+        .mensagem-card {
+            border: 2px solid;
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .pendente { background: #fff9e6; border-color: #ffcc00; }
+        .respondida { background: #e6ffef; border-color: #80d4aa; }
+        .resposta-caixa {
+            background: #d4f4e2;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 0.8rem;
+        }
+        .botoes { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+        .modal-fundo {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 450px;
+            width: 100%;
+            border: 3px solid #ff99cc;
+        }
+        .linha { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .voltar { text-align: center; margin-top: 1rem; }
+        .voltar a { color: #ff66b2; text-decoration: none; }
+        .status-pendente { color: #e67700; font-weight: bold; }
+        .status-respondido { color: #229954; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div id="telaLogin" class="caixa-login">
+        <h1>🔐 Área Administrativa</h1>
+        <p style="text-align:center; margin-bottom:1rem; color:#993366;">Encanto Nail Designer</p>
+        <input type="password" id="senhaAdmin" placeholder="Digite a senha de acesso 🔑">
+        <button class="btn-principal" onclick="verificarSenha()">Entrar →</button>
+        <div class="voltar">
+            <a href="index.html">← Voltar para o site</a>
+        </div>
+    </div>
+
+    <!-- PAINEL — SÓ APARECE SE ACERTAR A SENHA -->
+    <div id="painelAdmin" class="painel escondido">
+        <div class="linha">
+            <h1>💬 Mensagens Recebidas</h1>
+            <button class="btn-vermelho" style="padding:0.6rem 1rem; font-size:0.9rem;" onclick="sairAdmin()">Sair</button>
+        </div>
+        <div id="listaMensagens"></div>
+    </div>
+
+    <!-- MODAL DE RESPOSTA -->
+    <div id="modalResposta" class="modal-fundo escondido">
+        <div class="modal">
+            <h3 id="tituloModalResposta" style="color:#ff66b2; margin-bottom:1rem;"></h3>
+            <p style="margin-bottom:0.5rem;"><strong>Para:</strong> <span id="remetenteMensagem"></span></p>
+            <textarea id="textoResposta" rows="4" placeholder="Escreva sua resposta aqui... 💖"></textarea>
+            <input type="hidden" id="chaveMensagemAtual">
+            <input type="hidden" id="idDestinatario">
+            <input type="hidden" id="nomeDestinatario">
+            <div style="display:flex; gap:0.5rem;">
+                <button class="btn-verde" style="flex:1;" onclick="enviarResposta()">✅ Enviar Resposta</button>
+                <button class="btn-roxo" style="flex:1;" onclick="fecharModalResposta()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 🔑 DADOS DO SISTEMA — IGUAIS AO SEU
+        // ==========================================
+        const SENHA_ADMIN = "WJ321";
+        const NOME_REMETENTE_ADMIN = "Mylena — Encanto Nail Designer";
+        const CAMINHO_BASE = "encanto_nail_designer/mensagens";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
+            authDomain: "willobras.firebaseapp.com",
+            databaseURL: "https://willobras-default-rtdb.firebaseio.com",
+            projectId: "willobras",
+            storageBucket: "willobras.firebasestorage.app",
+            messagingSenderId: "66370500400",
+            appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let acessoLiberado = false;
+
+        function dataAtual() {
+            return new Date().toLocaleString('pt-BR');
+        }
+
+        // ==========================================
+        // 🔐 LOGIN
+        // ==========================================
+        function verificarSenha() {
+            const senha = document.getElementById('senhaAdmin').value;
+            if (senha === SENHA_ADMIN) {
+                acessoLiberado = true;
+                document.getElementById('telaLogin').classList.add('escondido');
+                document.getElementById('painelAdmin').classList.remove('escondido');
+                carregarTodasMensagensAdmin();
+            } else {
+                alert("❌ Senha incorreta!");
+            }
+        }
+
+        function sairAdmin() {
+            acessoLiberado = false;
+            document.getElementById('painelAdmin').classList.add('escondido');
+            document.getElementById('telaLogin').classList.remove('escondido');
+            document.getElementById('senhaAdmin').value = '';
+        }
+
+        // ==========================================
+        // 📨 RESPONDER MENSAGENS
+        // ==========================================
+        function fecharModalResposta() {
+            document.getElementById('modalResposta').classList.add('escondido');
+            document.getElementById('textoResposta').value = '';
+        }
+
+        function abrirModalResponderMensagem(chave, dados) {
+            document.getElementById('tituloModalResposta').textContent = "✍️ Responder Mensagem";
+            document.getElementById('remetenteMensagem').textContent = dados.nomeRemetente || "Visitante";
+            document.getElementById('chaveMensagemAtual').value = chave;
+            document.getElementById('idDestinatario').value = dados.idRemetente;
+            document.getElementById('nomeDestinatario').value = dados.nomeRemetente || "Visitante";
+            document.getElementById('textoResposta').value = dados.resposta || "";
+            document.getElementById('modalResposta').classList.remove('escondido');
+        }
+
+        async function enviarResposta() {
+            const chave = document.getElementById('chaveMensagemAtual').value;
+            const idDest = document.getElementById('idDestinatario').value;
+            const nomeDest = document.getElementById('nomeDestinatario').value;
+            const texto = document.getElementById('textoResposta').value.trim();
+
+            if (!texto) { alert("⚠️ Escreva sua resposta!"); return; }
+            if (!chave) { alert("❌ Chave não identificada!"); return; }
+
+            try {
+                await db.ref(CAMINHO_BASE + "/" + chave).update({
+                    resposta: texto,
+                    dataResposta: dataAtual()
+                });
+                alert("✅ Resposta enviada para " + nomeDest + "! 💖");
+                fecharModalResposta();
+            } catch (e) {
+                alert("❌ Erro: " + e.message);
+            }
+        }
+
+        async function excluirMensagem(chave) {
+            if (!confirm("⚠️ Tem certeza que deseja excluir?")) return;
+            await db.ref(CAMINHO_BASE + "/" + chave).remove();
+            alert("✅ Excluída!");
+        }
+
+        // ==========================================
+        // 📋 CARREGAR TODAS AS MENSAGENS — ADMIN VÊ TUDO
+        // ==========================================
+        function carregarTodasMensagensAdmin() {
+            db.ref(CAMINHO_BASE).on("value", (snap) => {
+                const lista = document.getElementById('listaMensagens');
+                lista.innerHTML = '';
+                let temMensagem = false;
+
+                snap.forEach((item) => {
+                    temMensagem = true;
+                    const chave = item.key;
+                    const dados = item.val();
+
+                    // Ignora mensagens marcadas como internas
+                    if (dados.mensagemNovaAdmin) return;
+
+                    const classeStatus = dados.resposta ? 'respondida' : 'pendente';
+                    const textoStatus = dados.resposta 
+                        ? '<span class="status-respondido">✅ Respondida</span>' 
+                        : '<span class="status-pendente">⏳ Pendente</span>';
+
+                    lista.innerHTML += `
+                        <div class="mensagem-card ${classeStatus}">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                                <strong>👤 ${dados.nomeRemetente || "Visitante"}</strong>
+                                ${textoStatus}
+                            </div>
+                            <p style="margin-bottom:0.5rem;">${dados.texto}</p>
+                            <p style="font-size:0.85rem; color:#666;">📅 ${dados.data}</p>
+                            ${dados.resposta ? `
+                                <div class="resposta-caixa">
+                                    <p style="font-weight:bold; color:#1a7d4d; margin-bottom:0.3rem;">📩 Sua Resposta:</p>
+                                    <p>${dados.resposta}</p>
+                                    <p style="font-size:0.8rem; color:#444; margin-top:0.3rem;">${dados.dataResposta || ''}</p>
+                                </div>
+                            ` : ''}
+                            <div class="botoes">
+                                <button class="btn-verde" onclick='abrirModalResponderMensagem("${chave}", ${JSON.stringify(dados).replace(/'/g, "\\'")})'>
+                                    ${dados.resposta ? '✏️ Editar' : '✍️ Responder'}
+                                </button>
+                                <button class="btn-vermelho" onclick="excluirMensagem('${chave}')">🗑️ Excluir</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (!temMensagem) {
+                    lista.innerHTML = '<p style="text-align:center; color:#b34782; padding:2rem;">Nenhuma mensagem recebida ainda 💬</p>';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
