@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat — Encanto Nail Designer</title>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #fff0f8 0%, #ffe6f2 100%);
+            font-family: 'Segoe UI', sans-serif;
+            padding: 1rem;
+        }
+        .caixa-chat {
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 24px;
+            border: 3px solid #ff99cc;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(255,102,178,.15);
+        }
+        .cabecalho {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .cabecalho h1 { font-size: 1.4rem; }
+        .cabecalho p { font-size: 0.9rem; opacity: 0.9; }
+        .area-mensagens {
+            flex: 1;
+            padding: 1rem;
+            height: 400px;
+            overflow-y: auto;
+            background: #fffafc;
+        }
+        .mensagem { margin-bottom: 1rem; max-width: 85%; }
+        .mensagem-eu { margin-left: auto; }
+        .mensagem-eu .bolha {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+            padding: 0.8rem 1rem;
+        }
+        .mensagem-resposta { margin-right: auto; }
+        .mensagem-resposta .bolha {
+            background: #e6ffef;
+            color: #1a7d4d;
+            border: 1px solid #b2f2cc;
+            border-radius: 18px 18px 18px 4px;
+            padding: 0.8rem 1rem;
+        }
+        .nome-remetente { font-weight: bold; font-size: 0.85rem; margin-bottom: 0.2rem; }
+        .data { font-size: 0.7rem; opacity: 0.7; margin-top: 0.3rem; }
+        .aviso-vazio {
+            text-align: center;
+            color: #b34782;
+            padding: 2rem;
+            font-size: 0.95rem;
+        }
+        .form-etapa { padding: 1.2rem; border-top: 2px solid #ffe6f2; }
+        .escondido { display: none !important; }
+        input, textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #ffd9e6;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            outline: none;
+        }
+        input:focus, textarea:focus { border-color: #ff66b2; }
+        button {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: scale(1.02); }
+        .btn-principal {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+        }
+        .btn-secundario {
+            background: #f0e6ff;
+            color: #993366;
+            margin-top: 0.5rem;
+        }
+        .voltar { text-align: center; margin-top: 1rem; }
+        .voltar a {
+            color: #ff66b2;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="caixa-chat">
+        <div class="cabecalho">
+            <h1>💬 Conversar com Mylena</h1>
+            <p>Encanto Nail Designer 💖</p>
+        </div>
+
+        <div id="areaMensagens" class="area-mensagens">
+            <p class="aviso-vazio">Olá! Seja bem-vinda(o)! 😊<br>Digite seu nome abaixo para começar ↓</p>
+        </div>
+
+        <div id="passoNome" class="form-etapa">
+            <input type="text" id="nomeChat" placeholder="Digite seu nome ✨">
+            <button class="btn-principal" onclick="confirmarNome()">Continuar →</button>
+        </div>
+
+        <div id="passoMensagem" class="form-etapa escondido">
+            <p style="margin-bottom: 0.5rem; color: #993366;">Olá, <span id="nomeExibido"></span>! 💖</p>
+            <textarea id="campoMensagem" rows="3" placeholder="Escreva sua mensagem... 💅"></textarea>
+            <button class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
+            <button class="btn-secundario" onclick="limparSair()">Sair / Trocar nome</button>
+        </div>
+    </div>
+
+    <div class="voltar">
+        <a href="index.html">← Voltar para a página principal</a>
+    </div>
+
+    <script>
+        // ==========================================
+        // 🔧 CONFIGURAÇÕES — MESMAS DO SEU SISTEMA
+        // ==========================================
+        const NOME_REMETENTE_ADMIN = "Mylena — Encanto Nail Designer";
+        const CAMINHO_BASE = "encanto_nail_designer/mensagens";
+
+        // 🔑 COLE AQUI A CHAVE DO FIREBASE (a mesma que você já usa!)
+        const firebaseConfig = {
+            apiKey: "COLE_SUA_CHAVE_AQUI",
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+            projectId: "SEU_PROJETO",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "XXXXXXXX",
+            appId: "XXXXXXXX"
+        };
+
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ID único — cada pessoa vê só suas mensagens
+        let ID_VISITANTE = localStorage.getItem("idVisitante_encanto");
+        if (!ID_VISITANTE) {
+            ID_VISITANTE = "usr_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem("idVisitante_encanto", ID_VISITANTE);
+        }
+
+        let nomeUsuarioChat = "";
+
+        function dataAtual() {
+            const d = new Date();
+            return d.toLocaleString("pt-BR", {
+                day: "2-digit", month: "2-digit", year: "numeric",
+                hour: "2-digit", minute: "2-digit"
+            });
+        }
+
+        // ==========================================
+        // 💬 FUNÇÕES
+        // ==========================================
+        function confirmarNome() {
+            const nome = document.getElementById('nomeChat').value.trim();
+            if (!nome) { alert("⚠️ Digite seu nome!"); return; }
+            nomeUsuarioChat = nome;
+            document.getElementById('nomeExibido').textContent = nome;
+            document.getElementById('passoNome').classList.add('escondido');
+            document.getElementById('passoMensagem').classList.remove('escondido');
+            carregarMensagensDoChat();
+        }
+
+        function limparSair() {
+            if (confirm("Tem certeza? Suas mensagens ficam salvas.")) {
+                nomeUsuarioChat = "";
+                document.getElementById('passoNome').classList.remove('escondido');
+                document.getElementById('passoMensagem').classList.add('escondido');
+                document.getElementById('nomeChat').value = '';
+                document.getElementById('campoMensagem').value = '';
+                document.getElementById('areaMensagens').innerHTML = 
+                    '<p class="aviso-vazio">Olá! Seja bem-vinda(o)! 😊<br>Digite seu nome abaixo para começar ↓</p>';
+            }
+        }
+
+        async function enviarMensagem() {
+            const texto = document.getElementById('campoMensagem').value.trim();
+            if (!texto) { alert("⚠️ Escreva sua mensagem!"); return; }
+            if (!nomeUsuarioChat) { alert("⚠️ Digite seu nome primeiro!"); return; }
+
+            try {
+                await db.ref(CAMINHO_BASE).push({
+                    idRemetente: ID_VISITANTE,
+                    nomeRemetente: nomeUsuarioChat,
+                    texto: texto,
+                    data: dataAtual(),
+                    resposta: null,
+                    dataResposta: null
+                });
+                document.getElementById('campoMensagem').value = '';
+                alert("✅ Mensagem enviada! Em breve responderei 💖");
+            } catch (e) {
+                alert("❌ Erro: " + e.message);
+            }
+        }
+
+        // ✅ SÓ VÊ AS PRÓPRIAS MENSAGENS
+        function carregarMensagensDoChat() {
+            const area = document.getElementById('areaMensagens');
+            db.ref(CAMINHO_BASE)
+              .orderByChild("idRemetente")
+              .equalTo(ID_VISITANTE)
+              .on("value", (snap) => {
+                area.innerHTML = '';
+                let temMensagem = false;
+                snap.forEach((item) => {
+                    temMensagem = true;
+                    const m = item.val();
+                    area.innerHTML += `
+                        <div class="mensagem mensagem-eu">
+                            <div class="bolha">
+                                <p class="nome-remetente">${m.nomeRemetente}</p>
+                                <p>${m.texto}</p>
+                                <p class="data">${m.data}</p>
+                            </div>
+                        </div>
+                    `;
+                    if (m.resposta) {
+                        area.innerHTML += `
+                            <div class="mensagem mensagem-resposta">
+                                <div class="bolha">
+                                    <p class="nome-remetente">📩 ${NOME_REMETENTE_ADMIN}</p>
+                                    <p>${m.resposta}</p>
+                                    <p class="data">${m.dataResposta || ''}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                if (!temMensagem) {
+                    area.innerHTML = '<p class="aviso-vazio">Ainda não tem mensagens. Escreva sua primeira mensagem! 💬</p>';
+                }
+                area.scrollTop = area.scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html>
