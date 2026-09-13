@@ -174,6 +174,17 @@
         .pendente { background: linear-gradient(135deg, #fff9e6, #fff3cd); border: 2px solid #ffc107; }
         .respondida { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border: 2px solid #66bb6a; }
 
+        .etiqueta-id {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 0.25rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-family: monospace;
+            margin-left: 0.5rem;
+        }
+
         .etiqueta-status {
             display: inline-block;
             padding: 0.3rem 1rem;
@@ -232,6 +243,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .nome-remetente { font-weight: bold; color: #664455; font-size: 1.05rem; }
@@ -268,7 +281,7 @@
 </head>
 <body>
 
-    <!-- TELA DE LOGIN — OBRIGATORIA -->
+    <!-- TELA DE LOGIN — OBRIGATÓRIA -->
     <div id="telaLogin" class="caixa-principal">
         <div class="faixa-topo"></div>
         <h1>🔐 Area de Gerenciar</h1>
@@ -295,7 +308,7 @@
         </div>
     </div>
 
-    <!-- PAINEL DE CONTROLE — SO APARECE COM SENHA CERTA -->
+    <!-- PAINEL DE CONTROLE — SÓ APARECE COM SENHA CORRETA -->
     <div id="painelControle" class="caixa-principal escondido">
         <div class="faixa-topo"></div>
         
@@ -309,29 +322,33 @@
             <button class="btn-sair" onclick="sair()">🚪 Sair</button>
         </div>
 
-        <!-- MENU DE NAVEGACAO -->
+        <!-- MENU DE NAVEGAÇÃO -->
         <nav class="menu-navegacao">
             <button class="botao-menu ativo" data-secao="mensagens">💬 Mensagens</button>
             <button class="botao-menu" data-secao="geral">⚙️ Sistema</button>
             <button class="botao-menu" data-secao="site">🌐 Navegar</button>
         </nav>
 
-        <!-- SECAO: MENSAGENS -->
+        <!-- SEÇÃO: MENSAGENS — AGORA COM ID PARA VOCÊ DISTINGUIR -->
         <div id="secao-mensagens" class="secao visivel">
             <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
                 Mensagens Recebidas
+                <small style="font-weight:normal; font-size:0.8rem; color:#888; margin-left:0.5rem;">
+                    (🆔 = Identidade única de cada pessoa)
+                </small>
             </h3>
             <div id="lista-mensagens"></div>
         </div>
 
-        <!-- SECAO: SISTEMA -->
+        <!-- SEÇÃO: SISTEMA -->
         <div id="secao-geral" class="secao">
             <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
-                Configuracoes
+                Configurações
             </h3>
             <div style="background:#fffafc; border-radius:16px; padding:1.5rem; border:2px solid #ffd9e6;">
                 <p style="margin-bottom:1rem; color:#2e7d32; font-weight:bold;">✅ Sistema Protegido</p>
-                <p style="margin-bottom:1rem; color:#666;">Acesso permitido somente com senha.</p>
+                <p style="margin-bottom:1rem; color:#666;">Senha: WJ321</p>
+                <p style="margin-bottom:1rem; color:#666;">🆔 Cada cliente tem ID único — nunca confunde nomes iguais!</p>
                 <p style="margin-bottom:1.5rem; color:#666;">Status: Conectado ao Banco de Dados</p>
                 
                 <div class="botoes-acao">
@@ -342,16 +359,16 @@
             </div>
         </div>
 
-        <!-- SECAO: NAVEGAR PELO SITE -->
+        <!-- SEÇÃO: NAVEGAR PELO SITE -->
         <div id="secao-site" class="secao">
             <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
-                Areas do Site
+                Áreas do Site
             </h3>
             <div style="background:#fffafc; border-radius:16px; padding:1.5rem; border:2px solid #ffd9e6;">
-                <p style="margin-bottom:1rem; color:#666;">Acesse qualquer pagina:</p>
+                <p style="margin-bottom:1rem; color:#666;">Acesse qualquer página:</p>
                 
                 <div class="botoes-acao">
-                    <button class="btn-azul" onclick="window.open('index.html', '_blank')">🏠 Pagina Inicial</button>
+                    <button class="btn-azul" onclick="window.open('index.html', '_blank')">🏠 Página Inicial</button>
                     <button class="btn-verde" onclick="window.open('chat.html', '_blank')">💬 Chat do Cliente</button>
                 </div>
             </div>
@@ -362,12 +379,13 @@
         </div>
     </div>
 
-    <!-- MODAL DE RESPONDER -->
+    <!-- MODAL DE RESPONDER — TAMBÉM MOSTRA O ID -->
     <div id="modalResposta" class="modal-fundo escondido">
         <div class="modal">
             <h3>✍️ Responder</h3>
             <p style="margin-bottom:0.5rem; color:#666;">
                 <strong>De:</strong> <span id="nomeRemetente"></span>
+                <span class="etiqueta-id" id="idRemetenteModal">—</span>
             </p>
             <textarea id="textoResposta" rows="5" placeholder="Sua resposta..."></textarea>
             <input type="hidden" id="chaveMensagem">
@@ -382,19 +400,21 @@
         // ==========================================
         // SENHA FIXA — WJ321
         // ==========================================
-        const SENHA_ADMIN = "WJ321"; // ← Exatamente esta!
+        const SENHA_ADMIN = "WJ321";
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
         const CHAVE_ACESSO = "areaGerenciarLiberada";
 
         let acessoLiberado = false;
 
-        // FIREBASE
+        // FIREBASE — MESMA CONFIGURAÇÃO DO CHAT
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
             authDomain: "willobras.firebaseapp.com",
             databaseURL: "https://willobras-default-rtdb.firebaseio.com",
             projectId: "willobras",
-            storageBucket: "willobras.firebasestorage.app"
+            storageBucket: "willobras.firebasestorage.app",
+            messagingSenderId: "66370500400",
+            appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
         };
 
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
@@ -405,7 +425,7 @@
         }
 
         // ==========================================
-        // VERIFICAR ACESSO SALVO
+        // MANTER ACESSO SALVO
         // ==========================================
         if (localStorage.getItem(CHAVE_ACESSO) === "SIM") {
             acessoLiberado = true;
@@ -415,7 +435,7 @@
         }
 
         // ==========================================
-        // LOGIN — SO ENTRA COM WJ321
+        // LOGIN — SÓ ENTRA COM WJ321
         // ==========================================
         function verificarSenha() {
             const digitada = document.getElementById('campoSenha').value.trim();
@@ -428,7 +448,7 @@
                 document.getElementById('painelControle').classList.remove('escondido');
                 
                 carregarMensagens();
-                alert("✅ Acesso Liberado! Bem-vinda Mylena!");
+                alert("✅ Acesso Liberado! Você vê todos com seus IDs únicos!");
             } else {
                 document.getElementById('avisoErro').classList.remove('escondido');
                 document.getElementById('campoSenha').value = '';
@@ -439,7 +459,7 @@
         // SAIR — BLOQUEIA NOVAMENTE
         // ==========================================
         function sair() {
-            if (!confirm("Sair da Area de Gerenciar?")) return;
+            if (!confirm("Sair da Área de Gerenciar?")) return;
             
             acessoLiberado = false;
             localStorage.removeItem(CHAVE_ACESSO);
@@ -449,11 +469,11 @@
             document.getElementById('avisoErro').classList.add('escondido');
             document.getElementById('campoSenha').value = '';
             
-            alert("🔒 Voce saiu! Acesso protegido.");
+            alert("🔒 Você saiu! Acesso protegido.");
         }
 
         // ==========================================
-        // MENU
+        // MENU DE NAVEGAÇÃO
         // ==========================================
         document.querySelectorAll('.botao-menu').forEach(botao => {
             botao.addEventListener('click', () => {
@@ -467,7 +487,7 @@
         });
 
         // ==========================================
-        // MENSAGENS
+        // EXIBIR MENSAGENS COM ID — VOCÊ DISTINGUE QUEM É QUEM
         // ==========================================
         function carregarMensagens() {
             const container = document.getElementById('lista-mensagens');
@@ -476,7 +496,7 @@
                 container.innerHTML = '';
                 
                 if (!snap.exists()) {
-                    container.innerHTML = '<div class="vazio"><div class="emoji">📭</div><p>Nenhuma mensagem</p></div>';
+                    container.innerHTML = '<div class="vazio"><div class="emoji">📭</div><p>Nenhuma mensagem recebida ainda</p></div>';
                     return;
                 }
 
@@ -490,17 +510,21 @@
                         ? '<span class="etiqueta-status status-respondido">✅ Respondida</span>' 
                         : '<span class="etiqueta-status status-pendente">⏳ Pendente</span>';
 
+                    // ✅ MOSTRA O ID JUNTO COM O NOME
                     container.innerHTML += `
                         <div class="mensagem-card ${classe}">
                             <div class="info-remetente">
-                                <span class="nome-remetente">${dados.nomeRemetente || "Visitante"}</span>
+                                <div>
+                                    <span class="nome-remetente">${dados.nomeRemetente || "Visitante"}</span>
+                                    <span class="etiqueta-id">🆔 ${dados.idRemetente || "sem-id"}</span>
+                                </div>
                                 ${status}
                             </div>
                             <p class="texto-msg">${dados.texto}</p>
                             <span class="data-msg">${dados.data || ''}</span>
                             ${dados.resposta ? `
                                 <div class="resposta-caixa">
-                                    <p style="font-weight:bold; color:#2e7d32;">📩 Resposta:</p>
+                                    <p style="font-weight:bold; color:#2e7d32; margin-bottom:0.5rem;">📩 Sua Resposta:</p>
                                     <p>${dados.resposta}</p>
                                     <span class="data-msg">${dados.dataResposta || ''}</span>
                                 </div>
@@ -520,6 +544,7 @@
         function abrirResponder(chave, dados) {
             document.getElementById('chaveMensagem').value = chave;
             document.getElementById('nomeRemetente').textContent = dados.nomeRemetente || "Visitante";
+            document.getElementById('idRemetenteModal').textContent = `🆔 ${dados.idRemetente || "sem-id"}`;
             document.getElementById('textoResposta').value = dados.resposta || "";
             document.getElementById('modalResposta').classList.remove('escondido');
         }
@@ -533,26 +558,27 @@
             const chave = document.getElementById('chaveMensagem').value;
             const resposta = document.getElementById('textoResposta').value.trim();
             
-            if (!resposta) { alert("Escreva a resposta!"); return; }
+            if (!resposta) { alert("Escreva sua resposta!"); return; }
             
             await db.ref(CAMINHO_BASE + "/" + chave).update({
                 resposta: resposta,
-                dataResposta: dataAtual()
+                dataResposta: dataAtual(),
+                mensagemNovaAdmin: true
             });
-            alert("✅ Enviada!");
+            alert("✅ Resposta enviada com sucesso!");
             fecharModal();
         }
 
         async function excluir(chave) {
-            if (!confirm("Excluir?")) return;
+            if (!confirm("Tem certeza que deseja excluir esta mensagem?")) return;
             await db.ref(CAMINHO_BASE + "/" + chave).remove();
-            alert("Excluida!");
+            alert("Excluída!");
         }
 
         async function limparTudo() {
-            if (!confirm("⚠️ APAGAR TUDO? Não tem volta!")) return;
+            if (!confirm("⚠️ ATENÇÃO: Isso apaga TODAS as mensagens! Tem certeza?")) return;
             await db.ref(CAMINHO_BASE).remove();
-            alert("Limpo!");
+            alert("Todas as mensagens foram removidas!");
         }
     </script>
 </body>
