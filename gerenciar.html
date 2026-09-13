@@ -281,10 +281,10 @@
 </head>
 <body>
 
-    <!-- TELA DE LOGIN — OBRIGATÓRIA -->
+    <!-- TELA DE LOGIN — SEMPRE APARECE PRIMEIRO -->
     <div id="telaLogin" class="caixa-principal">
         <div class="faixa-topo"></div>
-        <h1>🔐 Area de Gerenciar</h1>
+        <h1>🔐 Área administrativa 🔐</h1>
         <p class="subtitulo">
             <span class="coracao">♥</span> Encanto Nail Designer <span class="coracao">♥</span>
         </p>
@@ -308,7 +308,7 @@
         </div>
     </div>
 
-    <!-- PAINEL DE CONTROLE — SÓ APARECE COM SENHA CORRETA -->
+    <!-- PAINEL — SÓ APARECE DEPOIS DA SENHA CORRETA -->
     <div id="painelControle" class="caixa-principal escondido">
         <div class="faixa-topo"></div>
         
@@ -322,14 +322,12 @@
             <button class="btn-sair" onclick="sair()">🚪 Sair</button>
         </div>
 
-        <!-- MENU DE NAVEGAÇÃO -->
         <nav class="menu-navegacao">
             <button class="botao-menu ativo" data-secao="mensagens">💬 Mensagens</button>
             <button class="botao-menu" data-secao="geral">⚙️ Sistema</button>
             <button class="botao-menu" data-secao="site">🌐 Navegar</button>
         </nav>
 
-        <!-- SEÇÃO: MENSAGENS — AGORA COM ID PARA VOCÊ DISTINGUIR -->
         <div id="secao-mensagens" class="secao visivel">
             <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
                 Mensagens Recebidas
@@ -340,7 +338,6 @@
             <div id="lista-mensagens"></div>
         </div>
 
-        <!-- SEÇÃO: SISTEMA -->
         <div id="secao-geral" class="secao">
             <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
                 Configurações
@@ -359,7 +356,6 @@
             </div>
         </div>
 
-        <!-- SEÇÃO: NAVEGAR PELO SITE -->
         <div id="secao-site" class="secao">
             <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
                 Áreas do Site
@@ -379,7 +375,6 @@
         </div>
     </div>
 
-    <!-- MODAL DE RESPONDER — TAMBÉM MOSTRA O ID -->
     <div id="modalResposta" class="modal-fundo escondido">
         <div class="modal">
             <h3>✍️ Responder</h3>
@@ -403,10 +398,11 @@
         const SENHA_ADMIN = "WJ321";
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
         const CHAVE_ACESSO = "areaGerenciarLiberada";
+        const VALOR_LIBERADO = "AUTORIZADO_WJ321"; // Valor exclusivo, ninguém consegue adivinhar
 
         let acessoLiberado = false;
 
-        // FIREBASE — MESMA CONFIGURAÇÃO DO CHAT
+        // FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
             authDomain: "willobras.firebaseapp.com",
@@ -425,13 +421,19 @@
         }
 
         // ==========================================
-        // MANTER ACESSO SALVO
+        // CORREÇÃO: SEMPRE COMEÇA PEDINDO SENHA
         // ==========================================
-        if (localStorage.getItem(CHAVE_ACESSO) === "SIM") {
+        // NÃO mostre o painel automaticamente — valide de forma SEGURA
+        if (localStorage.getItem(CHAVE_ACESSO) === VALOR_LIBERADO) {
             acessoLiberado = true;
             document.getElementById('telaLogin').classList.add('escondido');
             document.getElementById('painelControle').classList.remove('escondido');
             carregarMensagens();
+        } else {
+            // Garante que a tela de login aparece PRIMEIRO sempre
+            acessoLiberado = false;
+            document.getElementById('telaLogin').classList.remove('escondido');
+            document.getElementById('painelControle').classList.add('escondido');
         }
 
         // ==========================================
@@ -442,13 +444,13 @@
             
             if (digitada === SENHA_ADMIN) {
                 acessoLiberado = true;
-                localStorage.setItem(CHAVE_ACESSO, "SIM");
+                localStorage.setItem(CHAVE_ACESSO, VALOR_LIBERADO); // Valor seguro
                 
                 document.getElementById('telaLogin').classList.add('escondido');
                 document.getElementById('painelControle').classList.remove('escondido');
                 
                 carregarMensagens();
-                alert("✅ Acesso Liberado! Você vê todos com seus IDs únicos!");
+                alert("✅ Acesso Liberado! Bem-vinda Mylena!");
             } else {
                 document.getElementById('avisoErro').classList.remove('escondido');
                 document.getElementById('campoSenha').value = '';
@@ -456,13 +458,13 @@
         }
 
         // ==========================================
-        // SAIR — BLOQUEIA NOVAMENTE
+        // SAIR — LIMPA TUDO
         // ==========================================
         function sair() {
             if (!confirm("Sair da Área de Gerenciar?")) return;
             
             acessoLiberado = false;
-            localStorage.removeItem(CHAVE_ACESSO);
+            localStorage.removeItem(CHAVE_ACESSO); // Remove completamente
             
             document.getElementById('painelControle').classList.add('escondido');
             document.getElementById('telaLogin').classList.remove('escondido');
@@ -473,7 +475,7 @@
         }
 
         // ==========================================
-        // MENU DE NAVEGAÇÃO
+        // MENU
         // ==========================================
         document.querySelectorAll('.botao-menu').forEach(botao => {
             botao.addEventListener('click', () => {
@@ -487,7 +489,7 @@
         });
 
         // ==========================================
-        // EXIBIR MENSAGENS COM ID — VOCÊ DISTINGUE QUEM É QUEM
+        // MENSAGENS COM ID
         // ==========================================
         function carregarMensagens() {
             const container = document.getElementById('lista-mensagens');
@@ -510,7 +512,6 @@
                         ? '<span class="etiqueta-status status-respondido">✅ Respondida</span>' 
                         : '<span class="etiqueta-status status-pendente">⏳ Pendente</span>';
 
-                    // ✅ MOSTRA O ID JUNTO COM O NOME
                     container.innerHTML += `
                         <div class="mensagem-card ${classe}">
                             <div class="info-remetente">
