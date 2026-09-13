@@ -22,7 +22,7 @@
         }
 
         .caixa-principal {
-            max-width: 720px;
+            max-width: 760px;
             margin: 0 auto;
             background: #ffffff;
             border-radius: 28px;
@@ -50,10 +50,9 @@
             font-family: 'Georgia', serif;
             font-style: italic;
             margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 0 #fff, 3px 3px 0 #ffd9e6;
         }
 
-        .subtitulo-pagina {
+        .subtitulo {
             text-align: center;
             color: #b34782;
             font-size: 1rem;
@@ -62,7 +61,6 @@
         }
 
         .coracao { color: #ff66b2; }
-
         .escondido { display: none !important; }
 
         input, textarea {
@@ -111,20 +109,10 @@
             font-size: 0.9rem;
         }
 
-        .btn-verde {
-            background: linear-gradient(90deg, #25D366, #128C7E);
-            color: white;
-        }
-
-        .btn-vermelho {
-            background: linear-gradient(90deg, #ef5350, #e53935);
-            color: white;
-        }
-
-        .btn-roxo {
-            background: linear-gradient(90deg, #993366, #b34782);
-            color: white;
-        }
+        .btn-verde { background: linear-gradient(90deg, #25D366, #128C7E); color: white; }
+        .btn-vermelho { background: linear-gradient(90deg, #ef5350, #e53935); color: white; }
+        .btn-roxo { background: linear-gradient(90deg, #993366, #b34782); color: white; }
+        .btn-azul { background: linear-gradient(90deg, #42a5f5, #1976d2); color: white; }
 
         .aviso-erro {
             color: #d32f2f;
@@ -135,15 +123,6 @@
             border-left: 4px solid #ef5350;
         }
 
-        .botoes {
-            display: flex;
-            gap: 0.7rem;
-            flex-wrap: wrap;
-            margin: 1.5rem 0;
-        }
-
-        .botoes button { flex: 1; min-width: 120px; }
-
         .linha-cabecalho {
             display: flex;
             justify-content: space-between;
@@ -153,27 +132,47 @@
             border-bottom: 2px dashed #ffd9e6;
         }
 
+        .menu-navegacao {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .menu-navegacao button {
+            flex: 1;
+            min-width: 130px;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            background: #fff;
+            color: #993366;
+            border: 2px solid #ffd9e6;
+        }
+
+        .menu-navegacao button.ativo {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            border-color: #ff66b2;
+        }
+
+        .secao { display: none; }
+        .secao.visivel { display: block; animation: aparecer 0.3s ease; }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .mensagem-card {
             border-radius: 20px;
             padding: 1.5rem;
             margin-bottom: 1.2rem;
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .mensagem-card:hover { transform: translateY(-2px); }
-
-        .pendente {
-            background: linear-gradient(135deg, #fff9e6, #fff3cd);
-            border: 2px solid #ffc107;
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.15);
-        }
-
-        .respondida {
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-            border: 2px solid #66bb6a;
-            box-shadow: 0 4px 12px rgba(102, 187, 106, 0.15);
-        }
+        .pendente { background: linear-gradient(135deg, #fff9e6, #fff3cd); border: 2px solid #ffc107; }
+        .respondida { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border: 2px solid #66bb6a; }
 
         .etiqueta-status {
             display: inline-block;
@@ -187,50 +186,29 @@
         .status-respondido { background: #c8e6c9; color: #2e7d32; }
 
         .resposta-caixa {
-            background: #ffffff;
+            background: #fff;
             border-radius: 16px;
             padding: 1.3rem;
             margin-top: 1rem;
             border-left: 4px solid #25D366;
-            box-shadow: inset 0 0 10px rgba(37, 211, 102, 0.08);
-        }
-
-        .resposta-titulo {
-            font-weight: bold;
-            color: #2e7d32;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .modal-fundo {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             padding: 1rem;
             z-index: 999;
         }
 
         .modal {
-            background: #fff;
-            border-radius: 24px;
-            padding: 2rem;
-            max-width: 440px;
-            width: 100%;
+            background: #fff; border-radius: 24px; padding: 2rem;
+            max-width: 440px; width: 100%;
             border: 4px solid #ff99cc;
             box-shadow: 0 10px 30px rgba(255, 102, 178, 0.25);
-            animation: aparecer 0.3s ease;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .modal h3 {
@@ -239,6 +217,34 @@
             margin-bottom: 1.5rem;
             text-align: center;
         }
+
+        .botoes-acao {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .botoes-acao button { flex: 1; min-width: 120px; }
+
+        .info-remetente {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .nome-remetente { font-weight: bold; color: #664455; font-size: 1.05rem; }
+        .data-msg { font-size: 0.85rem; color: #999; }
+        .texto-msg { color: #444; line-height: 1.6; margin-bottom: 0.5rem; }
+
+        .vazio {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #b34782;
+        }
+
+        .vazio .emoji { font-size: 3rem; margin-bottom: 1rem; }
 
         .voltar {
             text-align: center;
@@ -249,45 +255,9 @@
             color: #b34782;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.2s;
         }
 
-        .voltar a:hover {
-            color: #ff66b2;
-            text-decoration: underline;
-        }
-
-        .vazio {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #b34782;
-        }
-
-        .vazio .emoji { font-size: 3rem; margin-bottom: 1rem; }
-
-        .info-remetente {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.8rem;
-        }
-
-        .nome-remetente {
-            font-weight: bold;
-            color: #664455;
-            font-size: 1.05rem;
-        }
-
-        .data-msg {
-            font-size: 0.85rem;
-            color: #999;
-        }
-
-        .texto-msg {
-            color: #444;
-            line-height: 1.6;
-            margin-bottom: 0.5rem;
-        }
+        .voltar a:hover { color: #ff66b2; text-decoration: underline; }
 
         @media (max-width: 480px) {
             .caixa-principal { padding: 1.5rem; border-radius: 24px; }
@@ -298,105 +268,133 @@
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
+    <!-- TELA DE LOGIN — OBRIGATORIA -->
     <div id="telaLogin" class="caixa-principal">
         <div class="faixa-topo"></div>
-        <h1>💎 Area de Gerenciar</h1>
-        <p class="subtitulo-pagina">
+        <h1>🔐 Area de Gerenciar</h1>
+        <p class="subtitulo">
             <span class="coracao">♥</span> Encanto Nail Designer <span class="coracao">♥</span>
         </p>
 
-        <input type="password" id="campoSenha" placeholder="Digite a senha de acesso...">
-        <p id="avisoErro" class="aviso-erro escondido">Senha incorreta! Tente novamente.</p>
+        <input 
+            type="password" 
+            id="campoSenha" 
+            placeholder="Digite a senha de acesso..."
+            autocomplete="off"
+        >
+        <p id="avisoErro" class="aviso-erro escondido">
+            ❌ Senha incorreta! Acesso negado.
+        </p>
 
         <button class="btn-principal" onclick="verificarSenha()">
-            Entrar na Area
+            🔓 Entrar
         </button>
 
         <div class="voltar">
-            <a href="index.html">Voltar para a pagina principal</a>
+            <a href="index.html">← Voltar para o site</a>
         </div>
     </div>
 
-    <!-- PAINEL DE GERENCIAR -->
-    <div id="painelGerencia" class="caixa-principal escondido">
+    <!-- PAINEL DE CONTROLE — SO APARECE COM SENHA CERTA -->
+    <div id="painelControle" class="caixa-principal escondido">
         <div class="faixa-topo"></div>
         
         <div class="linha-cabecalho">
             <div>
-                <h1>💎 Area de Gerenciar</h1>
-                <p class="subtitulo-pagina" style="margin:0; text-align:left;">
+                <h1>💎 Controle Total</h1>
+                <p class="subtitulo" style="margin:0; text-align:left;">
                     Bem-vinda, Mylena <span class="coracao">♥</span>
                 </p>
             </div>
-            <button id="botaoSairArea" class="btn-sair" onclick="sairAreaAdministrativa()">
-                Sair
-            </button>
+            <button class="btn-sair" onclick="sair()">🚪 Sair</button>
         </div>
 
-        <div class="botoes">
-            <button id="btnLimparParticipantes" class="btn-vermelho escondido">Limpar Lista 1</button>
-            <button id="btnLimparApoiadores" class="btn-vermelho escondido">Limpar Lista 2</button>
+        <!-- MENU DE NAVEGACAO -->
+        <nav class="menu-navegacao">
+            <button class="botao-menu ativo" data-secao="mensagens">💬 Mensagens</button>
+            <button class="botao-menu" data-secao="geral">⚙️ Sistema</button>
+            <button class="botao-menu" data-secao="site">🌐 Navegar</button>
+        </nav>
+
+        <!-- SECAO: MENSAGENS -->
+        <div id="secao-mensagens" class="secao visivel">
+            <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
+                Mensagens Recebidas
+            </h3>
+            <div id="lista-mensagens"></div>
         </div>
 
-        <h3 style="margin: 2rem 0 1rem; color:#993366; font-size:1.3rem;">
-            Mensagens Recebidas
-        </h3>
-        
-        <div id="painel-mensagens-admin"></div>
+        <!-- SECAO: SISTEMA -->
+        <div id="secao-geral" class="secao">
+            <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
+                Configuracoes
+            </h3>
+            <div style="background:#fffafc; border-radius:16px; padding:1.5rem; border:2px solid #ffd9e6;">
+                <p style="margin-bottom:1rem; color:#2e7d32; font-weight:bold;">✅ Sistema Protegido</p>
+                <p style="margin-bottom:1rem; color:#666;">Acesso permitido somente com senha.</p>
+                <p style="margin-bottom:1.5rem; color:#666;">Status: Conectado ao Banco de Dados</p>
+                
+                <div class="botoes-acao">
+                    <button class="btn-vermelho" onclick="if(confirm('Apagar TODAS as mensagens?')){limparTudo()}">
+                        🗑️ Limpar Tudo
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECAO: NAVEGAR PELO SITE -->
+        <div id="secao-site" class="secao">
+            <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
+                Areas do Site
+            </h3>
+            <div style="background:#fffafc; border-radius:16px; padding:1.5rem; border:2px solid #ffd9e6;">
+                <p style="margin-bottom:1rem; color:#666;">Acesse qualquer pagina:</p>
+                
+                <div class="botoes-acao">
+                    <button class="btn-azul" onclick="window.open('index.html', '_blank')">🏠 Pagina Inicial</button>
+                    <button class="btn-verde" onclick="window.open('chat.html', '_blank')">💬 Chat do Cliente</button>
+                </div>
+            </div>
+        </div>
 
         <div class="voltar">
-            <a href="index.html">Voltar para o site</a>
+            <a href="index.html">← Voltar para o site</a>
         </div>
     </div>
 
     <!-- MODAL DE RESPONDER -->
     <div id="modalResposta" class="modal-fundo escondido">
         <div class="modal">
-            <h3>Responder Mensagem</h3>
-            
+            <h3>✍️ Responder</h3>
             <p style="margin-bottom:0.5rem; color:#666;">
-                <strong>Para:</strong> <span id="remetenteMensagem"></span>
+                <strong>De:</strong> <span id="nomeRemetente"></span>
             </p>
-            
-            <textarea 
-                id="textoResposta" 
-                rows="5" 
-                placeholder="Escreva sua resposta aqui..."
-            ></textarea>
-            
-            <input type="hidden" id="chaveMensagemAtual">
-            
+            <textarea id="textoResposta" rows="5" placeholder="Sua resposta..."></textarea>
+            <input type="hidden" id="chaveMensagem">
             <div style="display:flex; gap:0.7rem; margin-top:0.5rem;">
-                <button class="btn-verde" style="flex:1;" onclick="enviarResposta()">
-                    Enviar Resposta
-                </button>
-                <button class="btn-roxo" style="flex:1;" onclick="fecharModalResposta()">
-                    Cancelar
-                </button>
+                <button class="btn-verde" style="flex:1;" onclick="enviarResposta()">✅ Enviar</button>
+                <button class="btn-roxo" style="flex:1;" onclick="fecharModal()">✖️ Cancelar</button>
             </div>
         </div>
     </div>
 
     <script>
         // ==========================================
-        // DADOS DO SISTEMA
+        // SENHA FIXA — WJ321
         // ==========================================
-        const SENHA_ADMIN = "WJ321";
-        const NOME_REMETENTE_ADMIN = "Mylena — Encanto Nail Designer";
+        const SENHA_ADMIN = "WJ321"; // ← Exatamente esta!
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
-        const CHAVE_ACESSO = "adminAcessoLiberado";
+        const CHAVE_ACESSO = "areaGerenciarLiberada";
 
         let acessoLiberado = false;
 
+        // FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
             authDomain: "willobras.firebaseapp.com",
             databaseURL: "https://willobras-default-rtdb.firebaseio.com",
             projectId: "willobras",
-            storageBucket: "willobras.firebasestorage.app",
-            messagingSenderId: "66370500400",
-            appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
+            storageBucket: "willobras.firebasestorage.app"
         };
 
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
@@ -407,148 +405,154 @@
         }
 
         // ==========================================
-        // MANTER ACESSO SALVO
+        // VERIFICAR ACESSO SALVO
         // ==========================================
         if (localStorage.getItem(CHAVE_ACESSO) === "SIM") {
             acessoLiberado = true;
             document.getElementById('telaLogin').classList.add('escondido');
-            document.getElementById('painelGerencia').classList.remove('escondido');
-            document.getElementById('btnLimparParticipantes').classList.remove('escondido');
-            document.getElementById('btnLimparApoiadores').classList.remove('escondido');
-            carregarTodasMensagensAdmin();
+            document.getElementById('painelControle').classList.remove('escondido');
+            carregarMensagens();
         }
 
         // ==========================================
-        // LOGIN E SAIR
+        // LOGIN — SO ENTRA COM WJ321
         // ==========================================
         function verificarSenha() {
-            const senhaDigitada = document.getElementById('campoSenha').value.trim();
+            const digitada = document.getElementById('campoSenha').value.trim();
             
-            if (senhaDigitada === SENHA_ADMIN) {
+            if (digitada === SENHA_ADMIN) {
                 acessoLiberado = true;
                 localStorage.setItem(CHAVE_ACESSO, "SIM");
-
-                document.getElementById('telaLogin').classList.add('escondido');
-                document.getElementById('painelGerencia').classList.remove('escondido');
-                document.getElementById('btnLimparParticipantes').classList.remove('escondido');
-                document.getElementById('btnLimparApoiadores').classList.remove('escondido');
                 
-                carregarTodasMensagensAdmin();
-                alert("Acesso liberado! Seja bem-vinda Mylena");
+                document.getElementById('telaLogin').classList.add('escondido');
+                document.getElementById('painelControle').classList.remove('escondido');
+                
+                carregarMensagens();
+                alert("✅ Acesso Liberado! Bem-vinda Mylena!");
             } else {
                 document.getElementById('avisoErro').classList.remove('escondido');
                 document.getElementById('campoSenha').value = '';
             }
         }
 
-        function sairAreaAdministrativa() {
-            if (!confirm("Tem certeza que deseja sair?")) return;
+        // ==========================================
+        // SAIR — BLOQUEIA NOVAMENTE
+        // ==========================================
+        function sair() {
+            if (!confirm("Sair da Area de Gerenciar?")) return;
             
             acessoLiberado = false;
             localStorage.removeItem(CHAVE_ACESSO);
-
-            document.getElementById('painelGerencia').classList.add('escondido');
+            
+            document.getElementById('painelControle').classList.add('escondido');
             document.getElementById('telaLogin').classList.remove('escondido');
-            document.getElementById('btnLimparParticipantes').classList.add('escondido');
-            document.getElementById('btnLimparApoiadores').classList.add('escondido');
             document.getElementById('avisoErro').classList.add('escondido');
             document.getElementById('campoSenha').value = '';
-
-            alert("Voce saiu com sucesso!");
+            
+            alert("🔒 Voce saiu! Acesso protegido.");
         }
 
         // ==========================================
-        // RESPONDER E EXCLUIR MENSAGENS
+        // MENU
         // ==========================================
-        function fecharModalResposta() {
-            document.getElementById('modalResposta').classList.add('escondido');
-            document.getElementById('textoResposta').value = '';
-        }
-
-        function abrirModalResponder(chave, dados) {
-            document.getElementById('remetenteMensagem').textContent = dados.nomeRemetente || "Visitante";
-            document.getElementById('chaveMensagemAtual').value = chave;
-            document.getElementById('textoResposta').value = dados.resposta || "";
-            document.getElementById('modalResposta').classList.remove('escondido');
-        }
-
-        async function enviarResposta() {
-            const chave = document.getElementById('chaveMensagemAtual').value;
-            const texto = document.getElementById('textoResposta').value.trim();
-
-            if (!texto) { alert("Escreva sua resposta!"); return; }
-            if (!chave) { alert("Erro na chave!"); return; }
-
-            try {
-                await db.ref(CAMINHO_BASE + "/" + chave).update({
-                    resposta: texto,
-                    dataResposta: dataAtual()
-                });
-                alert("Resposta enviada!");
-                fecharModalResposta();
-            } catch (e) {
-                alert("Erro: " + e.message);
-            }
-        }
-
-        async function excluirMensagem(chave) {
-            if (!confirm("Excluir esta mensagem?")) return;
-            await db.ref(CAMINHO_BASE + "/" + chave).remove();
-            alert("Excluida!");
-        }
+        document.querySelectorAll('.botao-menu').forEach(botao => {
+            botao.addEventListener('click', () => {
+                document.querySelectorAll('.botao-menu').forEach(b => b.classList.remove('ativo'));
+                botao.classList.add('ativo');
+                
+                const idSecao = 'secao-' + botao.dataset.secao;
+                document.querySelectorAll('.secao').forEach(s => s.classList.remove('visivel'));
+                document.getElementById(idSecao).classList.add('visivel');
+            });
+        });
 
         // ==========================================
-        // CARREGAR LISTA DE MENSAGENS
+        // MENSAGENS
         // ==========================================
-        function carregarTodasMensagensAdmin() {
-            const container = document.getElementById('painel-mensagens-admin');
+        function carregarMensagens() {
+            const container = document.getElementById('lista-mensagens');
             
             db.ref(CAMINHO_BASE).on("value", (snap) => {
                 container.innerHTML = '';
+                
                 if (!snap.exists()) {
-                    container.innerHTML = '<div class="vazio"><div class="emoji">💬</div><p>Nenhuma mensagem recebida</p></div>';
+                    container.innerHTML = '<div class="vazio"><div class="emoji">📭</div><p>Nenhuma mensagem</p></div>';
                     return;
                 }
 
-                snap.forEach((item) => {
+                snap.forEach(item => {
                     const chave = item.key;
                     const dados = item.val();
                     if (dados.mensagemNovaAdmin) return;
 
-                    const classeStatus = dados.resposta ? 'respondida' : 'pendente';
-                    const textoStatus = dados.resposta 
-                        ? '<span class="etiqueta-status status-respondido">Respondida</span>' 
-                        : '<span class="etiqueta-status status-pendente">Pendente</span>';
+                    const classe = dados.resposta ? 'respondida' : 'pendente';
+                    const status = dados.resposta 
+                        ? '<span class="etiqueta-status status-respondido">✅ Respondida</span>' 
+                        : '<span class="etiqueta-status status-pendente">⏳ Pendente</span>';
 
                     container.innerHTML += `
-                        <div class="mensagem-card ${classeStatus}">
+                        <div class="mensagem-card ${classe}">
                             <div class="info-remetente">
                                 <span class="nome-remetente">${dados.nomeRemetente || "Visitante"}</span>
-                                ${textoStatus}
+                                ${status}
                             </div>
                             <p class="texto-msg">${dados.texto}</p>
-                            <span class="data-msg">${dados.data || ""}</span>
+                            <span class="data-msg">${dados.data || ''}</span>
                             ${dados.resposta ? `
                                 <div class="resposta-caixa">
-                                    <p class="resposta-titulo">📩 Sua Resposta:</p>
+                                    <p style="font-weight:bold; color:#2e7d32;">📩 Resposta:</p>
                                     <p>${dados.resposta}</p>
-                                    <span class="data-msg">${dados.dataResposta || ""}</span>
+                                    <span class="data-msg">${dados.dataResposta || ''}</span>
                                 </div>
                             ` : ''}
-                            ${acessoLiberado ? `
-                                <div class="botoes">
-                                    <button class="btn-verde" onclick='abrirModalResponder("${chave}", ${JSON.stringify(dados).replace(/'/g, "\\'")})'>
-                                        ${dados.resposta ? 'Editar' : 'Responder'}
-                                    </button>
-                                    <button class="btn-vermelho" onclick="excluirMensagem('${chave}')">
-                                        Excluir
-                                    </button>
-                                </div>
-                            ` : ''}
+                            <div class="botoes-acao">
+                                <button class="btn-verde" onclick='abrirResponder("${chave}", ${JSON.stringify(dados).replace(/'/g, "\\'")})'>
+                                    ${dados.resposta ? '✏️ Editar' : '✍️ Responder'}
+                                </button>
+                                <button class="btn-vermelho" onclick="excluir('${chave}')">🗑️ Excluir</button>
+                            </div>
                         </div>
                     `;
                 });
             });
+        }
+
+        function abrirResponder(chave, dados) {
+            document.getElementById('chaveMensagem').value = chave;
+            document.getElementById('nomeRemetente').textContent = dados.nomeRemetente || "Visitante";
+            document.getElementById('textoResposta').value = dados.resposta || "";
+            document.getElementById('modalResposta').classList.remove('escondido');
+        }
+
+        function fecharModal() {
+            document.getElementById('modalResposta').classList.add('escondido');
+            document.getElementById('textoResposta').value = '';
+        }
+
+        async function enviarResposta() {
+            const chave = document.getElementById('chaveMensagem').value;
+            const resposta = document.getElementById('textoResposta').value.trim();
+            
+            if (!resposta) { alert("Escreva a resposta!"); return; }
+            
+            await db.ref(CAMINHO_BASE + "/" + chave).update({
+                resposta: resposta,
+                dataResposta: dataAtual()
+            });
+            alert("✅ Enviada!");
+            fecharModal();
+        }
+
+        async function excluir(chave) {
+            if (!confirm("Excluir?")) return;
+            await db.ref(CAMINHO_BASE + "/" + chave).remove();
+            alert("Excluida!");
+        }
+
+        async function limparTudo() {
+            if (!confirm("⚠️ APAGAR TUDO? Não tem volta!")) return;
+            await db.ref(CAMINHO_BASE).remove();
+            alert("Limpo!");
         }
     </script>
 </body>
