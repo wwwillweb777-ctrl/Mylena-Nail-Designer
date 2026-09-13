@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area de Gerenciar — Encanto Nail Designer</title>
+    <title>Área Administrativa — Encanto Nail Designer</title>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
@@ -63,13 +63,18 @@
         .coracao { color: #ff66b2; }
         .escondido { display: none !important; }
 
+        .grupo-senha {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
         input, textarea {
             width: 100%;
             padding: 1rem 1.2rem;
+            padding-right: 3.5rem;
             border: 2px solid #ffd9e6;
             border-radius: 16px;
             font-size: 1rem;
-            margin-bottom: 1rem;
             outline: none;
             transition: all 0.3s ease;
             background: #fffafc;
@@ -79,6 +84,24 @@
             border-color: #ff66b2;
             box-shadow: 0 0 0 4px rgba(255, 102, 178, 0.15);
             background: #fff;
+        }
+
+        .botao-olho {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0;
+            box-shadow: none;
+            color: #b34782;
+        }
+
+        .botao-olho:hover {
+            transform: translateY(-50%) scale(1.1);
         }
 
         button {
@@ -111,8 +134,6 @@
 
         .btn-verde { background: linear-gradient(90deg, #25D366, #128C7E); color: white; }
         .btn-vermelho { background: linear-gradient(90deg, #ef5350, #e53935); color: white; }
-        .btn-roxo { background: linear-gradient(90deg, #993366, #b34782); color: white; }
-        .btn-azul { background: linear-gradient(90deg, #42a5f5, #1976d2); color: white; }
 
         .aviso-erro {
             color: #d32f2f;
@@ -130,37 +151,6 @@
             margin-bottom: 2rem;
             padding-bottom: 1rem;
             border-bottom: 2px dashed #ffd9e6;
-        }
-
-        .menu-navegacao {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .menu-navegacao button {
-            flex: 1;
-            min-width: 130px;
-            padding: 0.8rem;
-            font-size: 0.9rem;
-            background: #fff;
-            color: #993366;
-            border: 2px solid #ffd9e6;
-        }
-
-        .menu-navegacao button.ativo {
-            background: linear-gradient(90deg, #ff66b2, #ff80c0);
-            color: white;
-            border-color: #ff66b2;
-        }
-
-        .secao { display: none; }
-        .secao.visivel { display: block; animation: aparecer 0.3s ease; }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .mensagem-card {
@@ -284,17 +274,21 @@
     <!-- TELA DE LOGIN — SEMPRE APARECE PRIMEIRO -->
     <div id="telaLogin" class="caixa-principal">
         <div class="faixa-topo"></div>
-        <h1>🔐 Área administrativa 🔐</h1>
+        <h1>🔐 Área Administrativa</h1>
         <p class="subtitulo">
             <span class="coracao">♥</span> Encanto Nail Designer <span class="coracao">♥</span>
         </p>
 
-        <input 
-            type="password" 
-            id="campoSenha" 
-            placeholder="Digite a senha de acesso..."
-            autocomplete="off"
-        >
+        <div class="grupo-senha">
+            <input 
+                type="password" 
+                id="campoSenha" 
+                placeholder="Digite a senha de acesso..."
+                autocomplete="off"
+            >
+            <button type="button" class="botao-olho" id="botaoOlho" onclick="alternarVisibilidade()">👁️</button>
+        </div>
+
         <p id="avisoErro" class="aviso-erro escondido">
             ❌ Senha incorreta! Acesso negado.
         </p>
@@ -314,7 +308,7 @@
         
         <div class="linha-cabecalho">
             <div>
-                <h1>💎 Controle Total</h1>
+                <h1>💬 Mensagens</h1>
                 <p class="subtitulo" style="margin:0; text-align:left;">
                     Bem-vinda, Mylena <span class="coracao">♥</span>
                 </p>
@@ -322,52 +316,16 @@
             <button class="btn-sair" onclick="sair()">🚪 Sair</button>
         </div>
 
-        <nav class="menu-navegacao">
-            <button class="botao-menu ativo" data-secao="mensagens">💬 Mensagens</button>
-            <button class="botao-menu" data-secao="geral">⚙️ Sistema</button>
-            <button class="botao-menu" data-secao="site">🌐 Navegar</button>
-        </nav>
+        <p style="color:#993366; font-size:0.9rem; margin-bottom:1.5rem;">
+            🆔 O ID único ajuda a distinguir pessoas com o mesmo nome
+        </p>
 
-        <div id="secao-mensagens" class="secao visivel">
-            <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
-                Mensagens Recebidas
-                <small style="font-weight:normal; font-size:0.8rem; color:#888; margin-left:0.5rem;">
-                    (🆔 = Identidade única de cada pessoa)
-                </small>
-            </h3>
-            <div id="lista-mensagens"></div>
-        </div>
+        <div id="lista-mensagens"></div>
 
-        <div id="secao-geral" class="secao">
-            <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
-                Configurações
-            </h3>
-            <div style="background:#fffafc; border-radius:16px; padding:1.5rem; border:2px solid #ffd9e6;">
-                <p style="margin-bottom:1rem; color:#2e7d32; font-weight:bold;">✅ Sistema Protegido</p>
-                <p style="margin-bottom:1rem; color:#666;">Senha: WJ321</p>
-                <p style="margin-bottom:1rem; color:#666;">🆔 Cada cliente tem ID único — nunca confunde nomes iguais!</p>
-                <p style="margin-bottom:1.5rem; color:#666;">Status: Conectado ao Banco de Dados</p>
-                
-                <div class="botoes-acao">
-                    <button class="btn-vermelho" onclick="if(confirm('Apagar TODAS as mensagens?')){limparTudo()}">
-                        🗑️ Limpar Tudo
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="secao-site" class="secao">
-            <h3 style="margin: 0 0 1rem; color:#993366; font-size:1.3rem;">
-                Áreas do Site
-            </h3>
-            <div style="background:#fffafc; border-radius:16px; padding:1.5rem; border:2px solid #ffd9e6;">
-                <p style="margin-bottom:1rem; color:#666;">Acesse qualquer página:</p>
-                
-                <div class="botoes-acao">
-                    <button class="btn-azul" onclick="window.open('index.html', '_blank')">🏠 Página Inicial</button>
-                    <button class="btn-verde" onclick="window.open('chat.html', '_blank')">💬 Chat do Cliente</button>
-                </div>
-            </div>
+        <div class="botoes-acao" style="margin-top:2rem;">
+            <button class="btn-vermelho" onclick="if(confirm('Apagar TODAS as mensagens?')){limparTudo()}">
+                🗑️ Limpar Tudo
+            </button>
         </div>
 
         <div class="voltar">
@@ -375,6 +333,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE RESPONDER -->
     <div id="modalResposta" class="modal-fundo escondido">
         <div class="modal">
             <h3>✍️ Responder</h3>
@@ -386,19 +345,19 @@
             <input type="hidden" id="chaveMensagem">
             <div style="display:flex; gap:0.7rem; margin-top:0.5rem;">
                 <button class="btn-verde" style="flex:1;" onclick="enviarResposta()">✅ Enviar</button>
-                <button class="btn-roxo" style="flex:1;" onclick="fecharModal()">✖️ Cancelar</button>
+                <button class="btn-vermelho" style="flex:1;" onclick="fecharModal()">✖️ Cancelar</button>
             </div>
         </div>
     </div>
 
     <script>
         // ==========================================
-        // SENHA FIXA — WJ321
+        // SENHA — FICA APENAS AQUI NO CÓDIGO, NÃO EXIBE NA TELA
         // ==========================================
         const SENHA_ADMIN = "WJ321";
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
         const CHAVE_ACESSO = "areaGerenciarLiberada";
-        const VALOR_LIBERADO = "AUTORIZADO_WJ321"; // Valor exclusivo, ninguém consegue adivinhar
+        const VALOR_LIBERADO = "AUTORIZADO_WJ321";
 
         let acessoLiberado = false;
 
@@ -421,36 +380,43 @@
         }
 
         // ==========================================
-        // CORREÇÃO: SEMPRE COMEÇA PEDINDO SENHA
+        // 👁️ OLHO — MOSTRA/ESCONDE A SENHA
         // ==========================================
-        // NÃO mostre o painel automaticamente — valide de forma SEGURA
+        let senhaVisivel = false;
+        function alternarVisibilidade() {
+            const campo = document.getElementById('campoSenha');
+            const botao = document.getElementById('botaoOlho');
+            
+            senhaVisivel = !senhaVisivel;
+            campo.type = senhaVisivel ? 'text' : 'password';
+            botao.textContent = senhaVisivel ? '🙈' : '👁️';
+        }
+
+        // ==========================================
+        // PROTEÇÃO — SEMPRE PEDIR SENHA PRIMEIRO
+        // ==========================================
         if (localStorage.getItem(CHAVE_ACESSO) === VALOR_LIBERADO) {
             acessoLiberado = true;
             document.getElementById('telaLogin').classList.add('escondido');
             document.getElementById('painelControle').classList.remove('escondido');
             carregarMensagens();
-        } else {
-            // Garante que a tela de login aparece PRIMEIRO sempre
-            acessoLiberado = false;
-            document.getElementById('telaLogin').classList.remove('escondido');
-            document.getElementById('painelControle').classList.add('escondido');
         }
 
         // ==========================================
-        // LOGIN — SÓ ENTRA COM WJ321
+        // LOGIN
         // ==========================================
         function verificarSenha() {
             const digitada = document.getElementById('campoSenha').value.trim();
             
             if (digitada === SENHA_ADMIN) {
                 acessoLiberado = true;
-                localStorage.setItem(CHAVE_ACESSO, VALOR_LIBERADO); // Valor seguro
+                localStorage.setItem(CHAVE_ACESSO, VALOR_LIBERADO);
                 
                 document.getElementById('telaLogin').classList.add('escondido');
                 document.getElementById('painelControle').classList.remove('escondido');
                 
                 carregarMensagens();
-                alert("✅ Acesso Liberado! Bem-vinda Mylena!");
+                alert("✅ Acesso liberado! Bem-vinda Mylena!");
             } else {
                 document.getElementById('avisoErro').classList.remove('escondido');
                 document.getElementById('campoSenha').value = '';
@@ -461,35 +427,24 @@
         // SAIR — LIMPA TUDO
         // ==========================================
         function sair() {
-            if (!confirm("Sair da Área de Gerenciar?")) return;
+            if (!confirm("Sair da área administrativa?")) return;
             
             acessoLiberado = false;
-            localStorage.removeItem(CHAVE_ACESSO); // Remove completamente
+            localStorage.removeItem(CHAVE_ACESSO);
             
             document.getElementById('painelControle').classList.add('escondido');
             document.getElementById('telaLogin').classList.remove('escondido');
             document.getElementById('avisoErro').classList.add('escondido');
             document.getElementById('campoSenha').value = '';
+            senhaVisivel = false;
+            document.getElementById('botaoOlho').textContent = '👁️';
+            document.getElementById('campoSenha').type = 'password';
             
             alert("🔒 Você saiu! Acesso protegido.");
         }
 
         // ==========================================
-        // MENU
-        // ==========================================
-        document.querySelectorAll('.botao-menu').forEach(botao => {
-            botao.addEventListener('click', () => {
-                document.querySelectorAll('.botao-menu').forEach(b => b.classList.remove('ativo'));
-                botao.classList.add('ativo');
-                
-                const idSecao = 'secao-' + botao.dataset.secao;
-                document.querySelectorAll('.secao').forEach(s => s.classList.remove('visivel'));
-                document.getElementById(idSecao).classList.add('visivel');
-            });
-        });
-
-        // ==========================================
-        // MENSAGENS COM ID
+        // CARREGAR MENSAGENS COM ID
         // ==========================================
         function carregarMensagens() {
             const container = document.getElementById('lista-mensagens');
