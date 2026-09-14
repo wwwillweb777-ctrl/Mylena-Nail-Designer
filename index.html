@@ -134,31 +134,21 @@
 </head>
 <body>
 
-    <!-- 🎵 MÚSICA — Toca sozinha, repete sempre, SEM botão de parar -->
+    <!-- 🎵 ÁUDIO — caminho corrigido para o repositório CERTO -->
     <audio id="musicaFundo" autoplay loop>
-        <source src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/audio/so-os-loucos-sabem.mp3" type="audio/mpeg">
+        <source src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Mylena-Nail-Designer@main/audio/so-os-loucos-sabem.mp3" type="audio/mpeg">
     
 
     <script>
         const audio = document.getElementById('musicaFundo');
-        audio.volume = 0.7; // Volume 70% — pode mudar de 0 a 1
-
-        // Garante repetição infinita
-        audio.addEventListener('ended', function() {
-            this.currentTime = 0;
-            this.play();
-        });
-
-        // Toca ao primeiro clique se o navegador bloquear
-        document.addEventListener('click', function iniciar() {
-            audio.play();
-            document.removeEventListener('click', iniciar);
-        });
+        audio.volume = 0.7;
+        audio.addEventListener('ended', () => { audio.currentTime = 0; audio.play(); });
+        document.addEventListener('click', () => audio.play());
     </script>
 
     <div class="cartaz">
         <div class="banner-topo">
-            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
+            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Mylena-Nail-Designer@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
         </div>
 
         <div class="conteudo-interno">
@@ -202,7 +192,7 @@
 
             <div class="area-contato">
                 <div class="img-baixo">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/Mylena-Nail-Designer@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
                 </div>
                 <div class="botao-wpp">
                     <a href="https://wa.me/553173449910" target="_blank">
