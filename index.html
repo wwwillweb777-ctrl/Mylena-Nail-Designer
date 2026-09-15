@@ -144,7 +144,7 @@
             <div class="titulo">
                 <h1 class="titulo-principal">Encanto</h1>
                 <h2 class="titulo-sub">Nail Designer</h2>
-                <p class="sub-titulo"><span class="coracao">♥</span> ESTUDIO DE UNHAS <span class="coracao">♥</span></p>
+                <p class="sub-titulo"><span class="coracao">♥</span> ESTÚDIO DE UNHAS <span class="coracao">♥</span></p>
             </div>
             <p class="faixa-destaque">Designs exclusivos e com carinho ✨</p>
             <div class="bloco-superior">
@@ -197,30 +197,26 @@
 
     <script>
         // ==========================================
-        // 🔑 CONFIGURAÇÕES
+        // 🔑 CONFIGURAÇÕES — CONTAGEM SÓ AQUI!
         // ==========================================
         const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
         const CHAVE_ID = "idVisitante_encanto";
-        const CHAVE_SESSAO = "sessao_ativa_encanto"; // Controla a navegação
+        const CHAVE_SESSAO_ATIVA = "sessao_ativa_encanto";
 
-        // ==========================================
-        // 🆔 GERAR/RECUPERAR ID DO VISITANTE
-        // ==========================================
+        // Gerar ID único do visitante
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2, 6);
             const p2 = Math.random().toString(36).slice(2, 6);
             return `usr_${p1}${p2}`;
         }
 
+        // Recuperar ou criar ID (fica salvo no navegador)
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
             localStorage.setItem(CHAVE_ID, ID_VISITANTE);
         }
 
-        // ==========================================
-        // 📅 DATA ATUAL
-        // ==========================================
         function dataAtual() {
             return new Date().toLocaleString('pt-BR', {
                 day: '2-digit', month: '2-digit', year: 'numeric',
@@ -228,9 +224,7 @@
             });
         }
 
-        // ==========================================
-        // 🔥 FIREBASE
-        // ==========================================
+        // Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
             authDomain: "willobras.firebaseapp.com",
@@ -245,12 +239,12 @@
         const db = firebase.database();
 
         // ==========================================
-        // ✅ LÓGICA PRINCIPAL — SÓ CONTA AQUI NO INDEX!
+        // ✅ LÓGICA — SÓ CONTA NA PRIMEIRA ENTRADA
         // ==========================================
         function ehNovaSessao() {
-            // sessionStorage = some ao fechar navegador
-            if (!sessionStorage.getItem(CHAVE_SESSAO)) {
-                sessionStorage.setItem(CHAVE_SESSAO, 'sim');
+            // sessionStorage = APAGA SOZINHO ao fechar o navegador
+            if (!sessionStorage.getItem(CHAVE_SESSAO_ATIVA)) {
+                sessionStorage.setItem(CHAVE_SESSAO_ATIVA, 'sim');
                 return true; // Fechou e abriu = conta
             }
             return false; // Navegando entre páginas = NÃO conta
@@ -264,25 +258,13 @@
             const dados = snap.val() || {};
             const agora = dataAtual();
 
-            // ✅ Atualiza dados no Firebase
             await ref.update({
                 id: ID_VISITANTE,
                 nome: dados.nome || "",
-                // Soma SOMENTE se for sessão nova
                 acessos: novaVisita ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
                 primeiroAcesso: dados.primeiroAcesso || agora,
                 ultimoAcesso: agora
             });
-
-            // ✅ Atualiza contador TOTAL de visitas (para o gerenciar ler)
-            const totalRef = db.ref(`${CAMINHO_ACESSOS}/_total_`);
-            if (novaVisita) {
-                await totalRef.transaction((dados) => {
-                    if (!dados) return { contador: 1 };
-                    dados.contador = (dados.contador || 0) + 1;
-                    return dados;
-                });
-            }
         };
     </script>
 </body>
