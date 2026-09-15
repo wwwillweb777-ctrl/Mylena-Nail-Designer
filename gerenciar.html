@@ -259,12 +259,12 @@
 
         <div class="grupo-senha">
             <input type="password" id="campoSenha" placeholder="Digite a senha..." autocomplete="off">
-            <button type="button" class="botao-olho" id="botaoOlho">🙈</button>
+            <button type="button" class="botao-olho" onclick="alternarVisibilidade()">🙈</button>
         </div>
 
         <p id="avisoErro" class="aviso-erro escondido">❌ Senha incorreta!</p>
 
-        <button class="btn-principal" id="botaoEntrar">🔐 Entrar</button>
+        <button class="btn-principal" onclick="verificarSenha()">🔐 Entrar</button>
 
         <div class="voltar">
             <a href="index.html">← Voltar para o site</a>
@@ -278,7 +278,7 @@
                 <h1>💬 Mensagens & Acessos</h1>
                 <p class="subtitulo" style="margin:0;">Bem-vinda, Mylena ♥</p>
             </div>
-            <button class="btn-sair" id="botaoSair">🚪 Sair</button>
+            <button class="btn-sair" onclick="sair()">🚪 Sair</button>
         </div>
 
         <p style="color:#993366; font-size:0.9rem; margin-bottom:1.5rem;">
@@ -288,7 +288,7 @@
         <div id="lista-conteudo"></div>
 
         <div class="botoes-acao" style="margin-top:2rem;">
-            <button class="btn-vermelho" id="botaoLimparTudo">🗑️ Limpar Tudo</button>
+            <button class="btn-vermelho" onclick="if(confirm('⚠️ APAGAR TUDO? Não tem volta!')) limparTudo()">🗑️ Limpar Tudo</button>
         </div>
 
         <div class="voltar">
@@ -307,8 +307,8 @@
             <textarea id="m-resposta" rows="4" placeholder="Sua resposta..."></textarea>
             <input type="hidden" id="m-chave">
             <div class="botoes-acao">
-                <button class="btn-verde" id="botaoEnviarResposta">✅ Enviar</button>
-                <button class="btn-vermelho" id="botaoFecharModal">✖️ Cancelar</button>
+                <button class="btn-verde" onclick="enviarResposta()">✅ Enviar</button>
+                <button class="btn-vermelho" onclick="fecharModal()">✖️ Cancelar</button>
             </div>
         </div>
     </div>
@@ -321,7 +321,7 @@
         const CAMINHO_MSG = "encanto_nail_designer/mensagens";
         const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
 
-        // FIREBASE
+        // FIREBASE — INICIALIZAÇÃO SEGURA
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
             authDomain: "willobras.firebaseapp.com",
@@ -332,49 +332,24 @@
             appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
         };
 
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        let db = null;
+        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        }
 
         function dataAtual() {
             return new Date().toLocaleString('pt-BR');
         }
 
         // ==========================================
-        // VARIÁVEIS GLOBAIS
+        // FUNÇÕES — TODAS GLOBAIS PARA onclick FUNCIONAR
         // ==========================================
         let senhaVisivel = false;
 
-        // ==========================================
-        // LIGAR BOTÕES — AQUI ESTÁ A CORREÇÃO PRINCIPAL
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Olho da senha
-            document.getElementById('botaoOlho').addEventListener('click', alternarVisibilidade);
-            
-            // Botão Entrar
-            document.getElementById('botaoEntrar').addEventListener('click', verificarSenha);
-            
-            // Botão Sair
-            document.getElementById('botaoSair').addEventListener('click', sair);
-            
-            // Limpar Tudo
-            document.getElementById('botaoLimparTudo').addEventListener('click', function() {
-                if(confirm('⚠️ APAGAR TUDO? Não tem volta!')) limparTudo();
-            });
-            
-            // Enviar Resposta
-            document.getElementById('botaoEnviarResposta').addEventListener('click', enviarResposta);
-            
-            // Fechar Modal
-            document.getElementById('botaoFecharModal').addEventListener('click', fecharModal);
-        });
-
-        // ==========================================
-        // FUNÇÕES
-        // ==========================================
         function alternarVisibilidade() {
             const campo = document.getElementById('campoSenha');
-            const botao = document.getElementById('botaoOlho');
+            const botao = document.querySelector('.botao-olho');
             senhaVisivel = !senhaVisivel;
             campo.type = senhaVisivel ? 'text' : 'password';
             botao.textContent = senhaVisivel ? '👁️' : '🙈';
@@ -399,11 +374,15 @@
             document.getElementById('avisoErro').classList.add('escondido');
             document.getElementById('campoSenha').value = '';
             senhaVisivel = false;
-            document.getElementById('botaoOlho').textContent = '🙈';
-            document.getElementById('campoSenha').type = 'password';
         }
 
         async function carregarTudo() {
+            if (!db) {
+                document.getElementById('lista-conteudo').innerHTML = 
+                    '<div class="vazio"><p>⚠️ Firebase não carregou. Atualize a página.</p></div>';
+                return;
+            }
+
             const snapAcessos = await db.ref(CAMINHO_ACESSOS).once("value");
             const snapMensagens = await db.ref(CAMINHO_MSG).once("value");
 
@@ -442,7 +421,9 @@
                             <span class="etiqueta etq-data">🕘 Último: ${p.ultimoAcesso || '—'}</span>
                         </div>
                         ${msgs.length === 0 ? '<p style="color:#999; font-size:0.9rem;">Sem mensagens</p>' : ''}
-                        ${msgs.map(m => `
+                        ${msgs.map(m => {
+                            const resp = (m.resposta || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                            return `
                             <div class="mensagem-card ${m.resposta ? 'respondida' : 'pendente'}">
                                 <p style="margin-bottom:0.5rem;">${m.texto}</p>
                                 <span style="font-size:0.8rem; color:#888;">${m.data || ''}</span>
@@ -457,13 +438,13 @@
                                     </div>
                                 ` : ''}
                                 <div class="botoes-acao">
-                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${nomeExibir}", "${idPessoa}", `${(m.resposta||'').replace(/"/g, '&quot;')}`)'>
+                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${nomeExibir.replace(/"/g, '&quot;')}", "${idPessoa}", "${resp}")'>
                                         ${m.resposta ? '✏️ Editar' : '✍️ Responder'}
                                     </button>
                                     <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">🗑️ Mensagem</button>
                                 </div>
                             </div>
-                        `).join('')}
+                        `}).join('')}
                         <div class="botoes-acao">
                             <button class="btn-azul" onclick="excluirPessoa('${idPessoa}')">🗑️ Apagar esta pessoa</button>
                         </div>
@@ -477,21 +458,23 @@
                 const msgs = porId[id];
                 container.innerHTML += `
                     <div class="bloco-pessoa" style="opacity:0.8;">
-                        <div class="pessoa-nome">${msgs[0].nomeRemetente || "Visitante"}</div>
+                        <div class="pessoa-nome">${(msgs[0].nomeRemetente || "Visitante").replace(/"/g, '&quot;')}</div>
                         <div class="pessoa-dados">
                             <span class="etiqueta etq-id">🆔 ${id}</span>
                             <span class="etiqueta etq-acessos">👁️ Sem registro</span>
                         </div>
-                        ${msgs.map(m => `
+                        ${msgs.map(m => {
+                            const resp = (m.resposta || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                            return `
                             <div class="mensagem-card ${m.resposta ? 'respondida' : 'pendente'}">
                                 <p>${m.texto}</p>
                                 <span style="font-size:0.8rem; color:#888;">${m.data || ''}</span>
                                 <div class="botoes-acao">
-                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${(m.nomeRemetente||'Visitante').replace(/"/g, '&quot;')}", "${id}", "${(m.resposta||'').replace(/"/g, '&quot;')}")'>Responder</button>
+                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${(m.nomeRemetente||'Visitante').replace(/"/g, '&quot;')}", "${id}", "${resp}")'>Responder</button>
                                     <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">🗑️ Mensagem</button>
                                 </div>
                             </div>
-                        `).join('')}
+                        `}).join('')}
                     </div>
                 `;
             }
@@ -511,6 +494,7 @@
         }
 
         async function enviarResposta() {
+            if (!db) return;
             const chave = document.getElementById('m-chave').value;
             const texto = document.getElementById('m-resposta').value.trim();
             if (!texto) { alert("Escreva sua resposta!"); return; }
@@ -525,12 +509,13 @@
 
         async function excluirMensagem(chave) {
             if (!confirm("Excluir esta mensagem?")) return;
-            await db.ref(`${CAMINHO_MSG}/${chave}`).remove();
+            if (db) await db.ref(`${CAMINHO_MSG}/${chave}`).remove();
             carregarTudo();
         }
 
         async function excluirPessoa(idPessoa) {
             if (!confirm(`Apagar dados de ${idPessoa}?`)) return;
+            if (!db) return;
             await db.ref(`${CAMINHO_ACESSOS}/${idPessoa}`).remove();
             const snap = await db.ref(CAMINHO_MSG).orderByChild("idRemetente").equalTo(idPessoa).once("value");
             const updates = {};
@@ -542,6 +527,7 @@
 
         async function limparTudo() {
             if (!confirm("⚠️ APAGAR TUDO? Não tem volta!")) return;
+            if (!db) return;
             await db.ref(CAMINHO_MSG).remove();
             await db.ref(CAMINHO_ACESSOS).remove();
             alert("✅ Tudo apagado!");
