@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encanto Nail Designer</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh;
             background: linear-gradient(180deg, #fff0f8 0%, #ffe6f2 100%);
@@ -22,42 +20,28 @@
             font-family: 'Segoe UI', sans-serif;
             padding: 1rem;
         }
-
         .cartaz {
             max-width: 450px;
             margin: 0 auto;
             background: #fff;
             border-radius: 24px;
-            padding: 0;
-            position: relative;
-            overflow: hidden;
             border: 3px solid #ff99cc;
+            overflow: hidden;
         }
-
-        /* BANNER */
         .banner-topo {
             width: 100%;
             height: 420px;
             overflow: hidden;
-            position: relative;
             border-bottom-left-radius: 32px;
             border-bottom-right-radius: 32px;
         }
-
         .banner-topo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top;
             display: block;
         }
-
-        /* BOTAO DO CHAT */
-        .botao-chat-topo {
-            text-align: center;
-            margin-bottom: 0.8rem;
-        }
-
+        .botao-chat-topo { text-align: center; margin: 0.8rem 0; }
         .botao-chat-topo a {
             display: inline-block;
             background: linear-gradient(90deg, #25D366, #128C7E);
@@ -66,56 +50,18 @@
             border-radius: 50px;
             font-weight: bold;
             text-decoration: none;
-            font-size: 1rem;
-            box-shadow: 0 4px 12px rgba(37,211,102,.3);
-            transition: transform 0.2s;
         }
-
-        .botao-chat-topo a:hover {
-            transform: scale(1.05);
-        }
-
-        .coracao {
-            color: #ff66b2;
-        }
-
-        .conteudo-interno {
-            padding: 1.5rem;
-            position: relative;
-        }
-
-        /* TITULO */
-        .titulo {
-            text-align: center;
-            margin-bottom: 0.5rem;
-            padding-top: 0.5rem;
-        }
-
+        .coracao { color: #ff66b2; }
+        .conteudo-interno { padding: 1.5rem; }
+        .titulo { text-align: center; margin-bottom: 0.5rem; }
         .titulo-principal {
             font-size: 2.8rem;
-            font-weight: 900;
             color: #ff66b2;
-            text-shadow: 2px 2px 0 #fff, 3px 3px 0 #ff99cc;
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
             font-style: italic;
-            margin-top: 0;
         }
-
-        .titulo-sub {
-            font-size: 1.6rem;
-            font-family: cursive;
-            color: #222;
-            margin-top: -0.3rem;
-        }
-
-        .sub-titulo {
-            text-align: center;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            color: #b34782;
-            margin: 0.5rem 0 1rem;
-        }
-
+        .titulo-sub { font-size: 1.6rem; font-family: cursive; color: #222; }
+        .sub-titulo { text-align: center; color: #b34782; letter-spacing: 2px; margin: 0.5rem 0 1rem; }
         .faixa-destaque {
             background: linear-gradient(90deg, #ff66b2, #ff80c0);
             color: white;
@@ -124,280 +70,90 @@
             font-weight: bold;
             display: inline-block;
             position: relative;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 50%; transform: translateX(-50%);
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 10px rgba(255,102,178,.3);
         }
-
-        /* AREA SUPERIOR */
-        .bloco-superior {
-            position: relative;
-            margin-bottom: 2rem;
-            min-height: 200px;
-        }
-
-        .coluna-esq {
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
+        .bloco-superior { position: relative; margin-bottom: 2rem; min-height: 200px; }
+        .coluna-esq { position: absolute; top: 0; left: 0; display: flex; flex-direction: column; gap: 0.8rem; }
         .moldura-serrilhada {
-            width: 160px;
-            height: 130px;
+            width: 160px; height: 130px;
             background: linear-gradient(45deg, #ff99cc, #ff66b2);
             padding: 4px;
-            clip-path: polygon(
-                0% 10%, 8% 0%, 20% 0%, 28% 10%, 40% 0%, 52% 10%, 64% 0%, 76% 10%, 88% 0%, 100% 10%,
-                100% 22%, 92% 32%, 100% 44%, 92% 56%, 100% 68%, 92% 80%, 100% 92%, 92% 100%,
-                80% 100%, 68% 92%, 56% 100%, 44% 92%, 32% 100%, 20% 92%, 8% 100%, 0% 90%,
-                0% 78%, 8% 68%, 0% 56%, 8% 44%, 0% 32%, 8% 22%, 0% 10%
-            );
+            clip-path: polygon(0% 10%,8% 0%,20% 0%,28% 10%,40% 0%,52% 10%,64% 0%,76% 10%,88% 0%,100% 10%,100% 22%,92% 32%,100% 44%,92% 56%,100% 68%,92% 80%,100% 92%,92% 100%,80% 100%,68% 92%,56% 100%,44% 92%,32% 100%,20% 92%,8% 100%,0% 90%,0% 78%,8% 68%,0% 56%,8% 44%,0% 32%,8% 22%,0% 10%);
         }
-
         .moldura-serrilhada .espaco {
-            width: 100%;
-            height: 100%;
-            background: #ffe6f2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #b34782;
-            font-size: 0.9rem;
-            text-align: center;
+            width: 100%; height: 100%; background: #ffe6f2;
+            display: flex; align-items: center; justify-content: center;
+            color: #b34782; font-size: 0.9rem; text-align: center;
         }
-
-        /* Moldura do coracao */
         .moldura-coracao {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 170px;
-            height: 160px;
+            position: absolute; top: 0; right: 0;
+            width: 170px; height: 160px;
             clip-path: path('M85,12 C115,-8 170,20 170,72 C170,120 85,155 85,155 C85,155 0,120 0,72 C0,20 55,-8 85,12 Z');
             background: linear-gradient(45deg, #ff99cc, #ff66b2);
             padding: 3px;
-            box-shadow: 0 0 15px rgba(255,102,178,.2);
-            z-index: 2;
         }
-
-        .moldura-coracao .fundo {
-            width: 100%;
-            height: 100%;
-            background: #ffe6f2;
-        }
-
-        /* SERVICOS */
+        .moldura-coracao .fundo { width: 100%; height: 100%; background: #ffe6f2; }
         .caixa-servicos {
-            border: 2px solid #ff99cc;
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(255,102,178,.1);
+            border: 2px solid #ff99cc; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fff;
         }
-
-        .servico {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.7rem 0;
-        }
-
-        .servico-nome {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 600;
-            color: #993366;
-            font-size: 1.1rem;
-        }
-
+        .servico { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; }
+        .servico-nome { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: #993366; font-size: 1.1rem; }
         .preco-circulo {
-            width: 70px;
-            height: 70px;
-            border: 2px solid #ff99cc;
-            border-radius: 50%;
-            background: #ffe6f2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #d63384;
-            font-weight: bold;
-            text-align: center;
-            font-size: 0.9rem;
+            width: 70px; height: 70px; border: 2px solid #ff99cc; border-radius: 50%;
+            background: #ffe6f2; display: flex; align-items: center; justify-content: center;
+            color: #d63384; font-weight: bold;
         }
-
-        .acrescimo {
-            font-size: 0.9rem;
-            color: #b34782;
-            margin-left: 1.8rem;
-            margin-top: -0.3rem;
-        }
-
-        /* CONTATO */
-        .area-contato {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 1.5rem 0;
-            gap: 1rem;
-        }
-
+        .acrescimo { font-size: 0.9rem; color: #b34782; margin-left: 1.8rem; margin-top: -0.3rem; }
+        .area-contato { display: flex; align-items: center; justify-content: space-between; margin: 1.5rem 0; gap: 1rem; }
         .img-baixo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #ff99cc;
-            box-shadow: 0 4px 12px rgba(255,102,178,.3);
-            flex-shrink: 0;
+            width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid #ff99cc; flex-shrink: 0;
         }
-
-        .img-baixo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .botao-wpp {
-            flex: 1;
-        }
-
+        .img-baixo img { width: 100%; height: 100%; object-fit: cover; }
+        .botao-wpp { flex: 1; }
         .botao-wpp a {
-            display: block;
-            background: linear-gradient(90deg, #25D366, #128C7E);
-            color: white;
-            padding: 1rem;
-            border-radius: 50px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 1rem;
-            box-shadow: 0 4px 12px rgba(37,211,102,.3);
-            text-align: center;
+            display: block; background: linear-gradient(90deg, #25D366, #128C7E); color: white;
+            padding: 1rem; border-radius: 50px; font-weight: bold; text-decoration: none; text-align: center;
         }
-
-        /* DESTAQUES E RODAPE */
-        .destaques {
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            margin: 1.5rem 0;
-            color: #993366;
-            font-size: 0.95rem;
-        }
-
-        .em-breve {
-            border: 2px dashed #ff99cc;
-            border-radius: 16px;
-            padding: 1.2rem;
-            text-align: center;
-            color: #b34782;
-            margin-bottom: 1rem;
-        }
-
-        .em-breve p {
-            margin: 0.5rem 0;
-        }
-
-        .rodape {
-            text-align: center;
-            color: #b34782;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        /* BOTAO UNICO — ACESSO TOTAL */
-        .botao-acesso-total {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
+        .destaques { display: flex; justify-content: space-around; text-align: center; margin: 1.5rem 0; color: #993366; font-size: 0.95rem; }
+        .em-breve { border: 2px dashed #ff99cc; border-radius: 16px; padding: 1.2rem; text-align: center; color: #b34782; margin-bottom: 1rem; }
+        .rodape { text-align: center; color: #b34782; font-size: 0.9rem; margin-bottom: 1rem; }
+        .botao-acesso-total { text-align: center; margin-top: 1rem; }
         .botao-acesso-total a {
-            display: inline-block;
-            background: linear-gradient(90deg, #993366, #b34782);
-            color: white;
-            padding: 0.6rem 2.5rem;
-            border-radius: 50px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 12px rgba(153,51,102,.3);
-            transition: transform 0.2s;
+            display: inline-block; background: linear-gradient(90deg, #993366, #b34782);
+            color: white; padding: 0.6rem 2.5rem; border-radius: 50px; font-weight: bold; text-decoration: none;
         }
-
-        .botao-acesso-total a:hover {
-            transform: scale(1.05);
-        }
-
-        /* CELULAR */
         @media (max-width: 400px) {
-            .banner-topo {
-                height: 340px;
-            }
-            .titulo-principal {
-                font-size: 2.2rem;
-            }
-            .moldura-coracao {
-                width: 140px;
-                height: 135px;
-            }
-            .moldura-serrilhada {
-                width: 140px;
-                height: 115px;
-            }
-            .img-baixo {
-                width: 100px;
-                height: 100px;
-            }
+            .banner-topo { height: 340px; }
+            .titulo-principal { font-size: 2.2rem; }
+            .moldura-coracao { width: 140px; height: 135px; }
+            .moldura-serrilhada { width: 140px; height: 115px; }
+            .img-baixo { width: 100px; height: 100px; }
         }
     </style>
 </head>
 <body>
     <div class="cartaz">
-
-        <!-- BANNER -->
         <div class="banner-topo">
             <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
         </div>
-
         <div class="conteudo-interno">
-
-            <!-- BOTAO DO CHAT -->
             <div class="botao-chat-topo">
                 <a href="chat.html">💬 Chat, vem bater um papo😃</a>
             </div>
-
             <div class="titulo">
                 <h1 class="titulo-principal">Encanto</h1>
                 <h2 class="titulo-sub">Nail Designer</h2>
-                <p class="sub-titulo">
-                    <span class="coracao">♥</span> ESTUDIO DE UNHAS <span class="coracao">♥</span>
-                </p>
+                <p class="sub-titulo"><span class="coracao">♥</span> ESTUDIO DE UNHAS <span class="coracao">♥</span></p>
             </div>
-
             <p class="faixa-destaque">Designs exclusivos e com carinho ✨</p>
-
             <div class="bloco-superior">
                 <div class="coluna-esq">
-                    <div class="moldura-serrilhada">
-                        <div class="espaco">📷 Em breve</div>
-                    </div>
-                    <div class="moldura-serrilhada">
-                        <div class="espaco">📷 Em breve</div>
-                    </div>
+                    <div class="moldura-serrilhada"><div class="espaco">📷 Em breve</div></div>
+                    <div class="moldura-serrilhada"><div class="espaco">📷 Em breve</div></div>
                 </div>
-
-                <div class="moldura-coracao">
-                    <div class="fundo"></div>
-                </div>
+                <div class="moldura-coracao"><div class="fundo"></div></div>
             </div>
-
             <div class="caixa-servicos">
                 <div class="servico">
                     <div class="servico-nome"><span class="coracao">♥</span> Unhas Longas</div>
@@ -413,41 +169,88 @@
                 </div>
                 <p class="acrescimo">ACRESCIMO</p>
             </div>
-
-            <!-- WhatsApp -->
             <div class="area-contato">
                 <div class="img-baixo">
                     <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
                 </div>
                 <div class="botao-wpp">
                     <a href="https://wa.me/553173449910" target="_blank">
-                        💬 WhatsApp<br>
-                        <small>toque nesse botão apenas para emergência🚨🚨🚨</small>
+                        💬 WhatsApp<br><small>apenas para emergência🚨</small>
                     </a>
                 </div>
             </div>
-
             <div class="destaques">
                 <div><span class="coracao">♥</span> Exclusividade</div>
                 <div><span class="coracao">♥</span> Qualidade</div>
                 <div><span class="coracao">♥</span> Amor</div>
             </div>
-
             <div class="em-breve">
                 <p>📸 Novidades em breve</p>
-                <p>⏰ Horarios — em atualização</p>
+                <p>⏰ Horários — em atualização</p>
             </div>
-
-            <p class="rodape">💖 Agradecemos sua preferencia 💖</p>
-
-            <!-- ====================================== -->
-            <!-- UNICO BOTAO — ACESSO TOTAL DO SITE -->
-            <!-- ====================================== -->
+            <p class="rodape">💖 Agradecemos sua preferência 💖</p>
             <div class="botao-acesso-total">
                 <a href="gerenciar.html">🔐 Área administrativa 🔐</a>
             </div>
-
         </div>
     </div>
+
+    <script>
+        const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
+        const CHAVE_ID = "idVisitante_encanto";
+
+        function gerarIdUnico() {
+            const p1 = Math.random().toString(36).slice(2,6);
+            const p2 = Math.random().toString(36).slice(2,6);
+            return `usr_${p1}${p2}`;
+        }
+
+        let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
+        if (!ID_VISITANTE) {
+            ID_VISITANTE = gerarIdUnico();
+            localStorage.setItem(CHAVE_ID, ID_VISITANTE);
+        }
+
+        function dataAtual() {
+            return new Date().toLocaleString('pt-BR', {
+                day:'2-digit', month:'2-digit', year:'numeric',
+                hour:'2-digit', minute:'2-digit'
+            });
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
+            authDomain: "willobras.firebaseapp.com",
+            databaseURL: "https://willobras-default-rtdb.firebaseio.com",
+            projectId: "willobras",
+            storageBucket: "willobras.firebasestorage.app",
+            messagingSenderId: "66370500400",
+            appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ✅ REGISTRA TODA VEZ — MESMO SEM NOME
+        window.onload = async function() {
+            const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
+            const snap = await ref.once("value");
+            const dados = snap.val();
+            
+            if (dados) {
+                await ref.update({
+                    acessos: (dados.acessos || 0) + 1,
+                    ultimoAcesso: dataAtual()
+                });
+            } else {
+                await ref.set({
+                    id: ID_VISITANTE,
+                    nome: "", // vazio = ainda não informou
+                    acessos: 1,
+                    primeiroAcesso: dataAtual(),
+                    ultimoAcesso: dataAtual()
+                });
+            }
+        };
+    </script>
 </body>
 </html>
