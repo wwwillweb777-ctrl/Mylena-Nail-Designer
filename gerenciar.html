@@ -24,7 +24,6 @@
         .caixa-principal {
             max-width: 480px;
             margin: 0 auto;
-            background: transparent;
             padding: 1rem 0;
         }
 
@@ -41,7 +40,7 @@
             text-align: center;
             color: #b34782;
             font-size: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .escondido { display: none !important; }
@@ -65,7 +64,6 @@
         input, textarea {
             width: 100%;
             padding: 1rem 1.2rem;
-            padding-right: 3.5rem;
             border: 2px solid #ffd9e6;
             border-radius: 16px;
             font-size: 1rem;
@@ -126,6 +124,18 @@
             color: white; 
             border-radius: 50px;
         }
+        .btn-aba {
+            background: #fff;
+            color: #b34782;
+            border: 2px solid #ffd9e6;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+        }
+        .btn-aba.ativa {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            border-color: #ff66b2;
+        }
 
         .aviso-erro {
             color: #d32f2f;
@@ -136,14 +146,15 @@
             border-left: 4px solid #ef5350;
         }
 
-        .linha-cabecalho {
+        .navegacao {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
+        .navegacao button { flex: 1; }
+
+        /* === TELA PAINEL — Visualizações === */
         .info-topo {
             text-align: center;
             color: #993366;
@@ -151,7 +162,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* === BLOCO DE PESSOA === */
         .bloco-pessoa {
             margin-bottom: 2rem;
         }
@@ -164,6 +174,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .nome-pessoa {
@@ -197,10 +209,8 @@
         .btn-apagar-visual {
             font-size: 0.8rem;
             padding: 0.5rem 1rem;
-            margin-bottom: 0.8rem;
         }
 
-        /* === BOLHAS DE MENSAGEM — IGUAL AO CHAT === */
         .bolha-cliente {
             background: #fce4ec;
             color: #880e4f;
@@ -290,9 +300,103 @@
             color: #b34782;
         }
 
+        /* === TELA CHAT — IGUAL A FOTO === */
+        .tela-chat {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+            border: 3px solid #ffd9e6;
+            border-radius: 24px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .chat-conteudo {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .chat-msg-cliente {
+            background: #ff66b2;
+            color: white;
+            padding: 1rem 1.2rem;
+            border-radius: 24px 24px 24px 8px;
+            margin-bottom: 1rem;
+            max-width: 85%;
+        }
+
+        .chat-msg-admin {
+            background: #e8f5e9;
+            color: #00695c;
+            padding: 1rem 1.2rem;
+            border-radius: 24px 24px 8px 24px;
+            margin-bottom: 1rem;
+            margin-left: auto;
+            max-width: 85%;
+        }
+
+        .chat-nome {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .chat-texto {
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 0.3rem;
+        }
+
+        .chat-data {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .chat-boasvindas {
+            background: #fff0f8;
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #993366;
+        }
+
+        .chat-entrada {
+            padding: 1rem;
+            border-top: 2px solid #ffd9e6;
+        }
+
+        .chat-entrada textarea {
+            border-radius: 20px;
+            resize: none;
+            margin-bottom: 0.8rem;
+        }
+
+        .chat-botao-enviar {
+            width: 100%;
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .chat-selecao {
+            margin-bottom: 1rem;
+        }
+
+        .chat-selecao select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ffd9e6;
+            border-radius: 16px;
+            font-size: 1rem;
+            background: #fff;
+            color: #b34782;
+        }
+
         .voltar {
             text-align: center;
-            margin-top: 2rem;
+            margin-top: 1rem;
         }
 
         .voltar a {
@@ -328,13 +432,8 @@
         }
 
         @media (max-width: 480px) {
-            .bolha-cliente, .bolha-admin {
+            .chat-msg-cliente, .chat-msg-admin {
                 max-width: 95%;
-            }
-            .cabecalho-pessoa {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
             }
         }
     </style>
@@ -362,31 +461,65 @@
         </div>
     </div>
 
-    <!-- PAINEL PRINCIPAL -->
+    <!-- PAINEL PRINCIPAL COM ABAS -->
     <div id="painelControle" class="caixa-principal escondido">
-        <div class="linha-cabecalho">
-            <h1>💬 Mensagens</h1>
-            <button class="btn-sair" onclick="sair()">🚪 Sair</button>
+        <h1>💬 Área Administrativa</h1>
+        <p class="subtitulo">♥ Encanto Nail Designer ♥</p>
+
+        <!-- BOTÕES DE NAVEGAÇÃO ENTRE TELAS -->
+        <div class="navegacao">
+            <button id="btnAbaPainel" class="btn-aba ativa" onclick="mostrarAba('painel')">📊 Painel</button>
+            <button id="btnAbaChat" class="btn-aba" onclick="mostrarAba('chat')">💬 Chat</button>
+            <button class="btn-sair" onclick="sair()">🚪</button>
         </div>
 
-        <p class="info-topo">
-            🆔 ID = identificador único &nbsp;|&nbsp; 👁️ = quantidade de visitas
-        </p>
-
-        <div id="lista-conteudo"></div>
-
-        <div class="botoes-acao">
-            <button class="btn-vermelho" onclick="if(confirm('Apagar SOMENTE todas as mensagens?\nVisitas serão mantidas!')) limparSomenteMensagens()">
-                🗑️ Limpar Mensagens
-            </button>
+        <!-- TELA PAINEL (visualizações + mensagens) -->
+        <div id="abaPainel">
+            <p class="info-topo">
+                🆔 ID = identificador único &nbsp;|&nbsp; 👁️ = quantidade de visitas
+            </p>
+            <div id="lista-conteudo"></div>
+            <div class="botoes-acao">
+                <button class="btn-vermelho" onclick="if(confirm('Apagar SOMENTE todas as mensagens?\nVisitas serão mantidas!')) limparSomenteMensagens()">
+                    🗑️ Limpar Mensagens
+                </button>
+            </div>
+            <div class="voltar">
+                <a href="index.html">← Voltar para o site</a>
+            </div>
         </div>
 
-        <div class="voltar">
-            <a href="index.html">← Voltar para o site</a>
+        <!-- TELA CHAT — IGUAL A FOTO -->
+        <div id="abaChat" class="escondido">
+            <div class="tela-chat">
+                <div class="chat-conteudo">
+                    <!-- Seleção de conversa -->
+                    <div class="chat-selecao">
+                        <select id="selecionaConversa" onchange="carregarConversaChat()">
+                            <option value="">Selecione uma conversa...</option>
+                        </select>
+                    </div>
+
+                    <!-- Boas-vindas quando selecionado -->
+                    <div id="chatBoasVindas" class="chat-boasvindas escondido">
+                        <p>👋 Que bom te ver aqui, <strong id="chatNomeUsuario"></strong>!</p>
+                        <p style="margin-top:0.5rem;">Identificada automaticamente ✨</p>
+                    </div>
+
+                    <!-- Histórico do chat -->
+                    <div id="chatMensagens"></div>
+                </div>
+
+                <!-- Área de envio -->
+                <div class="chat-entrada">
+                    <textarea id="chatResposta" rows="3" placeholder="Escreva sua mensagem... 💅✨"></textarea>
+                    <button class="chat-botao-enviar" onclick="enviarMensagemChat()">📤 Enviar Mensagem</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- MODAL DE RESPOSTA -->
+    <!-- MODAL DE RESPOSTA (tela painel) -->
     <div id="modalResposta" class="modal-fundo escondido">
         <div class="modal">
             <h3>✍️ Responder</h3>
@@ -419,6 +552,9 @@
         };
 
         let db = null;
+        let conversas = {}; // Guarda todas as conversas para o chat
+        let idChatAtivo = null; // Qual conversa está aberta no chat
+
         if (typeof firebase !== 'undefined' && !firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
@@ -457,8 +593,31 @@
             document.getElementById('avisoErro').classList.add('escondido');
             document.getElementById('campoSenha').value = '';
             senhaVisivel = false;
+            idChatAtivo = null;
         }
 
+        // === TROCAR ENTRE ABA PAINEL E ABA CHAT ===
+        function mostrarAba(nomeAba) {
+            const abaPainel = document.getElementById('abaPainel');
+            const abaChat = document.getElementById('abaChat');
+            const btnPainel = document.getElementById('btnAbaPainel');
+            const btnChat = document.getElementById('btnAbaChat');
+
+            if (nomeAba === 'painel') {
+                abaPainel.classList.remove('escondido');
+                abaChat.classList.add('escondido');
+                btnPainel.classList.add('ativa');
+                btnChat.classList.remove('ativa');
+            } else {
+                abaPainel.classList.add('escondido');
+                abaChat.classList.remove('escondido');
+                btnPainel.classList.remove('ativa');
+                btnChat.classList.add('ativa');
+                carregarListaConversasChat();
+            }
+        }
+
+        // === CARREGAR TELA PAINEL ===
         async function carregarTudo() {
             if (!db) {
                 document.getElementById('lista-conteudo').innerHTML = 
@@ -473,6 +632,7 @@
             const mensagens = snapMensagens.val() || {};
             const container = document.getElementById('lista-conteudo');
             container.innerHTML = '';
+            conversas = {}; // Reset para o chat
 
             if (!snapAcessos.exists() && !snapMensagens.exists()) {
                 container.innerHTML = '<div class="vazio"><p>📭 Nenhuma pessoa visitou ainda</p></div>';
@@ -492,6 +652,7 @@
                 const p = acessos[idPessoa];
                 const nomeExibir = p.nome || "Visitante";
                 const msgs = porId[idPessoa] || [];
+                conversas[idPessoa] = { nome: nomeExibir, mensagens: msgs, dadosAcesso: p };
 
                 container.innerHTML += `
                     <div class="bloco-pessoa">
@@ -545,6 +706,7 @@
                 if (acessos[id]) continue;
                 const msgs = porId[id];
                 const nomeMsg = (msgs[0].nomeRemetente || "Visitante").replace(/"/g, '&quot;');
+                conversas[id] = { nome: nomeMsg, mensagens: msgs, dadosAcesso: null };
 
                 container.innerHTML += `
                     <div class="bloco-pessoa" style="opacity:0.9;">
@@ -584,6 +746,112 @@
             }
         }
 
+        // === FUNÇÕES CHAT ===
+        function carregarListaConversasChat() {
+            const select = document.getElementById('selecionaConversa');
+            select.innerHTML = '<option value="">Selecione uma conversa...</option>';
+            
+            for (const id in conversas) {
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = conversas[id].nome;
+                select.appendChild(opt);
+            }
+
+            // Se tinha uma conversa aberta, recarrega
+            if (idChatAtivo && conversas[idChatAtivo]) {
+                select.value = idChatAtivo;
+                carregarConversaChat();
+            }
+        }
+
+        function carregarConversaChat() {
+            const id = document.getElementById('selecionaConversa').value;
+            const boasVindas = document.getElementById('chatBoasVindas');
+            const areaMsg = document.getElementById('chatMensagens');
+            
+            if (!id || !conversas[id]) {
+                boasVindas.classList.add('escondido');
+                areaMsg.innerHTML = '';
+                idChatAtivo = null;
+                return;
+            }
+
+            idChatAtivo = id;
+            const conv = conversas[id];
+            
+            // Mostra boas-vindas
+            boasVindas.classList.remove('escondido');
+            document.getElementById('chatNomeUsuario').textContent = conv.nome;
+
+            // Monta mensagens
+            areaMsg.innerHTML = '';
+            conv.mensagens.forEach(m => {
+                // Mensagem do cliente
+                areaMsg.innerHTML += `
+                    <div class="chat-msg-cliente">
+                        <div class="chat-nome">${conv.nome}</div>
+                        <div class="chat-texto">${m.texto}</div>
+                        <div class="chat-data">${m.data || ''}</div>
+                    </div>
+                `;
+                // Resposta da admin, se houver
+                if (m.resposta) {
+                    areaMsg.innerHTML += `
+                        <div class="chat-msg-admin">
+                            <div class="chat-nome">📩 Mylena — Encanto Nail Designer</div>
+                            <div class="chat-texto">${m.resposta}</div>
+                            <div class="chat-data">${m.dataResposta || ''}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            // Rola para o final
+            const chatConteudo = document.querySelector('.chat-conteudo');
+            chatConteudo.scrollTop = chatConteudo.scrollHeight;
+        }
+
+        async function enviarMensagemChat() {
+            if (!idChatAtivo) {
+                alert('Selecione uma conversa primeiro! 💬');
+                return;
+            }
+            if (!db) return;
+
+            const texto = document.getElementById('chatResposta').value.trim();
+            if (!texto) {
+                alert('Escreva sua mensagem! ✍️');
+                return;
+            }
+
+            // Encontra a última mensagem sem resposta dessa conversa
+            const mensagens = conversas[idChatAtivo].mensagens;
+            const msgAlvo = mensagens.find(m => !m.resposta);
+            
+            if (!msgAlvo) {
+                alert('Essa conversa já foi respondida! Use o Painel para editar. ✏️');
+                document.getElementById('chatResposta').value = '';
+                return;
+            }
+
+            // Salva no Firebase
+            await db.ref(`${CAMINHO_MSG}/${msgAlvo.chave}`).update({
+                resposta: texto,
+                dataResposta: dataAtual()
+            });
+
+            alert('✅ Mensagem enviada!');
+            document.getElementById('chatResposta').value = '';
+            
+            // Recarrega tudo para sincronizar
+            await carregarTudo();
+            carregarListaConversasChat();
+            document.getElementById('selecionaConversa').value = idChatAtivo;
+            carregarConversaChat();
+        }
+
+        // === FUNÇÕES DO PAINEL ===
         function abrirModal(chave, nome, id, resposta) {
             document.getElementById('m-chave').value = chave;
             document.getElementById('m-nome').textContent = nome;
@@ -617,7 +885,6 @@
             carregarTudo();
         }
 
-        // ✅ Apaga SOMENTE visualizações — mantém mensagens
         async function excluirSomenteAcessos(idPessoa) {
             if (!confirm(`Apagar SOMENTE os dados de visualização de ${idPessoa}?\nAs mensagens serão MANTIDAS!`)) return;
             if (!db) return;
@@ -626,7 +893,6 @@
             carregarTudo();
         }
 
-        // ✅ Limpa SOMENTE mensagens — mantém visualizações
         async function limparSomenteMensagens() {
             if (!confirm("Apagar SOMENTE todas as mensagens?\nOs dados de visitas serão MANTIDOS!")) return;
             if (!db) return;
