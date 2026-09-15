@@ -198,7 +198,7 @@
     <script>
         const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
         const CHAVE_ID = "idVisitante_encanto";
-        const CHAVE_ESTOU_DENTRO = "visitaEmAndamento"; // Marca sessão ativa
+        const CHAVE_SESSAO_ATIVA = "sessao_encanto_ativa"; // IGUAL ao Will Construções!
 
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2,6);
@@ -206,6 +206,7 @@
             return `usr_${p1}${p2}`;
         }
 
+        // ID fica no localStorage = NÃO muda nunca para a mesma pessoa
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
@@ -232,23 +233,20 @@
         const db = firebase.database();
 
         // ==========================================
-        // ✅ LÓGICA DEFINITIVA — NÃO CONTA DUPLA
+        // ✅ LÓGICA IGUAL AO WILL CONSTRUÇÕES — FUNCIONA!
         // ==========================================
-        window.onload = async function() {
-            const dominioAtual = window.location.hostname;
-            const origem = document.referrer;
-            
-            // Veio de fora? = sem origem ou de outro site
-            const veioDeFora = !origem || !origem.includes(dominioAtual);
-            
-            // Já estava dentro do site nesta sessão?
-            const jaEstavaDentro = sessionStorage.getItem(CHAVE_ESTOU_DENTRO) === "sim";
-            
-            // ✅ CONTA SOMENTE: veio de fora E ainda não estava marcado como dentro
-            const ehNovaVisita = veioDeFora && !jaEstavaDentro;
+        
+        // sessionStorage = APAGA SOZINHO ao fechar o navegador
+        function ehNovaSessao() {
+            if (!sessionStorage.getItem(CHAVE_SESSAO_ATIVA)) {
+                sessionStorage.setItem(CHAVE_SESSAO_ATIVA, 'sim');
+                return true; // fechou e abriu de novo = conta
+            }
+            return false; // ainda está navegando = não conta
+        }
 
-            // Marca que está dentro — enquanto não fechar o navegador
-            sessionStorage.setItem(CHAVE_ESTOU_DENTRO, "sim");
+        window.onload = async function() {
+            const novaVisita = ehNovaSessao(); // ✅ A LINHA PRINCIPAL!
 
             const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
             const snap = await ref.once("value");
@@ -258,13 +256,12 @@
             await ref.update({
                 id: ID_VISITANTE,
                 nome: dados.nome || "",
-                acessos: ehNovaVisita ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
+                // ✅ Soma SOMENTE se for sessão nova (fechou e abriu)
+                acessos: novaVisita ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
                 primeiroAcesso: dados.primeiroAcesso || agoraStr,
                 ultimoAcesso: agoraStr
             });
         };
-
-        // ⚠️ sessionStorage APAGA SOZINHO ao fechar aba/navegador — não precisa limpar manualmente
     </script>
 </body>
 </html>
