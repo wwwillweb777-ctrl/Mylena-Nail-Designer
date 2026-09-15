@@ -198,6 +198,8 @@
     <script>
         const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
         const CHAVE_ID = "idVisitante_encanto";
+        const CHAVE_ULTIMA_SAIDA = "ultimaSaida_encanto";
+        const LIMITE_MINUTOS = 30; // Se voltar em até 30 min = NÃO conta nova visita
 
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2,6);
@@ -205,6 +207,7 @@
             return `usr_${p1}${p2}`;
         }
 
+        // ID ÚNICO — criado uma vez e nunca muda
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
@@ -216,6 +219,10 @@
                 day:'2-digit', month:'2-digit', year:'numeric',
                 hour:'2-digit', minute:'2-digit'
             });
+        }
+
+        function timestampAgora() {
+            return new Date().getTime();
         }
 
         const firebaseConfig = {
@@ -230,27 +237,47 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ✅ REGISTRA TODA VEZ — MESMO SEM NOME
+        // ==========================================
+        // ✅ SÓ CONTA QUANDO SAIU DO SITE E VOLTOU
+        // ==========================================
         window.onload = async function() {
+            const ultimaSaida = localStorage.getItem(CHAVE_ULTIMA_SAIDA);
+            const agora = timestampAgora();
+            const limiteMs = LIMITE_MINUTOS * 60 * 1000;
+
+            let ehNovaVisita = true;
+
+            if (ultimaSaida) {
+                const tempoFora = agora - parseInt(ultimaSaida, 10);
+                // Se voltou rápido = mesma sessão, NÃO conta nova visita
+                if (tempoFora < limiteMs) {
+                    ehNovaVisita = false;
+                }
+            }
+
+            // Apaga a marca de saída — pessoa está de volta
+            localStorage.removeItem(CHAVE_ULTIMA_SAIDA);
+
             const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
             const snap = await ref.once("value");
-            const dados = snap.val();
-            
-            if (dados) {
-                await ref.update({
-                    acessos: (dados.acessos || 0) + 1,
-                    ultimoAcesso: dataAtual()
-                });
-            } else {
-                await ref.set({
-                    id: ID_VISITANTE,
-                    nome: "", // vazio = ainda não informou
-                    acessos: 1,
-                    primeiroAcesso: dataAtual(),
-                    ultimoAcesso: dataAtual()
-                });
-            }
+            const dados = snap.val() || {};
+            const agoraStr = dataAtual();
+
+            await ref.update({
+                id: ID_VISITANTE,
+                nome: dados.nome || "", // vazio até digitar no chat
+                acessos: ehNovaVisita ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
+                primeiroAcesso: dados.primeiroAcesso || agoraStr,
+                ultimoAcesso: agoraStr
+            });
         };
+
+        // ==========================================
+        // ✅ MARCA SAÍDA — quando fecha/ sai do site
+        // ==========================================
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem(CHAVE_ULTIMA_SAIDA, timestampAgora().toString());
+        });
     </script>
 </body>
 </html>
