@@ -71,9 +71,7 @@
         const CHAVE_ID = "idVisitante_encanto";
         const CHAVE_NOME = "nomeVisitante_encanto";
 
-        // ==========================================
-        // 🔄 RESET — descomente APENAS UMA VEZ se quiser começar do zero
-        // ==========================================
+        // ⚠️ RESET — descomente APENAS UMA VEZ se quiser recomeçar do zero
         // localStorage.clear();
 
         function gerarIdUnico() {
@@ -82,6 +80,7 @@
             return `usr_${p1}${p2}`;
         }
 
+        // ✅ MESMO ID do index.html — nunca muda, nunca cria outro
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
@@ -110,28 +109,10 @@
         const db = firebase.database();
 
         // ==========================================
-        // ✅ CONTAGEM DE ACESSOS — ATUALIZA SEMPRE
+        // ✅ NÃO CONTA VISITA AQUI — SÓ O index.html conta
         // ==========================================
-        async function registrarAcesso() {
-            const refPessoa = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
-            const snap = await refPessoa.once("value");
-            const dados = snap.val() || {};
-            const agora = dataAtual();
-
-            await refPessoa.update({
-                id: ID_VISITANTE,
-                nome: dados.nome || nomeUsuario || null,
-                acessos: (dados.acessos || 0) + 1, // ✅ SÓ SOMA, NUNCA ZERA
-                primeiroAcesso: dados.primeiroAcesso || agora,
-                ultimoAcesso: agora
-            });
-        }
-
         window.onload = async function() {
-            // Registra o acesso logo ao entrar
-            await registrarAcesso();
-
-            // Usa o nome que JÁ ESTÁ no banco — SEMPRE
+            // Busca o nome que JÁ ESTÁ SALVO no banco — sempre o mesmo
             const snap = await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).once("value");
             const nomeBanco = snap.val();
             
@@ -144,6 +125,7 @@
                 await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).set(nomeUsuario);
                 entrarNoChat();
             }
+            // Se não tem nome → fica na tela de digitar
         };
 
         async function salvarNome() {
