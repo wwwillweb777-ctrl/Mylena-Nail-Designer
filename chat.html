@@ -71,6 +71,13 @@
         const CHAVE_ID = "idVisitante_encanto";
         const CHAVE_NOME = "nomeVisitante_encanto";
 
+        // ==========================================
+        // 🔄 RESET ATIVADO — Primeiro acesso para todos!
+        // ==========================================
+        localStorage.clear();
+        // Depois de usar, troque para: // localStorage.clear();
+        // ==========================================
+
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2,6);
             const p2 = Math.random().toString(36).slice(2,6);
@@ -104,13 +111,25 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        window.onload = function() {
-            if (nomeUsuario) entrarNoChat();
+        window.onload = async function() {
+            const snap = await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).once("value");
+            const nomeBanco = snap.val();
+            
+            if (nomeBanco && nomeBanco.trim() !== "") {
+                nomeUsuario = nomeBanco;
+                localStorage.setItem(CHAVE_NOME, nomeUsuario);
+                entrarNoChat();
+            } 
+            else if (nomeUsuario && nomeUsuario.trim() !== "") {
+                await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).set(nomeUsuario);
+                entrarNoChat();
+            }
         };
 
         async function salvarNome() {
             const nome = document.getElementById('nomeChat').value.trim();
             if (!nome) { alert("⚠️ Digite seu nome!"); return; }
+            
             nomeUsuario = nome;
             localStorage.setItem(CHAVE_NOME, nomeUsuario);
             await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).set(nomeUsuario);
@@ -127,14 +146,16 @@
         async function enviarMensagem() {
             const texto = document.getElementById('campoMensagem').value.trim();
             if (!texto) { alert("⚠️ Escreva sua mensagem!"); return; }
+            
             await db.ref(CAMINHO_MSG).push({
                 idRemetente: ID_VISITANTE,
-                nomeRemetente: nomeUsuario || "Visitante",
+                nomeRemetente: nomeUsuario,
                 texto: texto,
                 data: dataAtual(),
                 resposta: null,
                 dataResposta: null
             });
+            
             document.getElementById('campoMensagem').value = '';
             alert("✅ Mensagem enviada! Em breve responderei 💖");
         }
