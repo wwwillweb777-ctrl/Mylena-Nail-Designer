@@ -167,7 +167,7 @@
                     <div class="servico-nome"><span class="coracao">♥</span> 3D & Brilhos</div>
                     <div class="preco-circulo">+A definir</div>
                 </div>
-                <p class="acrescimo">ACRESCIMO</p>
+                <p class="acrescimo">ACRÉSCIMO</p>
             </div>
             <div class="area-contato">
                 <div class="img-baixo">
@@ -175,7 +175,7 @@
                 </div>
                 <div class="botao-wpp">
                     <a href="https://wa.me/553173449910" target="_blank">
-                        💬 WhatsApp<br><small>apenas para emergência🚨</small>
+                        💬 WhatsApp<br><small>apenas para emergência 🚨</small>
                     </a>
                 </div>
             </div>
@@ -196,30 +196,41 @@
     </div>
 
     <script>
+        // ==========================================
+        // 🔑 CONFIGURAÇÕES
+        // ==========================================
         const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
         const CHAVE_ID = "idVisitante_encanto";
-        const CHAVE_SESSAO_ATIVA = "sessao_encanto_ativa"; // IGUAL ao Will Construções!
+        const CHAVE_SESSAO = "sessao_ativa_encanto"; // Controla a navegação
 
+        // ==========================================
+        // 🆔 GERAR/RECUPERAR ID DO VISITANTE
+        // ==========================================
         function gerarIdUnico() {
-            const p1 = Math.random().toString(36).slice(2,6);
-            const p2 = Math.random().toString(36).slice(2,6);
+            const p1 = Math.random().toString(36).slice(2, 6);
+            const p2 = Math.random().toString(36).slice(2, 6);
             return `usr_${p1}${p2}`;
         }
 
-        // ID fica no localStorage = NÃO muda nunca para a mesma pessoa
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
             localStorage.setItem(CHAVE_ID, ID_VISITANTE);
         }
 
+        // ==========================================
+        // 📅 DATA ATUAL
+        // ==========================================
         function dataAtual() {
             return new Date().toLocaleString('pt-BR', {
-                day:'2-digit', month:'2-digit', year:'numeric',
-                hour:'2-digit', minute:'2-digit'
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
             });
         }
 
+        // ==========================================
+        // 🔥 FIREBASE
+        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
             authDomain: "willobras.firebaseapp.com",
@@ -229,38 +240,49 @@
             messagingSenderId: "66370500400",
             appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
         };
+
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         // ==========================================
-        // ✅ LÓGICA IGUAL AO WILL CONSTRUÇÕES — FUNCIONA!
+        // ✅ LÓGICA PRINCIPAL — SÓ CONTA AQUI NO INDEX!
         // ==========================================
-        
-        // sessionStorage = APAGA SOZINHO ao fechar o navegador
         function ehNovaSessao() {
-            if (!sessionStorage.getItem(CHAVE_SESSAO_ATIVA)) {
-                sessionStorage.setItem(CHAVE_SESSAO_ATIVA, 'sim');
-                return true; // fechou e abriu de novo = conta
+            // sessionStorage = some ao fechar navegador
+            if (!sessionStorage.getItem(CHAVE_SESSAO)) {
+                sessionStorage.setItem(CHAVE_SESSAO, 'sim');
+                return true; // Fechou e abriu = conta
             }
-            return false; // ainda está navegando = não conta
+            return false; // Navegando entre páginas = NÃO conta
         }
 
         window.onload = async function() {
-            const novaVisita = ehNovaSessao(); // ✅ A LINHA PRINCIPAL!
+            const novaVisita = ehNovaSessao();
 
             const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
             const snap = await ref.once("value");
             const dados = snap.val() || {};
-            const agoraStr = dataAtual();
+            const agora = dataAtual();
 
+            // ✅ Atualiza dados no Firebase
             await ref.update({
                 id: ID_VISITANTE,
                 nome: dados.nome || "",
-                // ✅ Soma SOMENTE se for sessão nova (fechou e abriu)
+                // Soma SOMENTE se for sessão nova
                 acessos: novaVisita ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
-                primeiroAcesso: dados.primeiroAcesso || agoraStr,
-                ultimoAcesso: agoraStr
+                primeiroAcesso: dados.primeiroAcesso || agora,
+                ultimoAcesso: agora
             });
+
+            // ✅ Atualiza contador TOTAL de visitas (para o gerenciar ler)
+            const totalRef = db.ref(`${CAMINHO_ACESSOS}/_total_`);
+            if (novaVisita) {
+                await totalRef.transaction((dados) => {
+                    if (!dados) return { contador: 1 };
+                    dados.contador = (dados.contador || 0) + 1;
+                    return dados;
+                });
+            }
         };
     </script>
 </body>
