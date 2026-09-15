@@ -22,7 +22,7 @@
         }
 
         .caixa-principal {
-            max-width: 800px;
+            max-width: 760px;
             margin: 0 auto;
             background: #ffffff;
             border-radius: 28px;
@@ -30,24 +30,13 @@
             padding: 2.5rem;
             box-shadow: 0 10px 30px rgba(255, 102, 178, 0.2);
             position: relative;
-            overflow: hidden;
-        }
-
-        .faixa-topo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(90deg, #ff66b2, #ff80c0, #ffb3d9, #ff80c0, #ff66b2);
         }
 
         h1 {
             text-align: center;
             color: #ff66b2;
-            font-size: 2rem;
-            font-weight: 900;
-            font-family: 'Georgia', serif;
+            font-size: 2.2rem;
+            font-family: Georgia, serif;
             font-style: italic;
             margin-bottom: 0.5rem;
         }
@@ -55,17 +44,15 @@
         .subtitulo {
             text-align: center;
             color: #b34782;
-            font-size: 1rem;
-            letter-spacing: 2px;
+            font-size: 1.1rem;
             margin-bottom: 2rem;
         }
 
-        .coracao { color: #ff66b2; }
         .escondido { display: none !important; }
 
         .grupo-senha {
             position: relative;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         input, textarea {
@@ -76,14 +63,12 @@
             border-radius: 16px;
             font-size: 1rem;
             outline: none;
-            transition: all 0.3s ease;
             background: #fffafc;
         }
 
         input:focus, textarea:focus {
             border-color: #ff66b2;
             box-shadow: 0 0 0 4px rgba(255, 102, 178, 0.15);
-            background: #fff;
         }
 
         .botao-olho {
@@ -93,31 +78,27 @@
             transform: translateY(-50%);
             background: transparent;
             border: none;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            padding: 0;
-            box-shadow: none;
-            color: #b34782;
         }
 
         button {
-            padding: 0.9rem 1.5rem;
+            padding: 1rem 1.5rem;
             border: none;
             border-radius: 50px;
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.2s;
         }
 
-        button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        button:active { transform: scale(0.98); }
 
         .btn-principal {
             background: linear-gradient(90deg, #ff66b2, #ff80c0);
             color: white;
             width: 100%;
             font-size: 1.1rem;
-            box-shadow: 0 4px 12px rgba(255, 102, 178, 0.3);
         }
 
         .btn-sair {
@@ -149,7 +130,6 @@
             border-bottom: 2px dashed #ffd9e6;
         }
 
-        /* BLOCO DA PESSOA — AGRUPA TUDO */
         .bloco-pessoa {
             background: #faf0f5;
             border-radius: 20px;
@@ -168,13 +148,12 @@
         .pessoa-dados {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.7rem;
+            gap: 0.5rem;
             margin-bottom: 1rem;
             font-size: 0.85rem;
         }
 
         .etiqueta {
-            display: inline-block;
             padding: 0.3rem 0.8rem;
             border-radius: 50px;
             font-weight: 600;
@@ -192,11 +171,10 @@
             background: #fff;
         }
 
-        .pendente { background: linear-gradient(135deg, #fff9e6, #fff3cd); border-color: #ffc107; }
-        .respondida { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-color: #66bb6a; }
+        .pendente { background: #fff9e6; border-color: #ffc107; }
+        .respondida { background: #e8f5e9; border-color: #66bb6a; }
 
         .etiqueta-status {
-            display: inline-block;
             padding: 0.3rem 0.8rem;
             border-radius: 50px;
             font-weight: bold;
@@ -226,27 +204,28 @@
 
         .modal-fundo {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            inset: 0;
             background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 1rem;
             z-index: 999;
         }
 
         .modal {
-            background: #fff; border-radius: 24px; padding: 2rem;
-            max-width: 440px; width: 100%;
+            background: #fff;
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 420px;
+            width: 100%;
             border: 4px solid #ff99cc;
-            box-shadow: 0 10px 30px rgba(255, 102, 178, 0.25);
         }
 
         .modal h3 {
             color: #ff66b2;
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
             text-align: center;
+            margin-bottom: 1.5rem;
         }
 
         .vazio {
@@ -254,8 +233,6 @@
             padding: 3rem 1rem;
             color: #b34782;
         }
-
-        .vazio .emoji { font-size: 3rem; margin-bottom: 1rem; }
 
         .voltar {
             text-align: center;
@@ -265,15 +242,11 @@
         .voltar a {
             color: #b34782;
             text-decoration: none;
-            font-weight: 500;
         }
 
-        .voltar a:hover { color: #ff66b2; text-decoration: underline; }
-
-        @media (max-width: 600px) {
-            .caixa-principal { padding: 1.5rem; border-radius: 24px; }
+        @media (max-width: 480px) {
+            .caixa-principal { padding: 1.5rem; }
             .linha-cabecalho { flex-direction: column; gap: 1rem; text-align: center; }
-            .pessoa-dados { justify-content: center; }
         }
     </style>
 </head>
@@ -281,59 +254,41 @@
 
     <!-- TELA DE LOGIN -->
     <div id="telaLogin" class="caixa-principal">
-        <div class="faixa-topo"></div>
         <h1>🔐 Área Administrativa</h1>
-        <p class="subtitulo">
-            <span class="coracao">♥</span> Encanto Nail Designer <span class="coracao">♥</span>
-        </p>
+        <p class="subtitulo">♥ Encanto Nail Designer ♥</p>
 
         <div class="grupo-senha">
-            <input 
-                type="password" 
-                id="campoSenha" 
-                placeholder="Digite a senha de acesso..."
-                autocomplete="off"
-            >
-            <button type="button" class="botao-olho" id="botaoOlho" onclick="alternarVisibilidade()">🙈</button>
+            <input type="password" id="campoSenha" placeholder="Digite a senha..." autocomplete="off">
+            <button type="button" class="botao-olho" id="botaoOlho">🙈</button>
         </div>
 
-        <p id="avisoErro" class="aviso-erro escondido">
-            ❌ Senha incorreta! Acesso negado.
-        </p>
+        <p id="avisoErro" class="aviso-erro escondido">❌ Senha incorreta!</p>
 
-        <button class="btn-principal" onclick="verificarSenha()">
-            🔐 Entrar
-        </button>
+        <button class="btn-principal" id="botaoEntrar">🔐 Entrar</button>
 
         <div class="voltar">
             <a href="index.html">← Voltar para o site</a>
         </div>
     </div>
 
-    <!-- PAINEL DE CONTROLE -->
+    <!-- PAINEL -->
     <div id="painelControle" class="caixa-principal escondido">
-        <div class="faixa-topo"></div>
-        
         <div class="linha-cabecalho">
             <div>
-                <h1>📊 Painel de Controle</h1>
-                <p class="subtitulo" style="margin:0; text-align:left;">
-                    Bem-vinda, Mylena <span class="coracao">♥</span>
-                </p>
+                <h1>💬 Mensagens & Acessos</h1>
+                <p class="subtitulo" style="margin:0;">Bem-vinda, Mylena ♥</p>
             </div>
-            <button class="btn-sair" onclick="sair()">🚪 Sair</button>
+            <button class="btn-sair" id="botaoSair">🚪 Sair</button>
         </div>
 
         <p style="color:#993366; font-size:0.9rem; margin-bottom:1.5rem;">
-            🆔 ID = identificador único | 👁️ = quantas vezes entrou | 📅 = datas de acesso
+            🆔 ID = identificador único | 👁️ = quantidade de acessos
         </p>
 
         <div id="lista-conteudo"></div>
 
         <div class="botoes-acao" style="margin-top:2rem;">
-            <button class="btn-vermelho" onclick="if(confirm('⚠️ APAGAR TUDO? Não tem volta!')) limparTudo()">
-                🗑️ Limpar Tudo
-            </button>
+            <button class="btn-vermelho" id="botaoLimparTudo">🗑️ Limpar Tudo</button>
         </div>
 
         <div class="voltar">
@@ -341,19 +296,19 @@
         </div>
     </div>
 
-    <!-- MODAL DE RESPONDER -->
+    <!-- MODAL -->
     <div id="modalResposta" class="modal-fundo escondido">
         <div class="modal">
-            <h3>✍️ Responder Mensagem</h3>
-            <p style="margin-bottom:0.5rem; color:#666;">
+            <h3>✍️ Responder</h3>
+            <p style="margin-bottom:0.5rem;">
                 <strong>De:</strong> <span id="m-nome"></span>
-                <span class="etiqueta etq-id" id="m-id">—</span>
+                <span class="etiqueta etq-id" id="m-id"></span>
             </p>
-            <textarea id="m-resposta" rows="5" placeholder="Escreva sua resposta..."></textarea>
+            <textarea id="m-resposta" rows="4" placeholder="Sua resposta..."></textarea>
             <input type="hidden" id="m-chave">
-            <div style="display:flex; gap:0.7rem; margin-top:1rem;">
-                <button class="btn-verde" style="flex:1;" onclick="enviarResposta()">✅ Enviar</button>
-                <button class="btn-vermelho" style="flex:1;" onclick="fecharModal()">✖️ Cancelar</button>
+            <div class="botoes-acao">
+                <button class="btn-verde" id="botaoEnviarResposta">✅ Enviar</button>
+                <button class="btn-vermelho" id="botaoFecharModal">✖️ Cancelar</button>
             </div>
         </div>
     </div>
@@ -385,9 +340,38 @@
         }
 
         // ==========================================
-        // LOGIN
+        // VARIÁVEIS GLOBAIS
         // ==========================================
         let senhaVisivel = false;
+
+        // ==========================================
+        // LIGAR BOTÕES — AQUI ESTÁ A CORREÇÃO PRINCIPAL
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Olho da senha
+            document.getElementById('botaoOlho').addEventListener('click', alternarVisibilidade);
+            
+            // Botão Entrar
+            document.getElementById('botaoEntrar').addEventListener('click', verificarSenha);
+            
+            // Botão Sair
+            document.getElementById('botaoSair').addEventListener('click', sair);
+            
+            // Limpar Tudo
+            document.getElementById('botaoLimparTudo').addEventListener('click', function() {
+                if(confirm('⚠️ APAGAR TUDO? Não tem volta!')) limparTudo();
+            });
+            
+            // Enviar Resposta
+            document.getElementById('botaoEnviarResposta').addEventListener('click', enviarResposta);
+            
+            // Fechar Modal
+            document.getElementById('botaoFecharModal').addEventListener('click', fecharModal);
+        });
+
+        // ==========================================
+        // FUNÇÕES
+        // ==========================================
         function alternarVisibilidade() {
             const campo = document.getElementById('campoSenha');
             const botao = document.getElementById('botaoOlho');
@@ -397,7 +381,8 @@
         }
 
         function verificarSenha() {
-            if (document.getElementById('campoSenha').value.trim() === SENHA_ADMIN) {
+            const digitada = document.getElementById('campoSenha').value.trim();
+            if (digitada === SENHA_ADMIN) {
                 document.getElementById('telaLogin').classList.add('escondido');
                 document.getElementById('painelControle').classList.remove('escondido');
                 carregarTudo();
@@ -418,9 +403,6 @@
             document.getElementById('campoSenha').type = 'password';
         }
 
-        // ==========================================
-        // CARREGAR TUDO — ACESSOS + MENSAGENS
-        // ==========================================
         async function carregarTudo() {
             const snapAcessos = await db.ref(CAMINHO_ACESSOS).once("value");
             const snapMensagens = await db.ref(CAMINHO_MSG).once("value");
@@ -431,11 +413,11 @@
             container.innerHTML = '';
 
             if (!snapAcessos.exists() && !snapMensagens) {
-                container.innerHTML = '<div class="vazio"><div class="emoji">📭</div><p>Nenhuma pessoa visitou ainda</p></div>';
+                container.innerHTML = '<div class="vazio"><p>📭 Nenhuma pessoa visitou ainda</p></div>';
                 return;
             }
 
-            // Agrupar mensagens por ID da pessoa
+            // Agrupar mensagens por ID
             const porId = {};
             for (const chave in mensagens) {
                 const m = mensagens[chave];
@@ -444,7 +426,7 @@
                 porId[m.idRemetente].push({ chave, ...m });
             }
 
-            // Exibir pessoas que têm registro de acesso
+            // Exibir pessoas com registro
             for (const idPessoa in acessos) {
                 const p = acessos[idPessoa];
                 const nomeExibir = p.nome || "Visitante (sem nome)";
@@ -459,23 +441,23 @@
                             <span class="etiqueta etq-data">📅 1º: ${p.primeiroAcesso || '—'}</span>
                             <span class="etiqueta etq-data">🕘 Último: ${p.ultimoAcesso || '—'}</span>
                         </div>
-                        ${msgs.length === 0 ? '<p style="color:#999; font-size:0.9rem;">Sem mensagens ainda</p>' : ''}
+                        ${msgs.length === 0 ? '<p style="color:#999; font-size:0.9rem;">Sem mensagens</p>' : ''}
                         ${msgs.map(m => `
                             <div class="mensagem-card ${m.resposta ? 'respondida' : 'pendente'}">
                                 <p style="margin-bottom:0.5rem;">${m.texto}</p>
-                                <span style="font-size:0.8rem; color:#888;">${m.data}</span>
+                                <span style="font-size:0.8rem; color:#888;">${m.data || ''}</span>
                                 <span class="etiqueta-status ${m.resposta ? 'status-respondido' : 'status-pendente'}">
                                     ${m.resposta ? '✅ Respondida' : '⏳ Pendente'}
                                 </span>
                                 ${m.resposta ? `
                                     <div class="resposta-caixa">
-                                        <p style="font-weight:bold; color:#2e7d32; margin-bottom:0.3rem;">📩 Sua resposta:</p>
+                                        <p style="font-weight:bold; color:#2e7d32;">📩 Resposta:</p>
                                         <p>${m.resposta}</p>
                                         <span style="font-size:0.8rem; color:#888;">${m.dataResposta || ''}</span>
                                     </div>
                                 ` : ''}
                                 <div class="botoes-acao">
-                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${nomeExibir}", "${idPessoa}", `${m.resposta || ''}`)'>
+                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${nomeExibir}", "${idPessoa}", `${(m.resposta||'').replace(/"/g, '&quot;')}`)'>
                                         ${m.resposta ? '✏️ Editar' : '✍️ Responder'}
                                     </button>
                                     <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">🗑️ Mensagem</button>
@@ -489,23 +471,23 @@
                 `;
             }
 
-            // Pessoas com mensagens mas sem registro de acesso
+            // Pessoas sem registro de acesso
             for (const id in porId) {
                 if (acessos[id]) continue;
                 const msgs = porId[id];
                 container.innerHTML += `
                     <div class="bloco-pessoa" style="opacity:0.8;">
-                        <div class="pessoa-nome">${msgs[0].nomeRemetente || "Visitante (sem nome)"}</div>
+                        <div class="pessoa-nome">${msgs[0].nomeRemetente || "Visitante"}</div>
                         <div class="pessoa-dados">
                             <span class="etiqueta etq-id">🆔 ${id}</span>
-                            <span class="etiqueta etq-acessos">👁️ Sem registro de acesso</span>
+                            <span class="etiqueta etq-acessos">👁️ Sem registro</span>
                         </div>
                         ${msgs.map(m => `
                             <div class="mensagem-card ${m.resposta ? 'respondida' : 'pendente'}">
                                 <p>${m.texto}</p>
-                                <span style="font-size:0.8rem; color:#888;">${m.data}</span>
+                                <span style="font-size:0.8rem; color:#888;">${m.data || ''}</span>
                                 <div class="botoes-acao">
-                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${m.nomeRemetente||'Visitante'}", "${id}", `${m.resposta||''}`)'>Responder</button>
+                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${(m.nomeRemetente||'Visitante').replace(/"/g, '&quot;')}", "${id}", "${(m.resposta||'').replace(/"/g, '&quot;')}")'>Responder</button>
                                     <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">🗑️ Mensagem</button>
                                 </div>
                             </div>
@@ -515,9 +497,6 @@
             }
         }
 
-        // ==========================================
-        // FUNÇÕES DE AÇÃO
-        // ==========================================
         function abrirModal(chave, nome, id, resposta) {
             document.getElementById('m-chave').value = chave;
             document.getElementById('m-nome').textContent = nome;
@@ -539,7 +518,7 @@
                 resposta: texto,
                 dataResposta: dataAtual()
             });
-            alert("✅ Resposta enviada!");
+            alert("✅ Enviada!");
             fecharModal();
             carregarTudo();
         }
@@ -551,23 +530,21 @@
         }
 
         async function excluirPessoa(idPessoa) {
-            if (!confirm(`Apagar TODOS os dados de ${idPessoa}?\nAcessos + mensagens serão removidos!`)) return;
-            // Apaga registro de acessos
+            if (!confirm(`Apagar dados de ${idPessoa}?`)) return;
             await db.ref(`${CAMINHO_ACESSOS}/${idPessoa}`).remove();
-            // Apaga todas as mensagens desta pessoa
             const snap = await db.ref(CAMINHO_MSG).orderByChild("idRemetente").equalTo(idPessoa).once("value");
             const updates = {};
             snap.forEach(item => { updates[item.key] = null; });
             await db.ref(CAMINHO_MSG).update(updates);
-            alert("✅ Dados apagados com sucesso!");
+            alert("✅ Apagado!");
             carregarTudo();
         }
 
         async function limparTudo() {
-            if (!confirm("⚠️ APAGAR TUDO — acessos + mensagens de TODAS as pessoas?\nNão tem volta!")) return;
+            if (!confirm("⚠️ APAGAR TUDO? Não tem volta!")) return;
             await db.ref(CAMINHO_MSG).remove();
             await db.ref(CAMINHO_ACESSOS).remove();
-            alert("✅ Tudo foi apagado!");
+            alert("✅ Tudo apagado!");
             carregarTudo();
         }
     </script>
