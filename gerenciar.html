@@ -292,7 +292,7 @@
         <div id="lista-conteudo"></div>
 
         <div class="botoes-acao" style="margin-top:2rem;">
-            <button class="btn-vermelho" onclick="if(confirm('⚠️ APAGAR TUDO? Não tem volta!')) limparTudo()">🗑️ Limpar Tudo</button>
+            <button class="btn-vermelho" onclick="if(confirm('⚠️ APAGAR TODAS AS MENSAGENS? As visitas serão mantidas!')) limparSomenteMensagens()">🗑️ Limpar Mensagens</button>
         </div>
 
         <div class="voltar">
@@ -408,8 +408,8 @@
                 container.innerHTML += `
                     <div class="bloco-pessoa">
                         <div class="pessoa-nome">${nomeExibir}</div>
-                        <button class="btn-vermelho btn-apagar-pessoa" onclick="excluirPessoa('${idPessoa}')">
-                            🗑️ Apagar esta pessoa
+                        <button class="btn-vermelho btn-apagar-pessoa" onclick="excluirSomenteAcessos('${idPessoa}')">
+                            🗑️ Apagar Visualizações
                         </button>
                         <div class="pessoa-dados">
                             <span class="etiqueta etq-id">🆔 ${p.id}</span>
@@ -453,12 +453,9 @@
                 container.innerHTML += `
                     <div class="bloco-pessoa" style="opacity:0.8;">
                         <div class="pessoa-nome">${nomeMsg}</div>
-                        <button class="btn-vermelho btn-apagar-pessoa" onclick="excluirPessoa('${id}')">
-                            🗑️ Apagar esta pessoa
-                        </button>
                         <div class="pessoa-dados">
                             <span class="etiqueta etq-id">🆔 ${id}</span>
-                            <span class="etiqueta etq-acessos">👁️ Sem registro</span>
+                            <span class="etiqueta etq-acessos">👁️ Sem registro de visualizações</span>
                         </div>
                         ${msgs.map(m => {
                             const resp = (m.resposta || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
@@ -510,24 +507,21 @@
             carregarTudo();
         }
 
-        async function excluirPessoa(idPessoa) {
-            if (!confirm(`Apagar todos os dados de ${idPessoa}?\nNão tem volta!`)) return;
+        // ✅ APAGA SOMENTE AS VISUALIZAÇÕES — MANTÉM AS MENSAGENS
+        async function excluirSomenteAcessos(idPessoa) {
+            if (!confirm(`Apagar SOMENTE os dados de visualização de ${idPessoa}?\nAs mensagens serão MANTIDAS!`)) return;
             if (!db) return;
             await db.ref(`${CAMINHO_ACESSOS}/${idPessoa}`).remove();
-            const snap = await db.ref(CAMINHO_MSG).orderByChild("idRemetente").equalTo(idPessoa).once("value");
-            const updates = {};
-            snap.forEach(item => { updates[item.key] = null; });
-            await db.ref(CAMINHO_MSG).update(updates);
-            alert("✅ Apagado!");
+            alert("✅ Visualizações apagadas! Mensagens mantidas.");
             carregarTudo();
         }
 
-        async function limparTudo() {
-            if (!confirm("⚠️ APAGAR TUDO? Não tem volta!")) return;
+        // ✅ LIMPA SOMENTE AS MENSAGENS — MANTÉM AS VISUALIZAÇÕES
+        async function limparSomenteMensagens() {
+            if (!confirm("Apagar SOMENTE todas as mensagens?\nOs dados de visitas serão MANTIDOS!")) return;
             if (!db) return;
             await db.ref(CAMINHO_MSG).remove();
-            await db.ref(CAMINHO_ACESSOS).remove();
-            alert("✅ Tudo apagado!");
+            alert("✅ Mensagens apagadas! Visitas mantidas.");
             carregarTudo();
         }
     </script>
