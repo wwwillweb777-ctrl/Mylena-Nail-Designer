@@ -102,17 +102,6 @@
             background: linear-gradient(90deg, #ff66b2, #ff80c0);
             color: white;
         }
-        .btn-secundario {
-            background: #f0e6ff;
-            color: #993366;
-            margin-top: 0.5rem;
-        }
-        .voltar { text-align: center; margin-top: 1rem; }
-        .voltar a {
-            color: #ff66b2;
-            text-decoration: none;
-            font-size: 0.95rem;
-        }
         .boas-vindas {
             background: #fff0f5;
             padding: 1rem;
@@ -120,6 +109,12 @@
             margin-bottom: 1rem;
             text-align: center;
             color: #993366;
+        }
+        .voltar { text-align: center; margin-top: 1rem; }
+        .voltar a {
+            color: #ff66b2;
+            text-decoration: none;
+            font-size: 0.95rem;
         }
     </style>
 </head>
@@ -136,18 +131,17 @@
             <p class="aviso-vazio">Olá! Seja bem-vinda(o)! 😊<br>Digite seu nome abaixo para começar ↓</p>
         </div>
 
-        <!-- Pede nome SÓ NA PRIMEIRA VEZ -->
+        <!-- SÓ APARECE NA PRIMEIRA VEZ -->
         <div id="passoNome" class="form-etapa">
             <input type="text" id="nomeChat" placeholder="Digite seu nome ✨">
             <button class="btn-principal" onclick="salvarNome()">Continuar →</button>
         </div>
 
-        <!-- JÁ RECONHECIDO → VAI DIRETO PRO CHAT SEM PEDIR NOME -->
+        <!-- SEMPRE APARECE DEPOIS DA PRIMEIRA VEZ -->
         <div id="passoMensagem" class="form-etapa escondido">
             <div class="boas-vindas" id="mensagemBoasVindas"></div>
             <textarea id="campoMensagem" rows="3" placeholder="Escreva sua mensagem... 💅"></textarea>
             <button class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
-            <button class="btn-secundario" onclick="trocarNome()">🔄 Trocar nome</button>
         </div>
     </div>
 
@@ -157,21 +151,21 @@
 
     <script>
         // ==========================================
-        // 🔑 IDENTIFICAÇÃO AUTOMÁTICA PELO APARELHO
+        // 🔑 IDENTIFICAÇÃO FIXA — NINGUÉM ALTERA
         // ==========================================
         const NOME_REMETENTE_ADMIN = "Mylena — Encanto Nail Designer";
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
         const CHAVE_ID = "idVisitante_encanto";
-        const CHAVE_NOME = "nomeVisitante_encanto"; // ← SALVA O NOME!
+        const CHAVE_NOME = "nomeVisitante_encanto";
 
-        // GERAR ID ÚNICO DO APARELHO
+        // GERAR ID ÚNICO DO APARELHO — FIXO PARA SEMPRE
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).substring(2, 6);
             const p2 = Math.random().toString(36).substring(2, 6);
             return `usr_${p1}${p2}`;
         }
 
-        // PEGAR OU CRIAR ID DO APARELHO
+        // PEGAR OU CRIAR ID — FIXO
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
@@ -179,7 +173,7 @@
         }
         document.getElementById('exibirMeuId').textContent = ID_VISITANTE;
 
-        // PEGAR NOME SALVO (se já tiver)
+        // PEGAR NOME SALVO
         let nomeUsuario = localStorage.getItem(CHAVE_NOME) || "";
 
         function dataAtual() {
@@ -205,32 +199,31 @@
         const db = firebase.database();
 
         // ==========================================
-        // 🚀 INÍCIO — JÁ RECONHECE AUTOMATICAMENTE!
+        // 🚀 INÍCIO — RECONHECE AUTOMÁTICO
         // ==========================================
         window.onload = function() {
             if (nomeUsuario) {
-                // ✅ JÁ CONHECEMOS → NÃO PEDIR NOME! ENTRAR DIRETO!
+                // ✅ JÁ CONHECE → ENTRA DIRETO
                 entrarNoChat();
             }
-            // Se não tem nome → mostra o campo de digitar (primeira vez só)
+            // Sem nome → pede uma vez só
         };
 
-        // SALVAR NOME — SÓ RODA UMA VEZ
+        // SALVAR NOME — UMA VEZ SÓ
         function salvarNome() {
             const nome = document.getElementById('nomeChat').value.trim();
             if (!nome) { alert("⚠️ Digite seu nome!"); return; }
             
             nomeUsuario = nome;
-            localStorage.setItem(CHAVE_NOME, nomeUsuario); // SALVA PARA SEMPRE!
+            localStorage.setItem(CHAVE_NOME, nomeUsuario); // SALVO E TRAVADO
             entrarNoChat();
         }
 
-        // ENTRA NO CHAT — NÃO PEDIR NOME MAIS
+        // ENTRA NO CHAT
         function entrarNoChat() {
             document.getElementById('passoNome').classList.add('escondido');
             document.getElementById('passoMensagem').classList.remove('escondido');
             
-            // Mensagem de boas-vindas personalizada
             const boasVindas = document.getElementById('mensagemBoasVindas');
             boasVindas.innerHTML = `
                 👋 Que bom te ver, <strong>${nomeUsuario}</strong>! 💖<br>
@@ -238,20 +231,6 @@
             `;
             
             carregarMensagensDoChat();
-        }
-
-        // TROCAR NOME (se quiser)
-        function trocarNome() {
-            if (confirm("Deseja trocar seu nome?\n✅ Seu ID permanece o mesmo!")) {
-                localStorage.removeItem(CHAVE_NOME);
-                nomeUsuario = "";
-                document.getElementById('passoNome').classList.remove('escondido');
-                document.getElementById('passoMensagem').classList.add('escondido');
-                document.getElementById('nomeChat').value = '';
-                document.getElementById('campoMensagem').value = '';
-                document.getElementById('areaMensagens').innerHTML = 
-                    '<p class="aviso-vazio">Digite seu nome abaixo para começar ↓</p>';
-            }
         }
 
         // ENVIAR MENSAGEM
@@ -275,7 +254,7 @@
             }
         }
 
-        // CARREGAR MENSAGENS DESTE USUÁRIO SÓ
+        // CARREGA SÓ AS MENSAGENS DESTE USUÁRIO
         function carregarMensagensDoChat() {
             const area = document.getElementById('areaMensagens');
             db.ref(CAMINHO_BASE)
