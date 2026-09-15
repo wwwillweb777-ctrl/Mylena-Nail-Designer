@@ -73,29 +73,48 @@
             left: 50%; transform: translateX(-50%);
             margin-bottom: 1.5rem;
         }
-        .bloco-superior { position: relative; margin-bottom: 2rem; min-height: 200px; }
+        .bloco-superior { position: relative; margin-bottom: 2rem; min-height: 380px; }
         .coluna-esq { position: absolute; top: 0; left: 0; display: flex; flex-direction: column; gap: 0.8rem; }
+        
+        /* MOLDURAS — COM IMAGENS DENTRO */
         .moldura-serrilhada {
-            width: 160px; height: 130px;
+            width: 160px; height: 180px;
             background: linear-gradient(45deg, #ff99cc, #ff66b2);
             padding: 4px;
             clip-path: polygon(0% 10%,8% 0%,20% 0%,28% 10%,40% 0%,52% 10%,64% 0%,76% 10%,88% 0%,100% 10%,100% 22%,92% 32%,100% 44%,92% 56%,100% 68%,92% 80%,100% 92%,92% 100%,80% 100%,68% 92%,56% 100%,44% 92%,32% 100%,20% 92%,8% 100%,0% 90%,0% 78%,8% 68%,0% 56%,8% 44%,0% 32%,8% 22%,0% 10%);
         }
         .moldura-serrilhada .espaco {
             width: 100%; height: 100%; background: #ffe6f2;
-            display: flex; align-items: center; justify-content: center;
-            color: #b34782; font-size: 0.9rem; text-align: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            padding: 0.5rem;
         }
+        .moldura-serrilhada .espaco img {
+            width: 100%; height: 130px; object-fit: cover; border-radius: 8px;
+        }
+        .moldura-serrilhada .legenda-moldura {
+            font-size: 0.8rem; color: #b34782; font-weight: 600; text-align: center;
+        }
+        
         .moldura-coracao {
             position: absolute; top: 0; right: 0;
-            width: 170px; height: 160px;
+            width: 170px; height: 220px;
             clip-path: path('M85,12 C115,-8 170,20 170,72 C170,120 85,155 85,155 C85,155 0,120 0,72 C0,20 55,-8 85,12 Z');
             background: linear-gradient(45deg, #ff99cc, #ff66b2);
-            padding: 3px;
+            padding: 4px;
         }
-        .moldura-coracao .fundo { width: 100%; height: 100%; background: #ffe6f2; }
+        .moldura-coracao .fundo {
+            width: 100%; height: 100%; background: #ffe6f2;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 1rem;
+        }
+        .moldura-coracao .fundo img {
+            width: 100%; height: 150px; object-fit: cover; border-radius: 50%;
+        }
+        .moldura-coracao .legenda-coracao {
+            font-size: 0.8rem; color: #b34782; font-weight: 600; text-align: center; margin-top: 0.3rem;
+        }
         
-        /* ===== GALERIA DE TRABALHOS ===== */
+        /* GALERIA ABAIXO */
         .galeria-titulo {
             text-align: center;
             margin: 2.5rem 0 1rem;
@@ -172,8 +191,8 @@
         @media (max-width: 400px) {
             .banner-topo { height: 340px; }
             .titulo-principal { font-size: 2.2rem; }
-            .moldura-coracao { width: 140px; height: 135px; }
-            .moldura-serrilhada { width: 140px; height: 115px; }
+            .moldura-coracao { width: 140px; height: 180px; }
+            .moldura-serrilhada { width: 140px; height: 160px; }
             .img-baixo { width: 100px; height: 100px; }
         }
     </style>
@@ -194,56 +213,60 @@
             </div>
             <p class="faixa-destaque">Designs exclusivos e com carinho ✨</p>
             
+            <!-- ✅ IMAGENS DENTRO DAS MOLDURAS - IGUAL AO PRINT -->
             <div class="bloco-superior">
                 <div class="coluna-esq">
-                    <div class="moldura-serrilhada"><div class="espaco">📷 Em breve</div></div>
-                    <div class="moldura-serrilhada"><div class="espaco">📷 Em breve</div></div>
+                    <!-- Moldura 1 - Francesa Branca -->
+                    <div class="moldura-serrilhada">
+                        <div class="espaco">
+                            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/francesa-branca-brilho.webp" 
+                                 alt="Francesa Branca com Brilho — Elegância clássica com brilho prateado" 
+                                 loading="lazy">
+                            <span class="legenda-moldura">💎 Francesa Branca</span>
+                        </div>
+                    </div>
+                    <!-- Moldura 2 - Nude em Gel -->
+                    <div class="moldura-serrilhada">
+                        <div class="espaco">
+                            <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-gel-nude.webp" 
+                                 alt="Unhas em Gel Tom Nude — Beleza natural com acabamento perfeito" 
+                                 loading="lazy">
+                            <span class="legenda-moldura">💅 Nude em Gel</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="moldura-coracao"><div class="fundo"></div></div>
+                <!-- Moldura Coração - Preto & Dourado -->
+                <div class="moldura-coracao">
+                    <div class="fundo">
+                        <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-dourado.webp" 
+                             alt="Preto & Dourado — Sofisticação em preto profundo com brilho dourado" 
+                             loading="lazy">
+                        <span class="legenda-coracao">✨ Preto & Dourado</span>
+                    </div>
+                </div>
             </div>
 
-            <!-- ========== GALERIA DE TRABALHOS ========== -->
+            <!-- GALERIA ABAIXO - DEMAIS TRABALHOS -->
             <div class="galeria-titulo">
                 <h3>✨ Nossos Trabalhos ✨</h3>
                 <p class="sub-titulo">Cada detalhe feito com carinho 💖</p>
             </div>
             <div class="galeria">
-                <!-- 1. Francesa Branca com Brilho -->
-                <div class="cartao-servico">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/francesa-branca-brilho.webp" 
-                         alt="Francesa Branca com Brilho — Elegância clássica com toque de brilho prateado e pedrarias" 
-                         loading="lazy">
-                    <p class="legenda-img">💎 Francesa Branca com Brilho</p>
-                </div>
-                <!-- 2. Unhas em Gel Nude -->
-                <div class="cartao-servico">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-gel-nude.webp" 
-                         alt="Unhas em Gel Tom Nude — Beleza natural com acabamento impecável e brilho suave" 
-                         loading="lazy">
-                    <p class="legenda-img">💅 Nude Perfeita em Gel</p>
-                </div>
-                <!-- 3. Preto & Dourado -->
-                <div class="cartao-servico">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-dourado.webp" 
-                         alt="Preto & Dourado — Sofisticação em preto profundo com detalhes brilhantes em dourado" 
-                         loading="lazy">
-                    <p class="legenda-img">✨ Preto e Dourado</p>
-                </div>
-                <!-- 4. Preto com Laço Prateado -->
+                <!-- 1. Preto com Laço Prateado -->
                 <div class="cartao-servico">
                     <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-prata.webp" 
-                         alt="Preto com Laço Prateado — Design ousado e refinado em preto brilhante com detalhes prateados" 
+                         alt="Preto com Laço Prateado — Design ousado em preto brilhante com detalhes prateados" 
                          loading="lazy">
                     <p class="legenda-img">🖤 Elegância Preto & Prata</p>
                 </div>
-                <!-- 5. Rosa Mármore & Prata -->
+                <!-- 2. Rosa Mármore & Prata -->
                 <div class="cartao-servico">
                     <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rosa-prata.webp" 
-                         alt="Rosa Mármore & Prata — Delicadeza em tons de rosa com efeito mármore e brilho prateado" 
+                         alt="Rosa Mármore & Prata — Delicadeza em tons de rosa com efeito mármore e brilho" 
                          loading="lazy">
                     <p class="legenda-img">💖 Rosa Mármore Brilhante</p>
                 </div>
-                <!-- 6. Rosa Brilhante Suave -->
+                <!-- 3. Rosa Brilhante Suave -->
                 <div class="cartao-servico">
                     <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rose-brilho.webp" 
                          alt="Rosa Brilhante Suave — Tom rosado natural com brilho sutil e elegante" 
@@ -294,9 +317,6 @@
     </div>
 
     <script>
-        // ==========================================
-        // 🔑 CONFIGURAÇÕES — CONTAGEM SÓ AQUI!
-        // ==========================================
         const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
         const CHAVE_ID = "idVisitante_encanto";
         const CHAVE_SESSAO_ATIVA = "sessao_ativa_encanto";
