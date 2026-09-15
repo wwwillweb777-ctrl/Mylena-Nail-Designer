@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat — Encanto Nail Designer</title>
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
@@ -114,6 +113,14 @@
             text-decoration: none;
             font-size: 0.95rem;
         }
+        .boas-vindas {
+            background: #fff0f5;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #993366;
+        }
     </style>
 </head>
 <body>
@@ -129,16 +136,18 @@
             <p class="aviso-vazio">Olá! Seja bem-vinda(o)! 😊<br>Digite seu nome abaixo para começar ↓</p>
         </div>
 
+        <!-- Pede nome SÓ NA PRIMEIRA VEZ -->
         <div id="passoNome" class="form-etapa">
             <input type="text" id="nomeChat" placeholder="Digite seu nome ✨">
-            <button class="btn-principal" onclick="confirmarNome()">Continuar →</button>
+            <button class="btn-principal" onclick="salvarNome()">Continuar →</button>
         </div>
 
+        <!-- JÁ RECONHECIDO → VAI DIRETO PRO CHAT SEM PEDIR NOME -->
         <div id="passoMensagem" class="form-etapa escondido">
-            <p style="margin-bottom: 0.5rem; color: #993366;">Olá, <span id="nomeExibido"></span>! 💖</p>
+            <div class="boas-vindas" id="mensagemBoasVindas"></div>
             <textarea id="campoMensagem" rows="3" placeholder="Escreva sua mensagem... 💅"></textarea>
             <button class="btn-principal" onclick="enviarMensagem()">📤 Enviar Mensagem</button>
-            <button class="btn-secundario" onclick="limparSair()">Sair / Trocar nome</button>
+            <button class="btn-secundario" onclick="trocarNome()">🔄 Trocar nome</button>
         </div>
     </div>
 
@@ -148,37 +157,40 @@
 
     <script>
         // ==========================================
-        // 🔑 SISTEMA DE ID ÚNICO — NINGUÉM MAIS SE CONFUNDE
+        // 🔑 IDENTIFICAÇÃO AUTOMÁTICA PELO APARELHO
         // ==========================================
         const NOME_REMETENTE_ADMIN = "Mylena — Encanto Nail Designer";
         const CAMINHO_BASE = "encanto_nail_designer/mensagens";
         const CHAVE_ID = "idVisitante_encanto";
+        const CHAVE_NOME = "nomeVisitante_encanto"; // ← SALVA O NOME!
 
-        // GERAR ID ÚNICO — EXEMPLO: usr_8x3k7z9q
+        // GERAR ID ÚNICO DO APARELHO
         function gerarIdUnico() {
-            const parte1 = Math.random().toString(36).substring(2, 6);
-            const parte2 = Math.random().toString(36).substring(2, 6);
-            return `usr_${parte1}${parte2}`;
+            const p1 = Math.random().toString(36).substring(2, 6);
+            const p2 = Math.random().toString(36).substring(2, 6);
+            return `usr_${p1}${p2}`;
         }
 
-        // PEGAR OU CRIAR ID — PERMANECE SALVO
+        // PEGAR OU CRIAR ID DO APARELHO
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
             localStorage.setItem(CHAVE_ID, ID_VISITANTE);
         }
-
-        // EXIBIR ID NO CABEÇALHO
         document.getElementById('exibirMeuId').textContent = ID_VISITANTE;
 
-        let nomeUsuarioChat = "";
+        // PEGAR NOME SALVO (se já tiver)
+        let nomeUsuario = localStorage.getItem(CHAVE_NOME) || "";
 
         function dataAtual() {
-            return new Date().toLocaleString('pt-BR');
+            return new Date().toLocaleString('pt-BR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
         }
 
         // ==========================================
-        // 🔧 FIREBASE — CONFIGURAÇÃO
+        // 🔧 FIREBASE
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
@@ -189,44 +201,68 @@
             messagingSenderId: "66370500400",
             appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
         };
-
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         // ==========================================
-        // 💬 FUNÇÕES DO CHAT
+        // 🚀 INÍCIO — JÁ RECONHECE AUTOMATICAMENTE!
         // ==========================================
-        function confirmarNome() {
+        window.onload = function() {
+            if (nomeUsuario) {
+                // ✅ JÁ CONHECEMOS → NÃO PEDIR NOME! ENTRAR DIRETO!
+                entrarNoChat();
+            }
+            // Se não tem nome → mostra o campo de digitar (primeira vez só)
+        };
+
+        // SALVAR NOME — SÓ RODA UMA VEZ
+        function salvarNome() {
             const nome = document.getElementById('nomeChat').value.trim();
             if (!nome) { alert("⚠️ Digite seu nome!"); return; }
-            nomeUsuarioChat = nome;
-            document.getElementById('nomeExibido').textContent = nome;
+            
+            nomeUsuario = nome;
+            localStorage.setItem(CHAVE_NOME, nomeUsuario); // SALVA PARA SEMPRE!
+            entrarNoChat();
+        }
+
+        // ENTRA NO CHAT — NÃO PEDIR NOME MAIS
+        function entrarNoChat() {
             document.getElementById('passoNome').classList.add('escondido');
             document.getElementById('passoMensagem').classList.remove('escondido');
+            
+            // Mensagem de boas-vindas personalizada
+            const boasVindas = document.getElementById('mensagemBoasVindas');
+            boasVindas.innerHTML = `
+                👋 Que bom te ver, <strong>${nomeUsuario}</strong>! 💖<br>
+                Identificada automaticamente ✨
+            `;
+            
             carregarMensagensDoChat();
         }
 
-        function limparSair() {
-            if (confirm("Deseja trocar seu nome? Seu ID permanece o mesmo.")) {
-                nomeUsuarioChat = "";
+        // TROCAR NOME (se quiser)
+        function trocarNome() {
+            if (confirm("Deseja trocar seu nome?\n✅ Seu ID permanece o mesmo!")) {
+                localStorage.removeItem(CHAVE_NOME);
+                nomeUsuario = "";
                 document.getElementById('passoNome').classList.remove('escondido');
                 document.getElementById('passoMensagem').classList.add('escondido');
                 document.getElementById('nomeChat').value = '';
                 document.getElementById('campoMensagem').value = '';
                 document.getElementById('areaMensagens').innerHTML = 
-                    '<p class="aviso-vazio">Olá! Seja bem-vinda(o)! 😊<br>Digite seu nome abaixo para começar ↓</p>';
+                    '<p class="aviso-vazio">Digite seu nome abaixo para começar ↓</p>';
             }
         }
 
+        // ENVIAR MENSAGEM
         async function enviarMensagem() {
             const texto = document.getElementById('campoMensagem').value.trim();
             if (!texto) { alert("⚠️ Escreva sua mensagem!"); return; }
-            if (!nomeUsuarioChat) { alert("⚠️ Digite seu nome primeiro!"); return; }
-
+            
             try {
                 await db.ref(CAMINHO_BASE).push({
-                    idRemetente: ID_VISITANTE, // ✅ ID ÚNICO ENVIADO!
-                    nomeRemetente: nomeUsuarioChat,
+                    idRemetente: ID_VISITANTE,
+                    nomeRemetente: nomeUsuario,
                     texto: texto,
                     data: dataAtual(),
                     resposta: null,
@@ -239,7 +275,7 @@
             }
         }
 
-        // ✅ SÓ MOSTRA AS MENSAGENS DESSE USUÁRIO
+        // CARREGAR MENSAGENS DESTE USUÁRIO SÓ
         function carregarMensagensDoChat() {
             const area = document.getElementById('areaMensagens');
             db.ref(CAMINHO_BASE)
