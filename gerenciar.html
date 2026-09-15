@@ -258,7 +258,6 @@
 </head>
 <body>
 
-    <!-- TELA DE LOGIN -->
     <div id="telaLogin" class="caixa-principal">
         <h1>🔐 Área Administrativa</h1>
         <p class="subtitulo">♥ Encanto Nail Designer ♥</p>
@@ -277,7 +276,6 @@
         </div>
     </div>
 
-    <!-- PAINEL -->
     <div id="painelControle" class="caixa-principal escondido">
         <div class="linha-cabecalho">
             <div>
@@ -302,7 +300,6 @@
         </div>
     </div>
 
-    <!-- MODAL -->
     <div id="modalResposta" class="modal-fundo escondido">
         <div class="modal">
             <h3>✍️ Responder</h3>
@@ -390,12 +387,11 @@
             const container = document.getElementById('lista-conteudo');
             container.innerHTML = '';
 
-            if (!snapAcessos.exists() && !snapMensagens) {
+            if (!snapAcessos.exists() && !snapMensagens.exists()) {
                 container.innerHTML = '<div class="vazio"><p>📭 Nenhuma pessoa visitou ainda</p></div>';
                 return;
             }
 
-            // Agrupar mensagens por ID
             const porId = {};
             for (const chave in mensagens) {
                 const m = mensagens[chave];
@@ -404,10 +400,8 @@
                 porId[m.idRemetente].push({ chave, ...m });
             }
 
-            // ✅ UMA PESSOA = UM BLOCO — Dados fixos, contagem só do index.html
             for (const idPessoa in acessos) {
                 const p = acessos[idPessoa];
-                // Nome FIXO — nunca muda
                 const nomeExibir = p.nome || "Visitante (sem nome)";
                 const msgs = porId[idPessoa] || [];
 
@@ -452,7 +446,6 @@
                 `;
             }
 
-            // Pessoas com mensagem mas sem registro de acesso
             for (const id in porId) {
                 if (acessos[id]) continue;
                 const msgs = porId[id];
