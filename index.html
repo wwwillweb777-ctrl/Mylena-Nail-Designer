@@ -94,6 +94,48 @@
             padding: 3px;
         }
         .moldura-coracao .fundo { width: 100%; height: 100%; background: #ffe6f2; }
+        
+        /* ===== GALERIA DE TRABALHOS ===== */
+        .galeria-titulo {
+            text-align: center;
+            margin: 2.5rem 0 1rem;
+        }
+        .galeria-titulo h3 {
+            color: #ff66b2;
+            font-size: 1.8rem;
+            font-family: Georgia, serif;
+            font-style: italic;
+        }
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .cartao-servico {
+            background: #fff;
+            border-radius: 20px;
+            border: 2px solid #ffd9e6;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .cartao-servico:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 102, 178, 0.2);
+        }
+        .cartao-servico img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+        .legenda-img {
+            padding: 1rem;
+            text-align: center;
+            color: #993366;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
         .caixa-servicos {
             border: 2px solid #ff99cc; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fff;
         }
@@ -123,6 +165,10 @@
             display: inline-block; background: linear-gradient(90deg, #993366, #b34782);
             color: white; padding: 0.6rem 2.5rem; border-radius: 50px; font-weight: bold; text-decoration: none;
         }
+        @media (max-width: 480px) {
+            .galeria { grid-template-columns: 1fr; }
+            .cartao-servico img { height: 240px; }
+        }
         @media (max-width: 400px) {
             .banner-topo { height: 340px; }
             .titulo-principal { font-size: 2.2rem; }
@@ -139,7 +185,7 @@
         </div>
         <div class="conteudo-interno">
             <div class="botao-chat-topo">
-                <a href="chat.html">💬 Chat, vem bater um papo😃</a>
+                <a href="chat.html">💬 Chat, vem bater um papo 😃</a>
             </div>
             <div class="titulo">
                 <h1 class="titulo-principal">Encanto</h1>
@@ -147,6 +193,7 @@
                 <p class="sub-titulo"><span class="coracao">♥</span> ESTÚDIO DE UNHAS <span class="coracao">♥</span></p>
             </div>
             <p class="faixa-destaque">Designs exclusivos e com carinho ✨</p>
+            
             <div class="bloco-superior">
                 <div class="coluna-esq">
                     <div class="moldura-serrilhada"><div class="espaco">📷 Em breve</div></div>
@@ -154,6 +201,57 @@
                 </div>
                 <div class="moldura-coracao"><div class="fundo"></div></div>
             </div>
+
+            <!-- ========== GALERIA DE TRABALHOS ========== -->
+            <div class="galeria-titulo">
+                <h3>✨ Nossos Trabalhos ✨</h3>
+                <p class="sub-titulo">Cada detalhe feito com carinho 💖</p>
+            </div>
+            <div class="galeria">
+                <!-- 1. Francesa Branca com Brilho -->
+                <div class="cartao-servico">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/francesa-branca-brilho.webp" 
+                         alt="Francesa Branca com Brilho — Elegância clássica com toque de brilho prateado e pedrarias" 
+                         loading="lazy">
+                    <p class="legenda-img">💎 Francesa Branca com Brilho</p>
+                </div>
+                <!-- 2. Unhas em Gel Nude -->
+                <div class="cartao-servico">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-gel-nude.webp" 
+                         alt="Unhas em Gel Tom Nude — Beleza natural com acabamento impecável e brilho suave" 
+                         loading="lazy">
+                    <p class="legenda-img">💅 Nude Perfeita em Gel</p>
+                </div>
+                <!-- 3. Preto & Dourado -->
+                <div class="cartao-servico">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-dourado.webp" 
+                         alt="Preto & Dourado — Sofisticação em preto profundo com detalhes brilhantes em dourado" 
+                         loading="lazy">
+                    <p class="legenda-img">✨ Preto e Dourado</p>
+                </div>
+                <!-- 4. Preto com Laço Prateado -->
+                <div class="cartao-servico">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-prata.webp" 
+                         alt="Preto com Laço Prateado — Design ousado e refinado em preto brilhante com detalhes prateados" 
+                         loading="lazy">
+                    <p class="legenda-img">🖤 Elegância Preto & Prata</p>
+                </div>
+                <!-- 5. Rosa Mármore & Prata -->
+                <div class="cartao-servico">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rosa-prata.webp" 
+                         alt="Rosa Mármore & Prata — Delicadeza em tons de rosa com efeito mármore e brilho prateado" 
+                         loading="lazy">
+                    <p class="legenda-img">💖 Rosa Mármore Brilhante</p>
+                </div>
+                <!-- 6. Rosa Brilhante Suave -->
+                <div class="cartao-servico">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rose-brilho.webp" 
+                         alt="Rosa Brilhante Suave — Tom rosado natural com brilho sutil e elegante" 
+                         loading="lazy">
+                    <p class="legenda-img">🌸 Rosa Suave Brilhante</p>
+                </div>
+            </div>
+
             <div class="caixa-servicos">
                 <div class="servico">
                     <div class="servico-nome"><span class="coracao">♥</span> Unhas Longas</div>
@@ -203,14 +301,12 @@
         const CHAVE_ID = "idVisitante_encanto";
         const CHAVE_SESSAO_ATIVA = "sessao_ativa_encanto";
 
-        // Gerar ID único do visitante
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2, 6);
             const p2 = Math.random().toString(36).slice(2, 6);
             return `usr_${p1}${p2}`;
         }
 
-        // Recuperar ou criar ID (fica salvo no navegador)
         let ID_VISITANTE = localStorage.getItem(CHAVE_ID);
         if (!ID_VISITANTE) {
             ID_VISITANTE = gerarIdUnico();
@@ -224,7 +320,6 @@
             });
         }
 
-        // Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
             authDomain: "willobras.firebaseapp.com",
@@ -238,21 +333,16 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ==========================================
-        // ✅ LÓGICA — SÓ CONTA NA PRIMEIRA ENTRADA
-        // ==========================================
         function ehNovaSessao() {
-            // sessionStorage = APAGA SOZINHO ao fechar o navegador
             if (!sessionStorage.getItem(CHAVE_SESSAO_ATIVA)) {
                 sessionStorage.setItem(CHAVE_SESSAO_ATIVA, 'sim');
-                return true; // Fechou e abriu = conta
+                return true;
             }
-            return false; // Navegando entre páginas = NÃO conta
+            return false;
         }
 
         window.onload = async function() {
             const novaVisita = ehNovaSessao();
-
             const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
             const snap = await ref.once("value");
             const dados = snap.val() || {};
