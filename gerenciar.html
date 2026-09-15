@@ -140,9 +140,15 @@
 
         .pessoa-nome {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: #993366;
             margin-bottom: 0.5rem;
+        }
+
+        .btn-apagar-pessoa {
+            margin-bottom: 1rem;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
         }
 
         .pessoa-dados {
@@ -398,16 +404,19 @@
                 porId[m.idRemetente].push({ chave, ...m });
             }
 
-            // ✅ UMA PESSOA = UM BLOCO — só atualiza os dados
+            // ✅ UMA PESSOA = UM BLOCO — Dados fixos, contagem só do index.html
             for (const idPessoa in acessos) {
                 const p = acessos[idPessoa];
-                // Nome FIXO — nunca muda sozinho
+                // Nome FIXO — nunca muda
                 const nomeExibir = p.nome || "Visitante (sem nome)";
                 const msgs = porId[idPessoa] || [];
 
                 container.innerHTML += `
                     <div class="bloco-pessoa">
                         <div class="pessoa-nome">${nomeExibir}</div>
+                        <button class="btn-vermelho btn-apagar-pessoa" onclick="excluirPessoa('${idPessoa}')">
+                            🗑️ Apagar esta pessoa
+                        </button>
                         <div class="pessoa-dados">
                             <span class="etiqueta etq-id">🆔 ${p.id}</span>
                             <span class="etiqueta etq-acessos">👁️ ${p.acessos || 0} visitas</span>
@@ -439,9 +448,6 @@
                                 </div>
                             </div>
                         `}).join('')}
-                        <div class="botoes-acao">
-                            <button class="btn-azul" onclick="excluirPessoa('${idPessoa}')">🗑️ Apagar esta pessoa</button>
-                        </div>
                     </div>
                 `;
             }
@@ -450,9 +456,13 @@
             for (const id in porId) {
                 if (acessos[id]) continue;
                 const msgs = porId[id];
+                const nomeMsg = (msgs[0].nomeRemetente || "Visitante").replace(/"/g, '&quot;');
                 container.innerHTML += `
                     <div class="bloco-pessoa" style="opacity:0.8;">
-                        <div class="pessoa-nome">${(msgs[0].nomeRemetente || "Visitante").replace(/"/g, '&quot;')}</div>
+                        <div class="pessoa-nome">${nomeMsg}</div>
+                        <button class="btn-vermelho btn-apagar-pessoa" onclick="excluirPessoa('${id}')">
+                            🗑️ Apagar esta pessoa
+                        </button>
                         <div class="pessoa-dados">
                             <span class="etiqueta etq-id">🆔 ${id}</span>
                             <span class="etiqueta etq-acessos">👁️ Sem registro</span>
@@ -464,7 +474,7 @@
                                 <p>${m.texto}</p>
                                 <span style="font-size:0.8rem; color:#888;">${m.data || ''}</span>
                                 <div class="botoes-acao">
-                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${(m.nomeRemetente||'Visitante').replace(/"/g, '&quot;')}", "${id}", "${resp}")'>Responder</button>
+                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${nomeMsg}", "${id}", "${resp}")'>Responder</button>
                                     <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">🗑️ Mensagem</button>
                                 </div>
                             </div>
@@ -508,7 +518,7 @@
         }
 
         async function excluirPessoa(idPessoa) {
-            if (!confirm(`Apagar dados de ${idPessoa}?`)) return;
+            if (!confirm(`Apagar todos os dados de ${idPessoa}?\nNão tem volta!`)) return;
             if (!db) return;
             await db.ref(`${CAMINHO_ACESSOS}/${idPessoa}`).remove();
             const snap = await db.ref(CAMINHO_MSG).orderByChild("idRemetente").equalTo(idPessoa).once("value");
