@@ -198,7 +198,7 @@
     <script>
         const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
         const CHAVE_ID = "idVisitante_encanto";
-        const CHAVE_MARCA_SAIDA = "marcaSaidaDoSite";
+        const CHAVE_ESTOU_DENTRO = "visitaEmAndamento"; // Marca sessão ativa
 
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2,6);
@@ -232,24 +232,23 @@
         const db = firebase.database();
 
         // ==========================================
-        // ✅ LÓGICA CORRIGIDA E CONFIÁVEL
+        // ✅ LÓGICA DEFINITIVA — NÃO CONTA DUPLA
         // ==========================================
         window.onload = async function() {
-            // Pega de onde veio
-            const origem = document.referrer;
             const dominioAtual = window.location.hostname;
+            const origem = document.referrer;
             
-            // Veio de fora = origem vazia OU de outro site
+            // Veio de fora? = sem origem ou de outro site
             const veioDeFora = !origem || !origem.includes(dominioAtual);
             
-            // Também confere pela marca de saída
-            const saiu = localStorage.getItem(CHAVE_MARCA_SAIDA) === "sim";
+            // Já estava dentro do site nesta sessão?
+            const jaEstavaDentro = sessionStorage.getItem(CHAVE_ESTOU_DENTRO) === "sim";
             
-            // É nova visita se veio de fora OU tinha marcado saída
-            const ehNovaVisita = veioDeFora || saiu;
+            // ✅ CONTA SOMENTE: veio de fora E ainda não estava marcado como dentro
+            const ehNovaVisita = veioDeFora && !jaEstavaDentro;
 
-            // Apaga a marca — agora está dentro do site
-            localStorage.removeItem(CHAVE_MARCA_SAIDA);
+            // Marca que está dentro — enquanto não fechar o navegador
+            sessionStorage.setItem(CHAVE_ESTOU_DENTRO, "sim");
 
             const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
             const snap = await ref.once("value");
@@ -265,10 +264,7 @@
             });
         };
 
-        // ✅ Marca que saiu do site
-        window.addEventListener('beforeunload', () => {
-            localStorage.setItem(CHAVE_MARCA_SAIDA, "sim");
-        });
+        // ⚠️ sessionStorage APAGA SOZINHO ao fechar aba/navegador — não precisa limpar manualmente
     </script>
 </body>
 </html>
