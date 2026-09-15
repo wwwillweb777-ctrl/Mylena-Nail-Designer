@@ -72,11 +72,9 @@
         const CHAVE_NOME = "nomeVisitante_encanto";
 
         // ==========================================
-        // 🔄 RESET ATIVADO — Primeiro acesso para todos!
+        // 🔄 RESET — descomente APENAS UMA VEZ se quiser começar do zero
         // ==========================================
-        localStorage.clear();
-        // Depois de usar, troque para: // localStorage.clear();
-        // ==========================================
+        // localStorage.clear();
 
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2,6);
@@ -111,7 +109,29 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // ==========================================
+        // ✅ CONTAGEM DE ACESSOS — ATUALIZA SEMPRE
+        // ==========================================
+        async function registrarAcesso() {
+            const refPessoa = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
+            const snap = await refPessoa.once("value");
+            const dados = snap.val() || {};
+            const agora = dataAtual();
+
+            await refPessoa.update({
+                id: ID_VISITANTE,
+                nome: dados.nome || nomeUsuario || null,
+                acessos: (dados.acessos || 0) + 1, // ✅ SÓ SOMA, NUNCA ZERA
+                primeiroAcesso: dados.primeiroAcesso || agora,
+                ultimoAcesso: agora
+            });
+        }
+
         window.onload = async function() {
+            // Registra o acesso logo ao entrar
+            await registrarAcesso();
+
+            // Usa o nome que JÁ ESTÁ no banco — SEMPRE
             const snap = await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).once("value");
             const nomeBanco = snap.val();
             
@@ -132,7 +152,10 @@
             
             nomeUsuario = nome;
             localStorage.setItem(CHAVE_NOME, nomeUsuario);
+            
+            // ✅ SALVA UMA VEZ — FICA FIXO PARA SEMPRE
             await db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}/nome`).set(nomeUsuario);
+            
             entrarNoChat();
         }
 
@@ -147,9 +170,10 @@
             const texto = document.getElementById('campoMensagem').value.trim();
             if (!texto) { alert("⚠️ Escreva sua mensagem!"); return; }
             
+            // ✅ Usa o nome FIXO — nunca muda
             await db.ref(CAMINHO_MSG).push({
                 idRemetente: ID_VISITANTE,
-                nomeRemetente: nomeUsuario,
+                nomeRemetente: nomeUsuario || "Visitante",
                 texto: texto,
                 data: dataAtual(),
                 resposta: null,
