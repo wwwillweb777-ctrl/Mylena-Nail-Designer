@@ -221,51 +221,6 @@
             color: #b34782;
         }
 
-        /* === TELA SELECIONAR USUÁRIO === */
-        .caixa-busca {
-            background: #fff;
-            border-radius: 24px;
-            border: 4px solid #ff99cc;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .caixa-busca h3 {
-            color: #ff66b2;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .grupo-busca {
-            margin-bottom: 1rem;
-        }
-
-        .grupo-busca label {
-            display: block;
-            color: #993366;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .resultado-busca {
-            margin-top: 1.5rem;
-        }
-
-        .card-usuario {
-            background: #faf0f5;
-            border-radius: 16px;
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid #ff66b2;
-        }
-
-        .card-nome {
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #993366;
-            margin-bottom: 0.5rem;
-        }
-
         /* === TELA CHAT INDIVIDUAL — IGUAL AO CLIENTE === */
         .tela-chat {
             display: flex;
@@ -421,30 +376,7 @@
         <div id="lista-usuarios"></div>
 
         <div class="botoes-geral">
-            <button class="btn-rosa" onclick="abrirTelaBusca()">💬 Abrir Chat por Usuário</button>
-            <button class="btn-vermelho" onclick="if(confirm('Apagar SOMENTE todas as mensagens?\nDados de visitas serão MANTIDOS!')) limparTodasMensagens()">🗑️ Limpar Mensagens</button>
-        </div>
-    </div>
-
-    <!-- TELA BUSCAR/SELECIONAR USUÁRIO -->
-    <div id="telaBusca" class="caixa-principal escondido">
-        <button class="botao-voltar" onclick="voltarParaLista()">Voltar para lista</button>
-        
-        <h1 style="margin-top:1rem;">💬 Abrir Chat</h1>
-        <p class="subtitulo">Digite o nome ou ID do usuário</p>
-
-        <div class="caixa-busca">
-            <div class="grupo-busca">
-                <label for="buscaNome">🔍 Nome do usuário</label>
-                <input type="text" id="buscaNome" placeholder="Digite o nome...">
-            </div>
-            <div class="grupo-busca">
-                <label for="buscaId">🆔 ID do usuário</label>
-                <input type="text" id="buscaId" placeholder="Digite o ID...">
-            </div>
-            <button class="btn-principal" onclick="buscarUsuario()">🔍 Buscar Usuário</button>
-
-            <div id="resultadoBusca" class="resultado-busca escondido"></div>
+            <button class="btn-vermelho" onclick="if(confirm('Apagar TODAS as mensagens?\\nDados de visitas serão MANTIDOS!')) limparTodasMensagens()">🗑️ Limpar Todas as Mensagens</button>
         </div>
     </div>
 
@@ -482,8 +414,8 @@
         };
 
         let db = null;
-        let todosUsuarios = {}; // Armazena todos os dados
-        let usuarioAtual = null; // Usuário aberto no chat
+        let todosUsuarios = {};
+        let usuarioAtual = null;
 
         if (typeof firebase !== 'undefined' && !firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -518,7 +450,6 @@
         function sair() {
             if (!confirm("Sair da área administrativa?")) return;
             document.getElementById('telaLista').classList.add('escondido');
-            document.getElementById('telaBusca').classList.add('escondido');
             document.getElementById('telaChat').classList.add('escondido');
             document.getElementById('telaLogin').classList.remove('escondido');
             document.getElementById('avisoErro').classList.add('escondido');
@@ -549,7 +480,6 @@
                 return;
             }
 
-            // Agrupar mensagens por usuário
             const porId = {};
             for (const chave in mensagens) {
                 const m = mensagens[chave];
@@ -558,7 +488,6 @@
                 porId[m.idRemetente].push({ chave, ...m });
             }
 
-            // Montar lista com todos
             for (const id in { ...acessos, ...porId }) {
                 const p = acessos[id] || {};
                 const mensagensUser = porId[id] || [];
@@ -598,53 +527,6 @@
             }
         }
 
-        // === TELA BUSCA ===
-        function abrirTelaBusca() {
-            document.getElementById('telaLista').classList.add('escondido');
-            document.getElementById('telaBusca').classList.remove('escondido');
-            document.getElementById('resultadoBusca').classList.add('escondido');
-            document.getElementById('buscaNome').value = '';
-            document.getElementById('buscaId').value = '';
-        }
-
-        function voltarParaLista() {
-            document.getElementById('telaBusca').classList.add('escondido');
-            document.getElementById('telaLista').classList.remove('escondido');
-        }
-
-        function buscarUsuario() {
-            const nome = document.getElementById('buscaNome').value.trim().toLowerCase();
-            const id = document.getElementById('buscaId').value.trim();
-            const resultadoDiv = document.getElementById('resultadoBusca');
-            
-            let encontrados = [];
-            for (const uid in todosUsuarios) {
-                const u = todosUsuarios[uid];
-                const matchNome = nome && u.nome.toLowerCase().includes(nome);
-                const matchId = id && uid === id;
-                if (matchNome || matchId) encontrados.push(u);
-            }
-
-            resultadoDiv.innerHTML = '';
-            if (encontrados.length === 0) {
-                resultadoDiv.innerHTML = '<p style="color:#b34782; text-align:center;">Nenhum usuário encontrado 😕</p>';
-            } else {
-                encontrados.forEach(u => {
-                    resultadoDiv.innerHTML += `
-                        <div class="card-usuario">
-                            <div class="card-nome">${u.nome}</div>
-                            <p style="font-size:0.9rem; color:#666;">🆔 ${u.id}</p>
-                            <p style="font-size:0.85rem; color:#888; margin:0.3rem 0;">👁️ ${u.acessos} visitas</p>
-                            <button class="btn-rosa" style="margin-top:0.5rem; width:100%;" onclick="abrirChatPorId('${u.id}')">
-                                💬 Entrar no Chat
-                            </button>
-                        </div>
-                    `;
-                });
-            }
-            resultadoDiv.classList.remove('escondido');
-        }
-
         // === ABRIR CHAT INDIVIDUAL ===
         function abrirChatPorId(idUsuario) {
             if (!todosUsuarios[idUsuario]) {
@@ -654,16 +536,12 @@
 
             usuarioAtual = todosUsuarios[idUsuario];
             
-            // Troca de tela
             document.getElementById('telaLista').classList.add('escondido');
-            document.getElementById('telaBusca').classList.add('escondido');
             document.getElementById('telaChat').classList.remove('escondido');
 
-            // Cabeçalho
             document.getElementById('chatNomeCabecalho').textContent = usuarioAtual.nome;
             document.getElementById('chatIdCabecalho').textContent = `🆔 ${usuarioAtual.id}`;
 
-            // Monta mensagens
             carregarMensagensChat();
         }
 
@@ -677,7 +555,6 @@
             }
 
             usuarioAtual.mensagens.forEach(m => {
-                // Mensagem do usuário
                 conteudo.innerHTML += `
                     <div class="bolha-usuario">
                         <div class="bolha-nome">${usuarioAtual.nome}</div>
@@ -686,7 +563,6 @@
                     </div>
                 `;
 
-                // Resposta da admin
                 if (m.resposta) {
                     conteudo.innerHTML += `
                         <div class="bolha-admin">
@@ -700,7 +576,6 @@
                 }
             });
 
-            // Rola para o final
             conteudo.scrollTop = conteudo.scrollHeight;
         }
 
@@ -711,10 +586,8 @@
             carregarListaGeral();
         }
 
-        // === ENVIAR RESPOSTA NO CHAT ===
         async function enviarRespostaChat() {
-            if (!usuarioAtual) return;
-            if (!db) return;
+            if (!usuarioAtual || !db) return;
 
             const texto = document.getElementById('chatResposta').value.trim();
             if (!texto) {
@@ -722,7 +595,6 @@
                 return;
             }
 
-            // Encontra a primeira mensagem pendente
             const msgPendente = usuarioAtual.mensagens.find(m => !m.resposta);
             
             if (!msgPendente) {
@@ -731,7 +603,6 @@
                 return;
             }
 
-            // Salva no Firebase
             await db.ref(`${CAMINHO_MSG}/${msgPendente.chave}`).update({
                 resposta: texto,
                 dataResposta: dataAtual()
@@ -740,15 +611,12 @@
             alert("✅ Mensagem enviada!");
             document.getElementById('chatResposta').value = '';
             
-            // Recarrega tudo
             await carregarListaGeral();
-            // Reabre o chat atualizado
             abrirChatPorId(usuarioAtual.id);
         }
 
-        // === FUNÇÕES AUXILIARES ===
         async function apagarVisualizacoes(id) {
-            if (!confirm(`Apagar visualizações de ${todosUsuarios[id]?.nome || id}?\nMensagens serão MANTIDAS!`)) return;
+            if (!confirm(`Apagar visualizações de ${todosUsuarios[id]?.nome || id}?\\nMensagens serão MANTIDAS!`)) return;
             if (!db) return;
             await db.ref(`${CAMINHO_ACESSOS}/${id}`).remove();
             alert("✅ Visualizações apagadas!");
@@ -756,10 +624,10 @@
         }
 
         async function limparTodasMensagens() {
-            if (!confirm("APAGAR TODAS AS MENSAGENS?\nDados de visitas serão mantidos!")) return;
+            if (!confirm("APAGAR TODAS AS MENSAGENS?\\nDados de visitas serão mantidos!")) return;
             if (!db) return;
             await db.ref(CAMINHO_MSG).remove();
-            alert("✅ Mensagens apagadas!");
+            alert("✅ Todas as mensagens foram apagadas!");
             carregarListaGeral();
         }
     </script>
