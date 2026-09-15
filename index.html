@@ -199,6 +199,7 @@
         const CAMINHO_ACESSOS = "encanto_nail_designer/acessos";
         const CHAVE_ID = "idVisitante_encanto";
         const CHAVE_ESTAVA_FORA = "estavaForaDoSite";
+        const CHAVE_ULTIMA_PAGINA = "ultimaPaginaVisitada";
 
         function gerarIdUnico() {
             const p1 = Math.random().toString(36).slice(2,6);
@@ -232,14 +233,14 @@
         const db = firebase.database();
 
         // ==========================================
-        // ✅ REGRA SIMPLES: SAIU → VOLTOU → CONTA!
+        // ✅ SÓ CONTA SE VEIO DE FORA DO SITE
         // ==========================================
         window.onload = async function() {
-            // Se estava marcado como fora = voltou = conta!
-            const estavaFora = localStorage.getItem(CHAVE_ESTAVA_FORA) === "sim";
-            
-            // Marca que agora está dentro
-            localStorage.setItem(CHAVE_ESTAVA_FORA, "nao");
+            const ultimaPagina = sessionStorage.getItem(CHAVE_ULTIMA_PAGINA);
+            const veioDeFora = !ultimaPagina; // sem registro = veio de fora
+
+            // Atualiza a página atual no histórico da sessão
+            sessionStorage.setItem(CHAVE_ULTIMA_PAGINA, window.location.pathname);
 
             const ref = db.ref(`${CAMINHO_ACESSOS}/${ID_VISITANTE}`);
             const snap = await ref.once("value");
@@ -249,16 +250,16 @@
             await ref.update({
                 id: ID_VISITANTE,
                 nome: dados.nome || "",
-                // ✅ Soma SEMPRE que voltou de fora
-                acessos: estavaFora ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
+                // ✅ Soma SOMENTE se veio de fora do site
+                acessos: veioDeFora ? (dados.acessos || 0) + 1 : (dados.acessos || 0),
                 primeiroAcesso: dados.primeiroAcesso || agoraStr,
                 ultimoAcesso: agoraStr
             });
         };
 
-        // ✅ Ao sair do site, marca: "estou fora"
+        // ✅ Ao sair do site (fechar aba/navegador), limpa o histórico
         window.addEventListener('beforeunload', () => {
-            localStorage.setItem(CHAVE_ESTAVA_FORA, "sim");
+            sessionStorage.removeItem(CHAVE_ULTIMA_PAGINA);
         });
     </script>
 </body>
