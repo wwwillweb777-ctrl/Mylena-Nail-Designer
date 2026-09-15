@@ -22,33 +22,40 @@
         }
 
         .caixa-principal {
-            max-width: 760px;
+            max-width: 480px;
             margin: 0 auto;
-            background: #ffffff;
-            border-radius: 28px;
-            border: 4px solid #ff99cc;
-            padding: 2.5rem;
-            box-shadow: 0 10px 30px rgba(255, 102, 178, 0.2);
-            position: relative;
+            background: transparent;
+            padding: 1rem 0;
         }
 
         h1 {
             text-align: center;
             color: #ff66b2;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-family: Georgia, serif;
             font-style: italic;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .subtitulo {
             text-align: center;
             color: #b34782;
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .escondido { display: none !important; }
+
+        /* === TELA DE LOGIN === */
+        .tela-login-card {
+            max-width: 420px;
+            margin: 3rem auto;
+            background: #fff;
+            border-radius: 28px;
+            border: 4px solid #ff99cc;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(255, 102, 178, 0.2);
+        }
 
         .grupo-senha {
             position: relative;
@@ -104,13 +111,21 @@
         .btn-sair {
             background: linear-gradient(90deg, #e53935, #f4511e);
             color: white;
-            padding: 0.7rem 1.3rem;
-            font-size: 0.9rem;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
+            border-radius: 50px;
         }
 
-        .btn-verde { background: linear-gradient(90deg, #25D366, #128C7E); color: white; }
-        .btn-vermelho { background: linear-gradient(90deg, #ef5350, #e53935); color: white; }
-        .btn-azul { background: linear-gradient(90deg, #2196F3, #1976D2); color: white; }
+        .btn-verde { 
+            background: linear-gradient(90deg, #25D366, #128C7E); 
+            color: white; 
+            border-radius: 50px;
+        }
+        .btn-vermelho { 
+            background: linear-gradient(90deg, #ef5350, #e53935); 
+            color: white; 
+            border-radius: 50px;
+        }
 
         .aviso-erro {
             color: #d32f2f;
@@ -125,42 +140,52 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px dashed #ffd9e6;
-        }
-
-        .bloco-pessoa {
-            background: #faf0f5;
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-left: 5px solid #ff66b2;
-        }
-
-        .pessoa-nome {
-            font-weight: bold;
-            font-size: 1.4rem;
-            color: #993366;
-            margin-bottom: 0.5rem;
-        }
-
-        .btn-apagar-pessoa {
             margin-bottom: 1rem;
-            padding: 0.6rem 1.5rem;
-            font-size: 0.9rem;
+            padding-bottom: 1rem;
         }
 
-        .pessoa-dados {
+        .info-topo {
+            text-align: center;
+            color: #993366;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* === BLOCO DE PESSOA === */
+        .bloco-pessoa {
+            margin-bottom: 2rem;
+        }
+
+        .cabecalho-pessoa {
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            padding: 1rem 1.2rem;
+            border-radius: 20px 20px 8px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nome-pessoa {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .dados-pessoa {
+            background: #fff;
+            padding: 1rem 1.2rem;
+            border-radius: 8px 8px 20px 20px;
+            border: 2px solid #ffd9e6;
+            border-top: none;
+            margin-bottom: 0.8rem;
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .etiqueta {
-            padding: 0.3rem 0.8rem;
+            padding: 0.3rem 0.7rem;
             border-radius: 50px;
             font-weight: 600;
         }
@@ -169,45 +194,113 @@
         .etq-acessos { background: #fff3cd; color: #856404; }
         .etq-data { background: #f3e5f5; color: #7b1fa2; }
 
-        .mensagem-card {
-            border-radius: 16px;
-            padding: 1.2rem;
-            margin-bottom: 0.8rem;
-            border: 2px solid #eee;
-            background: #fff;
-        }
-
-        .pendente { background: #fff9e6; border-color: #ffc107; }
-        .respondida { background: #e8f5e9; border-color: #66bb6a; }
-
-        .etiqueta-status {
-            padding: 0.3rem 0.8rem;
-            border-radius: 50px;
-            font-weight: bold;
+        .btn-apagar-visual {
             font-size: 0.8rem;
-            margin-left: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.8rem;
         }
 
-        .status-pendente { background: #fff3cd; color: #856404; }
-        .status-respondido { background: #c8e6c9; color: #2e7d32; }
+        /* === BOLHAS DE MENSAGEM — IGUAL AO CHAT === */
+        .bolha-cliente {
+            background: #fce4ec;
+            color: #880e4f;
+            padding: 1rem 1.2rem;
+            border-radius: 20px 20px 20px 4px;
+            margin-bottom: 0.5rem;
+            max-width: 90%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
 
-        .resposta-caixa {
-            background: #fff;
-            border-radius: 12px;
+        .bolha-admin {
+            background: #e8f5e9;
+            color: #1b5e20;
+            padding: 1rem 1.2rem;
+            border-radius: 20px 20px 4px 20px;
+            margin-bottom: 0.5rem;
+            margin-left: auto;
+            max-width: 90%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .texto-mensagem {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            line-height: 1.4;
+        }
+
+        .data-mensagem {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .status-pendente {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 0.3rem;
+        }
+
+        .status-respondido {
+            display: inline-block;
+            background: #c8e6c9;
+            color: #2e7d32;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 0.3rem;
+        }
+
+        .botoes-mensagem {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.7rem;
+        }
+
+        .botoes-mensagem button {
+            flex: 1;
+            padding: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .sem-mensagens {
+            text-align: center;
+            color: #b34782;
             padding: 1rem;
-            margin-top: 0.8rem;
-            border-left: 4px solid #25D366;
+            font-size: 0.9rem;
         }
 
         .botoes-acao {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-            margin-top: 0.8rem;
+            margin-top: 2rem;
+            text-align: center;
         }
 
-        .botoes-acao button { flex: 1; min-width: 110px; padding: 0.7rem; font-size: 0.9rem; }
+        .botoes-acao button {
+            width: 100%;
+            max-width: 320px;
+        }
 
+        .vazio {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #b34782;
+        }
+
+        .voltar {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .voltar a {
+            color: #b34782;
+            text-decoration: none;
+        }
+
+        /* === MODAL === */
         .modal-fundo {
             position: fixed;
             inset: 0;
@@ -234,65 +327,58 @@
             margin-bottom: 1.5rem;
         }
 
-        .vazio {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #b34782;
-        }
-
-        .voltar {
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .voltar a {
-            color: #b34782;
-            text-decoration: none;
-        }
-
         @media (max-width: 480px) {
-            .caixa-principal { padding: 1.5rem; }
-            .linha-cabecalho { flex-direction: column; gap: 1rem; text-align: center; }
+            .bolha-cliente, .bolha-admin {
+                max-width: 95%;
+            }
+            .cabecalho-pessoa {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- TELA DE LOGIN -->
     <div id="telaLogin" class="caixa-principal">
-        <h1>🔐 Área Administrativa</h1>
-        <p class="subtitulo">♥ Encanto Nail Designer ♥</p>
+        <div class="tela-login-card">
+            <h1>🔐 Área Administrativa</h1>
+            <p class="subtitulo">♥ Encanto Nail Designer ♥</p>
 
-        <div class="grupo-senha">
-            <input type="password" id="campoSenha" placeholder="Digite a senha..." autocomplete="off">
-            <button type="button" class="botao-olho" onclick="alternarVisibilidade()">🙈</button>
-        </div>
+            <div class="grupo-senha">
+                <input type="password" id="campoSenha" placeholder="Digite a senha..." autocomplete="off">
+                <button type="button" class="botao-olho" onclick="alternarVisibilidade()">🙈</button>
+            </div>
 
-        <p id="avisoErro" class="aviso-erro escondido">❌ Senha incorreta!</p>
+            <p id="avisoErro" class="aviso-erro escondido">❌ Senha incorreta!</p>
 
-        <button class="btn-principal" onclick="verificarSenha()">🔐 Entrar</button>
+            <button class="btn-principal" onclick="verificarSenha()">🔐 Entrar</button>
 
-        <div class="voltar">
-            <a href="index.html">← Voltar para o site</a>
+            <div class="voltar">
+                <a href="index.html">← Voltar para o site</a>
+            </div>
         </div>
     </div>
 
+    <!-- PAINEL PRINCIPAL -->
     <div id="painelControle" class="caixa-principal escondido">
         <div class="linha-cabecalho">
-            <div>
-                <h1>💬 Mensagens & Acessos</h1>
-                <p class="subtitulo" style="margin:0;">Bem-vinda, Mylena ♥</p>
-            </div>
+            <h1>💬 Mensagens</h1>
             <button class="btn-sair" onclick="sair()">🚪 Sair</button>
         </div>
 
-        <p style="color:#993366; font-size:0.9rem; margin-bottom:1.5rem;">
-            🆔 ID = identificador único | 👁️ = quantidade de visitas
+        <p class="info-topo">
+            🆔 ID = identificador único &nbsp;|&nbsp; 👁️ = quantidade de visitas
         </p>
 
         <div id="lista-conteudo"></div>
 
-        <div class="botoes-acao" style="margin-top:2rem;">
-            <button class="btn-vermelho" onclick="if(confirm('⚠️ APAGAR TODAS AS MENSAGENS? As visitas serão mantidas!')) limparSomenteMensagens()">🗑️ Limpar Mensagens</button>
+        <div class="botoes-acao">
+            <button class="btn-vermelho" onclick="if(confirm('Apagar SOMENTE todas as mensagens?\nVisitas serão mantidas!')) limparSomenteMensagens()">
+                🗑️ Limpar Mensagens
+            </button>
         </div>
 
         <div class="voltar">
@@ -300,18 +386,19 @@
         </div>
     </div>
 
+    <!-- MODAL DE RESPOSTA -->
     <div id="modalResposta" class="modal-fundo escondido">
         <div class="modal">
             <h3>✍️ Responder</h3>
             <p style="margin-bottom:0.5rem;">
                 <strong>De:</strong> <span id="m-nome"></span>
-                <span class="etiqueta etq-id" id="m-id"></span>
+                <span class="etiqueta etq-id" id="m-id" style="margin-left:0.5rem;"></span>
             </p>
             <textarea id="m-resposta" rows="4" placeholder="Sua resposta..."></textarea>
             <input type="hidden" id="m-chave">
-            <div class="botoes-acao">
-                <button class="btn-verde" onclick="enviarResposta()">✅ Enviar</button>
-                <button class="btn-vermelho" onclick="fecharModal()">✖️ Cancelar</button>
+            <div style="display:flex; gap:0.6rem; margin-top:1rem;">
+                <button class="btn-verde" onclick="enviarResposta()" style="flex:1;">✅ Enviar</button>
+                <button class="btn-vermelho" onclick="fecharModal()" style="flex:1;">✖️ Cancelar</button>
             </div>
         </div>
     </div>
@@ -400,75 +487,98 @@
                 porId[m.idRemetente].push({ chave, ...m });
             }
 
+            // Pessoas com registro de acesso
             for (const idPessoa in acessos) {
                 const p = acessos[idPessoa];
-                const nomeExibir = p.nome || "Visitante (sem nome)";
+                const nomeExibir = p.nome || "Visitante";
                 const msgs = porId[idPessoa] || [];
 
                 container.innerHTML += `
                     <div class="bloco-pessoa">
-                        <div class="pessoa-nome">${nomeExibir}</div>
-                        <button class="btn-vermelho btn-apagar-pessoa" onclick="excluirSomenteAcessos('${idPessoa}')">
-                            🗑️ Apagar Visualizações
-                        </button>
-                        <div class="pessoa-dados">
+                        <div class="cabecalho-pessoa">
+                            <span class="nome-pessoa">${nomeExibir}</span>
+                            <button class="btn-vermelho btn-apagar-visual" onclick="excluirSomenteAcessos('${idPessoa}')">
+                                🗑️ Apagar Visualizações
+                            </button>
+                        </div>
+                        <div class="dados-pessoa">
                             <span class="etiqueta etq-id">🆔 ${p.id}</span>
                             <span class="etiqueta etq-acessos">👁️ ${p.acessos || 0} visitas</span>
-                            <span class="etiqueta etq-data">📅 1ª visita: ${p.primeiroAcesso || '—'}</span>
-                            <span class="etiqueta etq-data">🕘 Última visita: ${p.ultimoAcesso || '—'}</span>
+                            <span class="etiqueta etq-data">📅 1ª: ${p.primeiroAcesso || '—'}</span>
+                            <span class="etiqueta etq-data">🕘 Última: ${p.ultimoAcesso || '—'}</span>
                         </div>
-                        ${msgs.length === 0 ? '<p style="color:#999; font-size:0.9rem;">Sem mensagens</p>' : ''}
+                        
+                        ${msgs.length === 0 ? '<p class="sem-mensagens">Sem mensagens ainda 💬</p>' : ''}
+                        
                         ${msgs.map(m => {
                             const resp = (m.resposta || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                             return `
-                            <div class="mensagem-card ${m.resposta ? 'respondida' : 'pendente'}">
-                                <p style="margin-bottom:0.5rem;">${m.texto}</p>
-                                <span style="font-size:0.8rem; color:#888;">${m.data || ''}</span>
-                                <span class="etiqueta-status ${m.resposta ? 'status-respondido' : 'status-pendente'}">
-                                    ${m.resposta ? '✅ Respondida' : '⏳ Pendente'}
-                                </span>
+                                <div class="bolha-cliente">
+                                    <div class="texto-mensagem">${m.texto}</div>
+                                    <div class="data-mensagem">${m.data || ''}</div>
+                                    ${!m.resposta ? '<span class="status-pendente">⏳ Pendente</span>' : ''}
+                                </div>
+                                
                                 ${m.resposta ? `
-                                    <div class="resposta-caixa">
-                                        <p style="font-weight:bold; color:#2e7d32;">📩 Resposta:</p>
-                                        <p>${m.resposta}</p>
-                                        <span style="font-size:0.8rem; color:#888;">${m.dataResposta || ''}</span>
+                                    <div class="bolha-admin">
+                                        <div class="texto-mensagem">📩 ${m.resposta}</div>
+                                        <div class="data-mensagem">${m.dataResposta || ''}</div>
+                                        <span class="status-respondido">✅ Respondida</span>
                                     </div>
                                 ` : ''}
-                                <div class="botoes-acao">
+                                
+                                <div class="botoes-mensagem">
                                     <button class="btn-verde" onclick='abrirModal("${m.chave}", "${nomeExibir.replace(/"/g, '&quot;')}", "${idPessoa}", "${resp}")'>
                                         ${m.resposta ? '✏️ Editar' : '✍️ Responder'}
                                     </button>
-                                    <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">🗑️ Mensagem</button>
+                                    <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">
+                                        🗑️ Mensagem
+                                    </button>
                                 </div>
-                            </div>
-                        `}).join('')}
+                            `}).join('')}
                     </div>
                 `;
             }
 
+            // Pessoas sem registro de acesso (só mensagem)
             for (const id in porId) {
                 if (acessos[id]) continue;
                 const msgs = porId[id];
                 const nomeMsg = (msgs[0].nomeRemetente || "Visitante").replace(/"/g, '&quot;');
+
                 container.innerHTML += `
-                    <div class="bloco-pessoa" style="opacity:0.8;">
-                        <div class="pessoa-nome">${nomeMsg}</div>
-                        <div class="pessoa-dados">
-                            <span class="etiqueta etq-id">🆔 ${id}</span>
-                            <span class="etiqueta etq-acessos">👁️ Sem registro de visualizações</span>
+                    <div class="bloco-pessoa" style="opacity:0.9;">
+                        <div class="cabecalho-pessoa" style="background:linear-gradient(90deg, #999, #bbb);">
+                            <span class="nome-pessoa">${nomeMsg}</span>
+                            <span style="font-size:0.8rem;">Sem registro</span>
                         </div>
+                        
                         ${msgs.map(m => {
                             const resp = (m.resposta || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                             return `
-                            <div class="mensagem-card ${m.resposta ? 'respondida' : 'pendente'}">
-                                <p>${m.texto}</p>
-                                <span style="font-size:0.8rem; color:#888;">${m.data || ''}</span>
-                                <div class="botoes-acao">
-                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${nomeMsg}", "${id}", "${resp}")'>Responder</button>
-                                    <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">🗑️ Mensagem</button>
+                                <div class="bolha-cliente">
+                                    <div class="texto-mensagem">${m.texto}</div>
+                                    <div class="data-mensagem">${m.data || ''}</div>
+                                    ${!m.resposta ? '<span class="status-pendente">⏳ Pendente</span>' : ''}
                                 </div>
-                            </div>
-                        `}).join('')}
+                                
+                                ${m.resposta ? `
+                                    <div class="bolha-admin">
+                                        <div class="texto-mensagem">📩 ${m.resposta}</div>
+                                        <div class="data-mensagem">${m.dataResposta || ''}</div>
+                                        <span class="status-respondido">✅ Respondida</span>
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="botoes-mensagem">
+                                    <button class="btn-verde" onclick='abrirModal("${m.chave}", "${nomeMsg}", "${id}", "${resp}")'>
+                                        ${m.resposta ? '✏️ Editar' : '✍️ Responder'}
+                                    </button>
+                                    <button class="btn-vermelho" onclick="excluirMensagem('${m.chave}')">
+                                        🗑️ Mensagem
+                                    </button>
+                                </div>
+                            `}).join('')}
                     </div>
                 `;
             }
@@ -507,7 +617,7 @@
             carregarTudo();
         }
 
-        // ✅ APAGA SOMENTE AS VISUALIZAÇÕES — MANTÉM AS MENSAGENS
+        // ✅ Apaga SOMENTE visualizações — mantém mensagens
         async function excluirSomenteAcessos(idPessoa) {
             if (!confirm(`Apagar SOMENTE os dados de visualização de ${idPessoa}?\nAs mensagens serão MANTIDAS!`)) return;
             if (!db) return;
@@ -516,7 +626,7 @@
             carregarTudo();
         }
 
-        // ✅ LIMPA SOMENTE AS MENSAGENS — MANTÉM AS VISUALIZAÇÕES
+        // ✅ Limpa SOMENTE mensagens — mantém visualizações
         async function limparSomenteMensagens() {
             if (!confirm("Apagar SOMENTE todas as mensagens?\nOs dados de visitas serão MANTIDOS!")) return;
             if (!db) return;
