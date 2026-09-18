@@ -28,19 +28,21 @@
             border: 3px solid #b366ff;
             overflow: hidden;
         }
-        /* ✅ Imagem INTEIRA, sem cortes */
+
+        /* ✅ FOTO DO TOPO — inteira, sem cortes */
         .banner-topo {
             width: 100%;
             background: linear-gradient(135deg, #f0d9ff, #f8c8e8);
-            padding: 0;
             overflow: hidden;
         }
         .banner-topo img {
             width: 100%;
             height: auto;
             object-fit: contain;
+            object-position: center top;
             display: block;
         }
+
         .botoes-topo {
             text-align: center;
             margin: 1rem 0;
@@ -101,6 +103,7 @@
             text-align: center;
             font-size: 1.1rem;
         }
+
         .galeria-titulo {
             text-align: center;
             margin: 1.5rem 0 1rem;
@@ -136,6 +139,7 @@
             font-size: 0.9rem;
             text-align: center;
         }
+
         .caixa-servicos {
             border: 2px solid #b366ff; 
             border-radius: 20px; 
@@ -144,18 +148,20 @@
             background: #fff;
         }
         .servico { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 0.7rem 0; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 0;
+            flex-wrap: nowrap;
         }
         .servico-nome { 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem; 
-            font-weight: 600; 
-            color: #7040b3; 
-            font-size: 1.2rem; 
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #7040b3;
+            font-size: 1.2rem;
+            white-space: nowrap;
         }
         .preco-circulo {
             width: 80px; 
@@ -163,12 +169,13 @@
             border: 2px solid #b366ff; 
             border-radius: 50%;
             background: #e6ccff; 
-            display: flex; 
-            align-items: center; 
+            display: flex;
+            align-items: center;
             justify-content: center;
             color: #8040cc; 
             font-weight: bold;
             font-size: 1rem;
+            flex-shrink: 0;
         }
         .acrescimo { 
             font-size: 1rem; 
@@ -176,13 +183,15 @@
             margin-left: 1.8rem; 
             margin-top: 0.3rem; 
         }
+
         .area-contato { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            margin: 1.5rem 0; 
-            gap: 1rem; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1.5rem 0;
+            gap: 1rem;
         }
+        /* ✅ MESMA FOTO DO TOPO na circular antes do WhatsApp */
         .img-baixo {
             width: 110px; 
             height: 110px; 
@@ -194,7 +203,8 @@
         .img-baixo img { 
             width: 100%; 
             height: 100%; 
-            object-fit: cover; 
+            object-fit: cover;
+            object-position: center top;
         }
         .botao-wpp { 
             flex: 1; 
@@ -205,11 +215,12 @@
             color: white;
             padding: 1rem; 
             border-radius: 50px; 
-            font-weight: bold; 
-            text-decoration: none; 
+            font-weight: bold;
+            text-decoration: none;
             text-align: center;
             font-size: 1rem;
         }
+
         .destaques { 
             display: flex; 
             justify-content: space-around; 
@@ -218,6 +229,7 @@
             color: #7040b3; 
             font-size: 1rem; 
         }
+
         .em-breve { 
             border: 2px dashed #b366ff; 
             border-radius: 16px; 
@@ -226,12 +238,14 @@
             color: #8040cc; 
             margin-bottom: 1rem; 
         }
+
         .rodape { 
             text-align: center; 
             color: #8040cc; 
             font-size: 1rem; 
             margin-bottom: 1rem; 
         }
+
         .botao-acesso-total { 
             text-align: center; 
             margin-top: 1rem; 
@@ -246,20 +260,24 @@
             text-decoration: none;
             font-size: 1.1rem;
         }
+
         @media (max-width: 380px) {
             .galeria { grid-template-columns: 1fr; }
             .item-trabalho img { height: 160px; }
             .titulo-principal { font-size: 2.2rem; }
+            .servico-nome { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
     <div class="cartaz">
-        <!-- ✅ Imagem INTEIRA, sem cortes -->
+        <!-- ✅ FOTO DO TOPO — inteira, bonitinha, sem cortes -->
         <div class="banner-topo">
             <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/logo_mylena.webp" alt="Encanto Nail Designer">
         </div>
+
         <div class="conteudo-interno">
+            <!-- ✅ Botões logo abaixo da foto -->
             <div class="botoes-topo">
                 <div class="botao-chat-topo">
                     <a href="chat.html">💬 Chat, vem bater um papo 😃</a>
@@ -268,46 +286,43 @@
                     <a href="avaliacoes.html">🔍🔏 Seção de Avaliações</a>
                 </div>
             </div>
+
             <div class="titulo">
                 <h1 class="titulo-principal">Encanto</h1>
                 <h2 class="titulo-sub">Nail Designer</h2>
                 <p class="sub-titulo"><span class="coracao">♥</span> ESTÚDIO DE UNHAS <span class="coracao">♥</span></p>
             </div>
+
             <p class="faixa-destaque">Designs exclusivos e com carinho ✨</p>
 
             <div class="galeria-titulo">
                 <h3>✨ Nossos Trabalhos ✨</h3>
                 <p class="sub-titulo">Cada detalhe feito com carinho 💖</p>
             </div>
+
             <div class="galeria">
                 <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/francesa-branca-brilho.webp" 
-                         alt="Francesa Branca com Brilho" loading="lazy">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/francesa-branca-brilho.webp" alt="Francesa Branca com Brilho" loading="lazy">
                     <p class="nome-trabalho">💎 Francesa Branca</p>
                 </div>
                 <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-gel-nude.webp" 
-                         alt="Nude em Gel" loading="lazy">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-gel-nude.webp" alt="Nude em Gel" loading="lazy">
                     <p class="nome-trabalho">💅 Nude em Gel</p>
                 </div>
                 <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-dourado.webp" 
-                         alt="Preto & Dourado" loading="lazy">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-dourado.webp" alt="Preto & Dourado" loading="lazy">
                     <p class="nome-trabalho">✨ Preto & Dourado</p>
                 </div>
                 <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-prata.webp" 
-                         alt="Preto & Prata" loading="lazy">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-preto-prata.webp" alt="Preto & Prata" loading="lazy">
                     <p class="nome-trabalho">🖤 Preto & Prata</p>
                 </div>
                 <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rosa-prata.webp" 
-                         alt="Rosa Mármore Brilhante" loading="lazy">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rosa-prata.webp" alt="Rosa Mármore Brilhante" loading="lazy">
                     <p class="nome-trabalho">💖 Rosa Mármore</p>
                 </div>
                 <div class="item-trabalho">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rose-brilho.webp" 
-                         alt="Rosa Suave Brilhante" loading="lazy">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/unhas-rose-brilho.webp" alt="Rosa Suave Brilhante" loading="lazy">
                     <p class="nome-trabalho">🌸 Rosa Suave</p>
                 </div>
             </div>
@@ -327,10 +342,11 @@
                 </div>
                 <p class="acrescimo">ACRÉSCIMO</p>
             </div>
+
             <div class="area-contato">
-                <!-- ✅ Link CDN padrão, sem ?raw=true -->
+                <!-- ✅ MESMA FOTO DO TOPO aqui -->
                 <div class="img-baixo">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp" alt="Encanto Nail Designer">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/logo_mylena.webp" alt="Encanto Nail Designer">
                 </div>
                 <div class="botao-wpp">
                     <a href="https://wa.me/553173449910" target="_blank">
@@ -338,16 +354,20 @@
                     </a>
                 </div>
             </div>
+
             <div class="destaques">
                 <div><span class="coracao">♥</span> Exclusividade</div>
                 <div><span class="coracao">♥</span> Qualidade</div>
                 <div><span class="coracao">♥</span> Amor</div>
             </div>
+
             <div class="em-breve">
                 <p>📸 Novidades em breve</p>
                 <p>⏰ Horários — em atualização</p>
             </div>
+
             <p class="rodape">💖 Agradecemos sua preferência 💖</p>
+
             <div class="botao-acesso-total">
                 <a href="gerenciar.html">🔐 Área administrativa 🔐</a>
             </div>
