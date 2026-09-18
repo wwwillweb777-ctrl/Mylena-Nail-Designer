@@ -42,7 +42,6 @@
         @layer utilities {
             .transition-custom { transition: all 0.3s ease; }
 
-            /* ⭐ Estrelas — BORDA PRETA + FUNDO INCOLOR quando vazia, FUNDO AMARELO quando preenchida */
             .estrela { 
                 @apply text-3xl cursor-pointer hover:scale-110 transition-custom;
                 color: transparent !important;
@@ -53,12 +52,10 @@
                 -webkit-text-stroke: 0 !important;
             }
 
-            /* Cards de Avaliação */
             .avaliacao-card {
                 @apply bg-white rounded-2xl shadow-lg p-6 border-l-4 border-primary mb-4 hover:shadow-xl transition-custom;
             }
 
-            /* 🔐 Área Administrativa */
             .area-admin {
                 background: linear-gradient(90deg, #9966ff, #b380ff);
                 padding: 1.5rem;
@@ -160,7 +157,6 @@
             }
             .lixeira:hover { transform: scale(1.2); }
 
-            /* Botão Voltar - VERMELHO */
             .botao-voltar {
                 display: inline-block;
                 background: linear-gradient(90deg, #ff3333, #cc0000);
@@ -178,7 +174,6 @@
 </head> 
 <body>
 
-    <!-- Cabeçalho -->
     <div class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm py-3 px-5 flex justify-center items-center">
         <a href="index.html" class="flex items-center gap-2 text-primary font-bold text-xl">
             <span class="text-secondary">💖</span>
@@ -186,7 +181,6 @@
         </a>
     </div>
 
-    <!-- Seção Principal -->
     <section class="py-10 px-4 max-w-3xl mx-auto">
         <a href="index.html" class="botao-voltar">← Voltar para a página principal</a>
 
@@ -199,7 +193,6 @@
             </p>
         </div>
 
-        <!-- Formulário -->
         <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 border-2 border-roxoClaro mb-12">
             <h2 class="text-2xl font-bold text-secondary mb-6 text-center">Deixe a Sua Avaliação ✨</h2>
             <form id="formAvaliacao" class="space-y-5">
@@ -264,8 +257,8 @@
             
             <div id="formSenha">
                 <div class="input-wrapper">
-                    <!-- Começa com senha ESCONDIDA = olho ABERTO -->
-                    <input type="password" id="senhaAdmin" class="input-senha" placeholder="Digite a senha...">
+                    <!-- Começa VISÍVEL = type="text" + olho ABERTO 👀 → IGUAL AO SEU CÓDIGO -->
+                    <input type="text" id="senhaAdmin" class="input-senha" placeholder="Digite a senha...">
                     <button type="button" class="btn-olho" onclick="mostrarSenha()">👀</button>
                 </div>
                 <div class="grupo-botoes">
@@ -278,7 +271,6 @@
             </div>
         </div>
 
-        <!-- Lista de Avaliações -->
         <div>
             <h2 class="text-2xl font-bold text-primary mb-6 text-center">Todas as Avaliações Recebidas</h2>
             <div id="listaAvaliacoes">
@@ -287,23 +279,22 @@
         </div>
     </section>
 
-<!-- ⚡ Scripts -->
 <script>
 let acessoLiberado = false;
 const SENHA_CORRETA = "WJ@321";
 
-// 👀 CORRIGIDO: Olho ABERTO = mostra; Olho FECHADO = esconde
+// 👀 IGUALZINHO ao modelo que você mostrou!
 function mostrarSenha() {
     const input = document.getElementById('senhaAdmin');
     const botao = document.querySelector('.btn-olho');
     
     if (botao.textContent === '👀') {
-        // Olho aberto → CLICA → mostra a senha → vira olho fechado
-        input.type = 'text';
+        // Olho ABERTO → CLICA → ESCONDE → fica FECHADO
+        input.type = 'password';
         botao.textContent = '🙈';
     } else {
-        // Olho fechado → CLICA → esconde a senha → vira olho aberto
-        input.type = 'password';
+        // Olho FECHADO → CLICA → MOSTRA → fica ABERTO
+        input.type = 'text';
         botao.textContent = '👀';
     }
 }
@@ -323,13 +314,14 @@ function verificarSenha() {
     }
 }
 
-// 🚪 SAIR — reseta tudo certinho
+// 🚪 RESETA IGUAL AO SEU CÓDIGO: VISÍVEL + OLHO ABERTO
 function sairAdmin() {
     acessoLiberado = false;
-    // Volta escondido com olho aberto
+    
+    // ✅ RESETA: VISÍVEL + OLHO ABERTO — igualzinho ao seu código!
     document.getElementById('senhaAdmin').value = '';
-    document.getElementById('senhaAdmin').type = 'password';
-    document.querySelector('.btn-olho').textContent = '👀';
+    document.getElementById('senhaAdmin').type = 'text';  // letras visíveis
+    document.querySelector('.btn-olho').textContent = '👀';  // olho aberto
     
     document.getElementById('formSenha').style.display = 'block';
     document.getElementById('botaoSairContainer').style.display = 'none';
@@ -338,7 +330,6 @@ function sairAdmin() {
 }
 </script>
 
-<!-- 🚀 FIREBASE -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
     import { getDatabase, ref, push, onValue, orderByChild, query, remove } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
@@ -357,7 +348,6 @@ function sairAdmin() {
     const db = getDatabase(app);
     const avaliacoesRef = ref(db, "encanto_nail_designer/avaliacoes");
 
-    // ⭐ LÓGICA DAS ESTRELAS
     const estrelas = document.querySelectorAll('#selecaoEstrelas .estrela');
     const campoEstrelas = document.getElementById('avaliacaoEstrelas');
 
@@ -372,7 +362,6 @@ function sairAdmin() {
         });
     });
 
-    // 📩 ENVIO
     const formulario = document.getElementById('formAvaliacao');
     formulario.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -399,7 +388,6 @@ function sairAdmin() {
         }
     });
 
-    // 📥 CARREGAR AVALIAÇÕES
     window.carregarAvaliacoes = function() {
         const listaAvaliacoes = document.getElementById('listaAvaliacoes');
         onValue(query(avaliacoesRef, orderByChild('data')), (snapshot) => {
@@ -438,7 +426,6 @@ function sairAdmin() {
         });
     };
 
-    // 🗑️ EXCLUIR
     window.apagarEstaAvaliacao = function(id) {
         if (!acessoLiberado) {
             alert("🔒 Acesso negado! Digite a senha na Área Administrativa primeiro.");
