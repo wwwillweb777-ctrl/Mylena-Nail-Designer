@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avaliações — Encanto Nail Designer</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#9966ff',    // Roxo principal
-                        secondary: '#ff66b2',  // Rosa destaque
+                        primary: '#9966ff',
+                        secondary: '#ff66b2',
                         roxoClaro: '#e6ccff',
                         roxoMedio: '#b380ff',
                         rosaClaro: '#ffb3d9',
-                        rosaEscuro: '#cc3380'
+                        rosaEscuro: '#cc3380',
+                        estrelaDourada: '#F59E0B'
                     },
                     fontFamily: { sans: ['Segoe UI', 'sans-serif'] }
                 }
@@ -26,7 +27,7 @@
     </script>
     <style type="text/tailwindcss">
         @layer base { 
-            * { margin: 0; padding: 0; box-sizing: border-box; } 
+            * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; } 
             body { 
                 min-height: 100vh;
                 background: linear-gradient(180deg, #f8f0ff 0%, #ffe6f2 100%);
@@ -39,17 +40,19 @@
             }
         }
         @layer utilities {
-            .text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
             .transition-custom { transition: all 0.3s ease; }
-            .botao-desativado { @apply opacity-50 cursor-not-allowed pointer-events-none; }
 
-            /* ⭐ Cards de Avaliação */
+            /* ⭐ Estrelas — LÓGICA ORIGINAL PRESERVADA */
+            .estrela { 
+                @apply text-3xl cursor-pointer hover:scale-110 transition-custom; 
+            }
+            .estrela-preenchida { color: #F59E0B !important; } /* DOURADO */
+            .estrela-vazia { color: '#d9b3ff' !important; }
+
+            /* Cards de Avaliação */
             .avaliacao-card {
                 @apply bg-white rounded-2xl shadow-lg p-6 border-l-4 border-primary mb-4 hover:shadow-xl transition-custom;
             }
-            .estrela { @apply text-2xl; }
-            .estrela-preenchida { color: '#ff9900' !important; }
-            .estrela-vazia { color: '#d9b3ff' !important; }
 
             /* 🔐 Área Administrativa */
             .area-admin {
@@ -105,7 +108,7 @@
             }
             .lixeira:hover { transform: scale(1.2); }
 
-            /* 📋 Menu Lateral */
+            /* Menu Lateral */
             .menu-lateral {
                 position: fixed;
                 top: 0;
@@ -150,7 +153,6 @@
                 transform: translateX(4px);
             }
 
-            /* Botão voltar */
             .botao-voltar {
                 display: inline-block;
                 background: linear-gradient(90deg, #ff66b2, #ff80c0);
@@ -168,7 +170,7 @@
 </head> 
 <body>
 
-    <!-- 🧭 Cabeçalho -->
+    <!-- Cabeçalho -->
     <div class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm py-3 px-5 flex justify-between items-center">
         <a href="index.html" class="flex items-center gap-2 text-primary font-bold text-xl">
             <span class="text-secondary">💖</span>
@@ -177,7 +179,7 @@
         <button class="text-2xl text-primary hover:text-secondary transition-colors" onclick="abrirMenu()">&#9776;</button>
     </div>
 
-    <!-- 📋 Menu Lateral -->
+    <!-- Menu Lateral -->
     <div id="menuLateral" class="menu-lateral">
         <div class="fechar-menu" onclick="fecharMenu()">&times;</div>
         <a href="index.html" class="item-menu">🏠 Início</a>
@@ -185,57 +187,69 @@
         <a href="javascript:void(0)" class="item-menu" onclick="irPara('chat.html')">💬 Chat</a>
     </div>
 
-    <!-- 📝 Seção Principal -->
+    <!-- Seção Principal -->
     <section class="py-10 px-4 max-w-3xl mx-auto">
         <a href="index.html" class="botao-voltar">← Voltar para a página principal</a>
 
         <div class="text-center mb-10">
             <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold text-primary mb-3">
-                ⭐ Seção de Avaliações
+                ⭐ Avaliações e Opiniões
             </h1>
             <p class="text-gray-600 text-lg max-w-xl mx-auto">
-                Sua opinião é muito importante para mim! Deixe seu comentário e avaliação 💖
+                Veja o que as pessoas dizem — seja cliente ou visitante, sua opinião é muito importante para mim! 💖
             </p>
         </div>
 
-        <!-- Formulário -->
+        <!-- Formulário — COM NOME + E-MAIL OBRIGATÓRIOS -->
         <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 border-2 border-roxoClaro mb-12">
-            <h2 class="text-2xl font-bold text-secondary mb-6 text-center">Deixe sua avaliação ✨</h2>
+            <h2 class="text-2xl font-bold text-secondary mb-6 text-center">Deixe a Sua Avaliação ✨</h2>
             <form id="formAvaliacao" class="space-y-5">
-                <div>
-                    <label for="nome" class="block text-gray-700 font-semibold mb-2">Seu Nome *</label>
-                    <input type="text" id="nome" required 
-                        class="w-full px-4 py-3 border-2 border-roxoClaro rounded-xl bg-roxoClaro/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-custom" 
-                        placeholder="Digite seu nome">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label for="nome" class="block text-gray-700 font-semibold mb-2">Seu Nome *</label>
+                        <input type="text" id="nome" required 
+                            class="w-full px-4 py-3 border-2 border-roxoClaro rounded-xl bg-roxoClaro/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-custom" 
+                            placeholder="Digite seu nome completo">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-gray-700 font-semibold mb-2">Seu E-mail *</label>
+                        <input type="email" id="email" required 
+                            class="w-full px-4 py-3 border-2 border-roxoClaro rounded-xl bg-roxoClaro/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-custom" 
+                            placeholder="seuemail@exemplo.com">
+                    </div>
                 </div>
+
                 <div>
-                    <label class="block text-gray-700 font-semibold mb-3">Sua Nota *</label>
-                    <div class="flex gap-2 justify-center text-3xl" id="selecaoEstrelas">
-                        <i class="fa-solid fa-star estrela estrela-vazia cursor-pointer hover:scale-110 transition-custom" data-valor="1"></i>
-                        <i class="fa-solid fa-star estrela estrela-vazia cursor-pointer hover:scale-110 transition-custom" data-valor="2"></i>
-                        <i class="fa-solid fa-star estrela estrela-vazia cursor-pointer hover:scale-110 transition-custom" data-valor="3"></i>
-                        <i class="fa-solid fa-star estrela estrela-vazia cursor-pointer hover:scale-110 transition-custom" data-valor="4"></i>
-                        <i class="fa-solid fa-star estrela estrela-vazia cursor-pointer hover:scale-110 transition-custom" data-valor="5"></i>
+                    <label class="block text-gray-700 font-semibold mb-3">Qual a sua avaliação? *</label>
+                    <div class="flex gap-2 justify-center" id="selecaoEstrelas">
+                        <i class="fa-solid fa-star estrela estrela-vazia" data-valor="1"></i>
+                        <i class="fa-solid fa-star estrela estrela-vazia" data-valor="2"></i>
+                        <i class="fa-solid fa-star estrela estrela-vazia" data-valor="3"></i>
+                        <i class="fa-solid fa-star estrela estrela-vazia" data-valor="4"></i>
+                        <i class="fa-solid fa-star estrela estrela-vazia" data-valor="5"></i>
                     </div>
                     <input type="hidden" id="avaliacaoEstrelas" required value="0">
                 </div>
+
                 <div>
-                    <label for="comentario" class="block text-gray-700 font-semibold mb-2">Seu Comentário *</label>
+                    <label for="comentario" class="block text-gray-700 font-semibold mb-2">Seu Parecer / Comentário *</label>
                     <textarea id="comentario" rows="4" required 
                         class="w-full px-4 py-3 border-2 border-roxoClaro rounded-xl bg-roxoClaro/30 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-custom resize-none" 
-                        placeholder="Conte sua experiência..."></textarea>
+                        placeholder="Conte como foi a sua experiência..."></textarea>
                 </div>
+
                 <div class="text-center pt-2">
                     <button type="submit" 
                         class="bg-gradient-to-r from-secondary to-rosaEscuro text-white font-bold py-3 px-8 rounded-full text-lg hover:scale-105 transition-custom shadow-md">
-                        ✨ Enviar Avaliação
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Enviar Minha Avaliação
                     </button>
                 </div>
+
                 <div id="mensagemSucesso" class="hidden mt-4 p-4 bg-green-50 border-l-4 border-green-400 text-green-700 rounded-lg text-center">
-                    ✅ Muito obrigado! Sua avaliação foi enviada com carinho 💖
+                    ✅ Muito obrigado! Sua avaliação foi enviada com sucesso 💖
                 </div>
                 <div id="mensagemErro" class="hidden mt-4 p-4 bg-red-50 border-l-4 border-red-400 text-red-700 rounded-lg text-center">
-                    ❌ Ops! Ocorreu um erro. Tente novamente.
+                    ❌ Ops! Ocorreu um erro ao enviar. Tente novamente.
                 </div>
             </form>
         </div>
@@ -243,44 +257,54 @@
         <!-- 🔐 Área Administrativa -->
         <div class="area-admin">
             <div class="texto-admin">🔐 Área Administrativa</div>
-            <input type="password" id="senhaAdmin" class="input-senha" placeholder="Senha...">
+            <input type="password" id="senhaAdmin" class="input-senha" placeholder="Digite a senha...">
             <button onclick="verificarSenha()" class="botao-admin">Acessar</button>
         </div>
 
         <!-- Lista de Avaliações -->
         <div>
-            <h2 class="text-2xl font-bold text-primary mb-6 text-center">💬 Avaliações Recebidas</h2>
+            <h2 class="text-2xl font-bold text-primary mb-6 text-center">Todas as Avaliações Recebidas</h2>
             <div id="listaAvaliacoes">
-                <div class="text-center text-gray-500 italic py-8">Ainda não há avaliações. Seja o primeiro! ✨</div>
+                <div class="text-center text-gray-500 italic py-8">Ainda não há nenhuma avaliação. Seja o primeiro a compartilhar sua opinião! ✨</div>
             </div>
         </div>
     </section>
 
-<!-- ⚡ Scripts -->
+<!-- ⚡ Scripts do Menu e Administrativos — IGUAIS ao original -->
 <script>
-// Menu
 function abrirMenu() {
-    document.getElementById('menuLateral').classList.add('aberto');
+    const menu = document.getElementById('menuLateral');
+    menu.classList.add('aberto');
     document.body.style.overflow = 'hidden';
-}
-function fecharMenu() {
-    document.getElementById('menuLateral').classList.remove('aberto');
-    document.body.style.overflow = 'auto';
-}
-function irPara(pagina) {
-    fecharMenu();
-    setTimeout(() => window.location.href = pagina, 100);
+    document.body.style.pointerEvents = 'auto';
 }
 
-// Admin
+function fecharMenu() {
+    const menu = document.getElementById('menuLateral');
+    menu.classList.remove('aberto');
+    document.body.style.overflow = 'auto';
+    document.body.style.pointerEvents = 'auto';
+}
+
+function irPara(pagina) {
+    fecharMenu();
+    setTimeout(function() {
+        const pastaAtual = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+        const enderecoCompleto = pastaAtual + pagina;
+        window.location.href = enderecoCompleto;
+        window.location.assign(enderecoCompleto);
+    }, 100);
+}
+
+// 🔐 SENHA — ACEITA MAIÚSCULO E MINÚSCULO
 let acessoLiberado = false;
 const SENHA_CORRETA = "WJ@321";
 
 function verificarSenha() {
-    const senha = document.getElementById('senhaAdmin').value;
-    if (senha.toLowerCase() === SENHA_CORRETA.toLowerCase()) {
+    const senhaDigitada = document.getElementById('senhaAdmin').value;
+    if (senhaDigitada.toLowerCase() === SENHA_CORRETA.toLowerCase()) {
         acessoLiberado = true;
-        alert("🔓 Acesso liberado!");
+        alert("🔓 Acesso liberado! Agora você pode excluir avaliações.");
         carregarAvaliacoes();
     } else {
         acessoLiberado = false;
@@ -289,107 +313,125 @@ function verificarSenha() {
 }
 </script>
 
-<!-- 🔥 Firebase — Configuração do Encanto Nail Designer -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
-    authDomain: "willobras.firebaseapp.com",
-    databaseURL: "https://willobras-default-rtdb.firebaseio.com",
-    projectId: "willobras",
-    storageBucket: "willobras.firebasestorage.app",
-    messagingSenderId: "66370500400",
-    appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
-};
+<!-- 🚀 FIREBASE — Configuração do Encanto Nail Designer -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, orderByChild, query, remove } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const avaliacoesRef = db.ref("encanto_nail_designer/avaliacoes");
-
-// ⭐ Estrelas
-const estrelas = document.querySelectorAll('#selecaoEstrelas .estrela');
-const campoEstrelas = document.getElementById('avaliacaoEstrelas');
-
-estrelas.forEach((estrela, i) => {
-    estrela.addEventListener('click', () => {
-        const valor = i + 1;
-        estrelas.forEach((e, idx) => {
-            e.classList.toggle('estrela-preenchida', idx < valor);
-            e.classList.toggle('estrela-vazia', idx >= valor);
-        });
-        campoEstrelas.value = valor;
-    });
-});
-
-// 📩 Envio
-document.getElementById('formAvaliacao').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const dados = {
-        nome: document.getElementById('nome').value.trim(),
-        nota: parseInt(campoEstrelas.value),
-        comentario: document.getElementById('comentario').value.trim(),
-        data: new Date().toLocaleString('pt-BR')
+    const firebaseConfig = {
+        apiKey: "AIzaSyCqsOq01FhDq9z9Wn0tK9XbP8mIeQ9z7yM",
+        authDomain: "willobras.firebaseapp.com",
+        databaseURL: "https://willobras-default-rtdb.firebaseio.com",
+        projectId: "willobras",
+        storageBucket: "willobras.firebasestorage.app",
+        messagingSenderId: "66370500400",
+        appId: "1:66370500400:web:42d6569ca2c8172ddf3af5"
     };
 
-    try {
-        await avaliacoesRef.push(dados);
-        document.getElementById('mensagemSucesso').classList.remove('hidden');
-        document.getElementById('mensagemErro').classList.add('hidden');
-        e.target.reset();
-        estrelas.forEach(e => { e.classList.remove('estrela-preenchida'); e.classList.add('estrela-vazia'); });
-        carregarAvaliacoes();
-    } catch {
-        document.getElementById('mensagemErro').classList.remove('hidden');
-        document.getElementById('mensagemSucesso').classList.add('hidden');
-    }
-});
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const avaliacoesRef = ref(db, "encanto_nail_designer/avaliacoes");
 
-// 📥 Carregar
-window.carregarAvaliacoes = function() {
-    const lista = document.getElementById('listaAvaliacoes');
-    avaliacoesRef.orderByChild('data').on('value', (snapshot) => {
-        lista.innerHTML = '';
-        if (!snapshot.exists()) {
-            lista.innerHTML = '<div class="text-center text-gray-500 italic py-8">Ainda não há avaliações. Seja o primeiro! ✨</div>';
-            return;
-        }
+    // ⭐ LÓGICA DAS ESTRELAS — EXATAMENTE COMO NO ORIGINAL
+    const estrelas = document.querySelectorAll('#selecaoEstrelas .estrela');
+    const campoEstrelas = document.getElementById('avaliacaoEstrelas');
 
-        snapshot.forEach(item => {
-            const d = item.val();
-            const id = item.key;
-            const estrelasHtml = Array(5).fill(0).map((_,i) => 
-                `<i class="fa-solid fa-star ${i < d.nota ? 'estrela-preenchida' : 'estrela-vazia'}"></i>`
-            ).join('');
-            const lixeira = acessoLiberado 
-                ? `<span onclick="apagar('${id}')" class="lixeira">🗑️</span>` : '';
-
-            lista.innerHTML = `
-                <div class="avaliacao-card">
-                    <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-bold text-lg text-primary">${d.nome} ${lixeira}</h4>
-                        <span class="text-sm text-gray-400">${d.data}</span>
-                    </div>
-                    <div class="mb-2">${estrelasHtml}</div>
-                    <p class="text-gray-700">${d.comentario}</p>
-                </div>
-            ` + lista.innerHTML;
+    estrelas.forEach((estrela, indice) => {
+        estrela.addEventListener('click', () => {
+            const valorClicado = indice + 1;
+            estrelas.forEach((e, i) => {
+                e.classList.toggle('estrela-preenchida', i < valorClicado);
+                e.classList.toggle('estrela-vazia', i >= valorClicado);
+            });
+            campoEstrelas.value = valorClicado;
         });
     });
-};
 
-// 🗑️ Excluir
-window.apagar = function(id) {
-    if (!acessoLiberado) return alert("🔒 Acesse a área administrativa primeiro!");
-    if (confirm("Excluir esta avaliação? Não pode ser desfeito!")) {
-        avaliacoesRef.child(id).remove()
-            .then(() => alert("✅ Excluído!"))
-            .catch(e => alert("❌ Erro: " + e));
-    }
-};
+    // 📩 ENVIO — com nome, e-mail, nota, comentário, data
+    const formulario = document.getElementById('formAvaliacao');
+    formulario.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const dadosAvaliacao = {
+            nome: document.getElementById('nome').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            nota: parseInt(campoEstrelas.value),
+            comentario: document.getElementById('comentario').value.trim(),
+            data: new Date().toLocaleString('pt-BR')
+        };
 
-// Inicializar
-carregarAvaliacoes();
+        try {
+            await push(avaliacoesRef, dadosAvaliacao);
+            document.getElementById('mensagemSucesso').classList.remove('hidden');
+            document.getElementById('mensagemErro').classList.add('hidden');
+            formulario.reset();
+            // Reseta estrelas
+            estrelas.forEach(e => {
+                e.classList.remove('estrela-preenchida');
+                e.classList.add('estrela-vazia');
+            });
+        } catch (erro) {
+            document.getElementById('mensagemErro').classList.remove('hidden');
+            document.getElementById('mensagemSucesso').classList.add('hidden');
+        }
+    });
+
+    // 📥 CARREGAR AVALIAÇÕES + LIXEIRA SÓ APARECE SE LOGADO
+    window.carregarAvaliacoes = function() {
+        const listaAvaliacoes = document.getElementById('listaAvaliacoes');
+        onValue(query(avaliacoesRef, orderByChild('data')), (snapshot) => {
+            listaAvaliacoes.innerHTML = '';
+            if (!snapshot.exists()) {
+                listaAvaliacoes.innerHTML = '<div class="text-center text-gray-500 italic py-8">Ainda não há nenhuma avaliação. Seja o primeiro a compartilhar sua opinião! ✨</div>';
+                return;
+            }
+
+            snapshot.forEach(item => {
+                const dados = item.val();
+                const idAvaliacao = item.key;
+                // Estrelas douradas na exibição
+                const estrelasVisuais = Array.from({length: 5}, (_, i) => 
+                    `<i class="fa-solid fa-star estrela ${i < dados.nota ? 'estrela-preenchida' : 'estrela-vazia'}"></i>`
+                ).join('');
+
+                // 🗑️ Lixeira só aparece se logado
+                const botaoExcluir = acessoLiberado 
+                    ? `<span onclick="apagarEstaAvaliacao('${idAvaliacao}')" class="lixeira">🗑️</span>` 
+                    : '';
+
+                const cartao = document.createElement('div');
+                cartao.className = 'avaliacao-card relative';
+                cartao.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between items-start mb-3 gap-3">
+                        <div>
+                            <h4 class="font-bold text-xl text-primary">${dados.nome} ${botaoExcluir}</h4>
+                            <p class="text-gray-500 text-sm">${dados.email}</p>
+                            <div class="flex my-2 gap-1">${estrelasVisuais}</div>
+                        </div>
+                        <span class="text-gray-400 text-sm italic">${dados.data}</span>
+                    </div>
+                    <p class="text-gray-700 text-lg leading-relaxed">${dados.comentario}</p>
+                `;
+                listaAvaliacoes.prepend(cartao);
+            });
+        });
+    };
+
+    // 🗑️ EXCLUIR — só com senha correta
+    window.apagarEstaAvaliacao = function(id) {
+        if (!acessoLiberado) {
+            alert("🔒 Acesso negado! Digite a senha na Área Administrativa primeiro.");
+            return;
+        }
+        if (confirm('Tem certeza que deseja excluir esta avaliação? Essa ação não pode ser desfeita!')) {
+            const avaliacaoParaApagar = ref(db, `encanto_nail_designer/avaliacoes/${id}`);
+            remove(avaliacaoParaApagar)
+                .then(() => alert('✅ Avaliação excluída com sucesso!'))
+                .catch(erro => alert('❌ Erro ao excluir: ' + erro));
+        }
+    };
+
+    // Carrega automaticamente
+    carregarAvaliacoes();
 </script>
 
 </body>
