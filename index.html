@@ -28,21 +28,17 @@
             border: 3px solid #b366ff;
             overflow: hidden;
         }
-        /* ✅ BANNER AJUSTADO — imagem desce, rosto todo visível */
+        /* ✅ Imagem INTEIRA, sem cortes */
         .banner-topo {
             width: 100%;
-            height: 380px; /* Mais altura */
-            overflow: hidden;
-            border-bottom-left-radius: 32px;
-            border-bottom-right-radius: 32px;
             background: linear-gradient(135deg, #f0d9ff, #f8c8e8);
-            position: relative;
+            padding: 0;
+            overflow: hidden;
         }
         .banner-topo img {
             width: 100%;
-            height: 120%; /* Imagem maior */
-            object-fit: cover;
-            object-position: center top; /* ✅ Desce a imagem → cabeça aparece certinho */
+            height: auto;
+            object-fit: contain;
             display: block;
         }
         .botoes-topo {
@@ -105,7 +101,6 @@
             text-align: center;
             font-size: 1.1rem;
         }
-
         .galeria-titulo {
             text-align: center;
             margin: 1.5rem 0 1rem;
@@ -141,7 +136,6 @@
             font-size: 0.9rem;
             text-align: center;
         }
-
         .caixa-servicos {
             border: 2px solid #b366ff; 
             border-radius: 20px; 
@@ -238,7 +232,6 @@
             font-size: 1rem; 
             margin-bottom: 1rem; 
         }
-        
         .botao-acesso-total { 
             text-align: center; 
             margin-top: 1rem; 
@@ -253,19 +246,17 @@
             text-decoration: none;
             font-size: 1.1rem;
         }
-        
         @media (max-width: 380px) {
             .galeria { grid-template-columns: 1fr; }
             .item-trabalho img { height: 160px; }
             .titulo-principal { font-size: 2.2rem; }
-            .banner-topo { height: 320px; }
         }
     </style>
 </head>
 <body>
     <div class="cartaz">
+        <!-- ✅ Imagem INTEIRA, sem cortes -->
         <div class="banner-topo">
-            <!-- ✅ IMAGEM AJUSTADA — rosto todo visível + link CDN rápido -->
             <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/logo_mylena.webp" alt="Encanto Nail Designer">
         </div>
         <div class="conteudo-interno">
@@ -337,7 +328,7 @@
                 <p class="acrescimo">ACRÉSCIMO</p>
             </div>
             <div class="area-contato">
-                <!-- ✅ LINK CDN RÁPIDO — igual os prints -->
+                <!-- ✅ Link CDN padrão, sem ?raw=true -->
                 <div class="img-baixo">
                     <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp" alt="Encanto Nail Designer">
                 </div>
