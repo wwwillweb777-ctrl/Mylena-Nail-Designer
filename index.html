@@ -48,7 +48,7 @@
             flex-direction: column;
             gap: 0.7rem;
         }
-        .botao-chat-topo a, .botao-avaliacoes a {
+        .botao-chat-topo a {
             display: inline-block;
             width: 100%;
             background: linear-gradient(90deg, #25D366, #128C7E);
@@ -58,8 +58,16 @@
             font-weight: bold;
             text-decoration: none;
         }
+        /* ✅ BOTÃO AVALIAÇÕES — FUNDO ROSA */
         .botao-avaliacoes a {
-            background: linear-gradient(90deg, #9966ff, #b380ff);
+            display: inline-block;
+            width: 100%;
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            padding: 0.7rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
         }
         .coracao { color: #9966ff; }
         .conteudo-interno { padding: 1.5rem; }
@@ -73,15 +81,9 @@
         .titulo-sub { font-size: 1.4rem; font-family: cursive; color: #222; }
         .sub-titulo { text-align: center; color: #8040cc; letter-spacing: 2px; margin: 0.5rem 0 1rem; }
         .faixa-destaque {
-            background: linear-gradient(90deg, #9966ff, #b380ff);
-            color: white;
-            padding: 0.7rem 1.8rem;
-            border-radius: 50px;
+            color: #9966ff;
             font-weight: bold;
-            display: inline-block;
-            position: relative;
-            left: 50%; transform: translateX(-50%);
-            margin-bottom: 1.5rem;
+            padding: 0.7rem 1.8rem;
         }
 
         /* ✅ GALERIA */
@@ -145,10 +147,17 @@
         .destaques { display: flex; justify-content: space-around; text-align: center; margin: 1.5rem 0; color: #7040b3; font-size: 0.95rem; }
         .em-breve { border: 2px dashed #b366ff; border-radius: 16px; padding: 1.2rem; text-align: center; color: #8040cc; margin-bottom: 1rem; }
         .rodape { text-align: center; color: #8040cc; font-size: 0.9rem; margin-bottom: 1rem; }
+        
+        /* ✅ BOTÃO ÁREA ADMINISTRATIVA — FUNDO ROSA */
         .botao-acesso-total { text-align: center; margin-top: 1rem; }
         .botao-acesso-total a {
-            display: inline-block; background: linear-gradient(90deg, #7040b3, #9966ff);
-            color: white; padding: 0.6rem 2.5rem; border-radius: 50px; font-weight: bold; text-decoration: none;
+            display: inline-block;
+            background: linear-gradient(90deg, #ff66b2, #ff80c0);
+            color: white;
+            padding: 0.6rem 2.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
         }
         
         /* Ajuste para telas menores */
