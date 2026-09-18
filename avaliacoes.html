@@ -42,12 +42,12 @@
         @layer utilities {
             .transition-custom { transition: all 0.3s ease; }
 
-            /* ⭐ Estrelas — LÓGICA ORIGINAL PRESERVADA */
+            /* ⭐ Estrelas — INCOLOR quando vazia, AMARELA quando preenchida */
             .estrela { 
                 @apply text-3xl cursor-pointer hover:scale-110 transition-custom; 
             }
-            .estrela-preenchida { color: #F59E0B !important; } /* DOURADO */
-            .estrela-vazia { color: '#d9b3ff' !important; }
+            .estrela-preenchida { color: #F59E0B !important; } /* AMARELO/DOURADO */
+            .estrela-vazia { color: transparent !important; } /* INCOLOR — SEM COR */
 
             /* Cards de Avaliação */
             .avaliacao-card {
@@ -108,54 +108,10 @@
             }
             .lixeira:hover { transform: scale(1.2); }
 
-            /* Menu Lateral */
-            .menu-lateral {
-                position: fixed;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100vh;
-                background: linear-gradient(180deg, '#9966ff', '#7040b3');
-                box-shadow: 2px 0 15px rgba(0,0,0,0.15);
-                z-index: 10000;
-                transition: left 0.35s ease;
-                display: flex;
-                flex-direction: column;
-                padding: 2rem 1.5rem;
-            }
-            .menu-lateral.aberto { left: 0; }
-            .fechar-menu {
-                text-align: right;
-                font-size: 1.7rem;
-                color: white;
-                font-weight: bold;
-                cursor: pointer;
-                margin-bottom: 2rem;
-            }
-            .item-menu {
-                display: block;
-                width: 100%;
-                font-size: 1.1rem;
-                font-weight: 500;
-                margin: 0.6rem 0;
-                padding: 1rem 1.5rem;
-                text-decoration: none;
-                color: white;
-                background-color: rgba(255,255,255,0.15);
-                border-radius: 12px;
-                border: none;
-                transition: all 0.25s ease;
-                text-align: left;
-                cursor: pointer;
-            }
-            .item-menu:hover {
-                background-color: rgba(255, 102, 178, 0.3);
-                transform: translateX(4px);
-            }
-
+            /* Botão Voltar - VERMELHO */
             .botao-voltar {
                 display: inline-block;
-                background: linear-gradient(90deg, #ff66b2, #ff80c0);
+                background: linear-gradient(90deg, #ff3333, #cc0000);
                 color: white;
                 padding: 0.6rem 2rem;
                 border-radius: 50px;
@@ -171,20 +127,11 @@
 <body>
 
     <!-- Cabeçalho -->
-    <div class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm py-3 px-5 flex justify-between items-center">
+    <div class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm py-3 px-5 flex justify-center items-center">
         <a href="index.html" class="flex items-center gap-2 text-primary font-bold text-xl">
             <span class="text-secondary">💖</span>
             <span>Encanto</span>
         </a>
-        <button class="text-2xl text-primary hover:text-secondary transition-colors" onclick="abrirMenu()">&#9776;</button>
-    </div>
-
-    <!-- Menu Lateral -->
-    <div id="menuLateral" class="menu-lateral">
-        <div class="fechar-menu" onclick="fecharMenu()">&times;</div>
-        <a href="index.html" class="item-menu">🏠 Início</a>
-        <a href="javascript:void(0)" class="item-menu" onclick="irPara('avaliacoes.html')">⭐ Avaliações</a>
-        <a href="javascript:void(0)" class="item-menu" onclick="irPara('chat.html')">💬 Chat</a>
     </div>
 
     <!-- Seção Principal -->
@@ -200,7 +147,7 @@
             </p>
         </div>
 
-        <!-- Formulário — COM NOME + E-MAIL OBRIGATÓRIOS -->
+        <!-- Formulário -->
         <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 border-2 border-roxoClaro mb-12">
             <h2 class="text-2xl font-bold text-secondary mb-6 text-center">Deixe a Sua Avaliação ✨</h2>
             <form id="formAvaliacao" class="space-y-5">
@@ -270,33 +217,8 @@
         </div>
     </section>
 
-<!-- ⚡ Scripts do Menu e Administrativos — IGUAIS ao original -->
+<!-- ⚡ Scripts -->
 <script>
-function abrirMenu() {
-    const menu = document.getElementById('menuLateral');
-    menu.classList.add('aberto');
-    document.body.style.overflow = 'hidden';
-    document.body.style.pointerEvents = 'auto';
-}
-
-function fecharMenu() {
-    const menu = document.getElementById('menuLateral');
-    menu.classList.remove('aberto');
-    document.body.style.overflow = 'auto';
-    document.body.style.pointerEvents = 'auto';
-}
-
-function irPara(pagina) {
-    fecharMenu();
-    setTimeout(function() {
-        const pastaAtual = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-        const enderecoCompleto = pastaAtual + pagina;
-        window.location.href = enderecoCompleto;
-        window.location.assign(enderecoCompleto);
-    }, 100);
-}
-
-// 🔐 SENHA — ACEITA MAIÚSCULO E MINÚSCULO
 let acessoLiberado = false;
 const SENHA_CORRETA = "WJ@321";
 
@@ -313,7 +235,7 @@ function verificarSenha() {
 }
 </script>
 
-<!-- 🚀 FIREBASE — Configuração do Encanto Nail Designer -->
+<!-- 🚀 FIREBASE -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
     import { getDatabase, ref, push, onValue, orderByChild, query, remove } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
@@ -332,7 +254,7 @@ function verificarSenha() {
     const db = getDatabase(app);
     const avaliacoesRef = ref(db, "encanto_nail_designer/avaliacoes");
 
-    // ⭐ LÓGICA DAS ESTRELAS — EXATAMENTE COMO NO ORIGINAL
+    // ⭐ LÓGICA DAS ESTRELAS — INCOLOR → AMARELO
     const estrelas = document.querySelectorAll('#selecaoEstrelas .estrela');
     const campoEstrelas = document.getElementById('avaliacaoEstrelas');
 
@@ -347,7 +269,7 @@ function verificarSenha() {
         });
     });
 
-    // 📩 ENVIO — com nome, e-mail, nota, comentário, data
+    // 📩 ENVIO
     const formulario = document.getElementById('formAvaliacao');
     formulario.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -364,7 +286,7 @@ function verificarSenha() {
             document.getElementById('mensagemSucesso').classList.remove('hidden');
             document.getElementById('mensagemErro').classList.add('hidden');
             formulario.reset();
-            // Reseta estrelas
+            // ⭐ Reseta para INCOLOR
             estrelas.forEach(e => {
                 e.classList.remove('estrela-preenchida');
                 e.classList.add('estrela-vazia');
@@ -375,7 +297,7 @@ function verificarSenha() {
         }
     });
 
-    // 📥 CARREGAR AVALIAÇÕES + LIXEIRA SÓ APARECE SE LOGADO
+    // 📥 CARREGAR AVALIAÇÕES — estrelas AMARELAS nos comentários enviados
     window.carregarAvaliacoes = function() {
         const listaAvaliacoes = document.getElementById('listaAvaliacoes');
         onValue(query(avaliacoesRef, orderByChild('data')), (snapshot) => {
@@ -388,12 +310,11 @@ function verificarSenha() {
             snapshot.forEach(item => {
                 const dados = item.val();
                 const idAvaliacao = item.key;
-                // Estrelas douradas na exibição
+                // ⭐ AMARELO para as preenchidas, INCOLOR para as outras
                 const estrelasVisuais = Array.from({length: 5}, (_, i) => 
                     `<i class="fa-solid fa-star estrela ${i < dados.nota ? 'estrela-preenchida' : 'estrela-vazia'}"></i>`
                 ).join('');
 
-                // 🗑️ Lixeira só aparece se logado
                 const botaoExcluir = acessoLiberado 
                     ? `<span onclick="apagarEstaAvaliacao('${idAvaliacao}')" class="lixeira">🗑️</span>` 
                     : '';
@@ -416,7 +337,7 @@ function verificarSenha() {
         });
     };
 
-    // 🗑️ EXCLUIR — só com senha correta
+    // 🗑️ EXCLUIR
     window.apagarEstaAvaliacao = function(id) {
         if (!acessoLiberado) {
             alert("🔒 Acesso negado! Digite a senha na Área Administrativa primeiro.");
@@ -430,7 +351,6 @@ function verificarSenha() {
         }
     };
 
-    // Carrega automaticamente
     carregarAvaliacoes();
 </script>
 
