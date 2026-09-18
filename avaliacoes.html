@@ -61,16 +61,19 @@
             /* 🔐 Área Administrativa */
             .area-admin {
                 background: linear-gradient(90deg, #9966ff, #b380ff);
-                padding: 1rem 1.5rem;
+                padding: 1.5rem;
                 border-radius: 16px;
                 margin: 2rem auto;
                 max-width: 700px;
+                box-shadow: 0 4px 12px rgba(153, 102, 255, 0.3);
+            }
+            .cabecalho-admin {
                 display: flex;
-                align-items: center;
                 justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1rem;
                 flex-wrap: wrap;
                 gap: 0.75rem;
-                box-shadow: 0 4px 12px rgba(153, 102, 255, 0.3);
             }
             .texto-admin {
                 color: #ffffff;
@@ -80,28 +83,73 @@
                 align-items: center;
                 gap: 0.5rem;
             }
+            .input-wrapper {
+                position: relative;
+                width: 100%;
+            }
             .input-senha {
-                padding: 0.5rem 1rem;
+                width: 100%;
+                padding: 0.75rem 3rem 0.75rem 1rem;
                 border-radius: 10px;
                 border: 2px solid #e6ccff;
                 outline: none;
                 background-color: #fff;
                 color: '#7040b3';
                 font-weight: 500;
+                font-size: 1rem;
+            }
+            .btn-olho {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                border: none;
+                font-size: 1.25rem;
+                cursor: pointer;
+                padding: 0;
+                color: #888;
+                z-index: 10;
+                line-height: 1;
+            }
+            .btn-olho:hover {
+                color: #9966ff;
+            }
+            .grupo-botoes {
+                display: flex;
+                gap: 0.75rem;
+                margin-top: 1rem;
+                flex-wrap: wrap;
             }
             .botao-admin {
                 background: linear-gradient(90deg, #ff66b2, #ff80c0);
                 color: white;
                 font-weight: bold;
-                padding: 0.5rem 1.5rem;
+                padding: 0.6rem 1.5rem;
                 border-radius: 50px;
                 border: none;
                 cursor: pointer;
                 transition: 0.3s;
+                font-size: 1rem;
             }
             .botao-admin:hover {
                 transform: scale(1.05);
                 box-shadow: 0 4px 10px rgba(255, 102, 178, 0.3);
+            }
+            .botao-sair {
+                background: linear-gradient(90deg, #ff3333, #cc0000);
+                color: white;
+                font-weight: bold;
+                padding: 0.6rem 1.5rem;
+                border-radius: 50px;
+                border: none;
+                cursor: pointer;
+                transition: 0.3s;
+                font-size: 1rem;
+            }
+            .botao-sair:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 10px rgba(255, 51, 51, 0.3);
             }
             .lixeira {
                 color: '#ff4d94';
@@ -206,10 +254,27 @@
         </div>
 
         <!-- 🔐 Área Administrativa -->
-        <div class="area-admin">
-            <div class="texto-admin">🔐 Área Administrativa</div>
-            <input type="password" id="senhaAdmin" class="input-senha" placeholder="Digite a senha...">
-            <button onclick="verificarSenha()" class="botao-admin">Acessar</button>
+        <div class="area-admin" id="areaAdmin">
+            <div class="cabecalho-admin">
+                <div class="texto-admin">🔐 Área Administrativa</div>
+                <div id="botaoSairContainer" style="display: none;">
+                    <button class="botao-sair" onclick="sairAdmin()">🚪 Sair</button>
+                </div>
+            </div>
+            
+            <div id="formSenha">
+                <div class="input-wrapper">
+                    <input type="password" id="senhaAdmin" class="input-senha" placeholder="Digite a senha...">
+                    <button type="button" class="btn-olho" onclick="mostrarSenha()">👀</button>
+                </div>
+                <div class="grupo-botoes">
+                    <button onclick="verificarSenha()" class="botao-admin">🔓 Acessar</button>
+                </div>
+            </div>
+            
+            <div id="mensagemAcesso" style="display: none; color: white; margin-top: 0.75rem;">
+                ✅ Acesso liberado! Você já pode excluir avaliações.
+            </div>
         </div>
 
         <!-- Lista de Avaliações -->
@@ -226,16 +291,47 @@
 let acessoLiberado = false;
 const SENHA_CORRETA = "WJ@321";
 
+// 👀 MOSTRAR/ESCONDER SENHA — igual ao modelo
+function mostrarSenha() {
+    const input = document.getElementById('senhaAdmin');
+    const botao = document.querySelector('.btn-olho');
+    if (botao.textContent === '👀') {
+        input.type = 'text';
+        botao.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        botao.textContent = '👀';
+    }
+}
+
 function verificarSenha() {
     const senhaDigitada = document.getElementById('senhaAdmin').value;
     if (senhaDigitada.toLowerCase() === SENHA_CORRETA.toLowerCase()) {
         acessoLiberado = true;
         alert("🔓 Acesso liberado! Agora você pode excluir avaliações.");
+        // Mostra botão Sair e esconde campo de senha
+        document.getElementById('formSenha').style.display = 'none';
+        document.getElementById('botaoSairContainer').style.display = 'block';
+        document.getElementById('mensagemAcesso').style.display = 'block';
         carregarAvaliacoes();
     } else {
         acessoLiberado = false;
         alert("❌ Senha incorreta!");
     }
+}
+
+// 🚪 SAIR DA ÁREA ADMINISTRATIVA
+function sairAdmin() {
+    acessoLiberado = false;
+    // Reseta tudo
+    document.getElementById('senhaAdmin').value = '';
+    document.getElementById('senhaAdmin').type = 'password';
+    document.querySelector('.btn-olho').textContent = '👀';
+    document.getElementById('formSenha').style.display = 'block';
+    document.getElementById('botaoSairContainer').style.display = 'none';
+    document.getElementById('mensagemAcesso').style.display = 'none';
+    // Recarrega sem as lixeiras
+    carregarAvaliacoes();
 }
 </script>
 
@@ -258,7 +354,7 @@ function verificarSenha() {
     const db = getDatabase(app);
     const avaliacoesRef = ref(db, "encanto_nail_designer/avaliacoes");
 
-    // ⭐ LÓGICA DAS ESTRELAS — BORDA PRETA VISÍVEL, FUNDO INCOLOR; AO CLICAR FUNDO AMARELO
+    // ⭐ LÓGICA DAS ESTRELAS
     const estrelas = document.querySelectorAll('#selecaoEstrelas .estrela');
     const campoEstrelas = document.getElementById('avaliacaoEstrelas');
 
@@ -290,7 +386,7 @@ function verificarSenha() {
             document.getElementById('mensagemSucesso').classList.remove('hidden');
             document.getElementById('mensagemErro').classList.add('hidden');
             formulario.reset();
-            // ⭐ Reseta para BORDA PRETA + FUNDO INCOLOR
+            // Reseta estrelas
             estrelas.forEach(e => {
                 e.classList.remove('estrela-preenchida');
                 e.classList.add('estrela-vazia');
@@ -314,11 +410,12 @@ function verificarSenha() {
             snapshot.forEach(item => {
                 const dados = item.val();
                 const idAvaliacao = item.key;
-                // ⭐ Estrelas com BORDA PRETA visível, FUNDO INCOLOR quando vazia, FUNDO AMARELO quando preenchida
+                // Estrelas com BORDA PRETA visível, FUNDO INCOLOR quando vazia, FUNDO AMARELO quando preenchida
                 const estrelasVisuais = Array.from({length: 5}, (_, i) => 
                     `<i class="fa-solid fa-star estrela ${i < dados.nota ? 'estrela-preenchida' : 'estrela-vazia'}"></i>`
                 ).join('');
 
+                // Lixeira só aparece se logado
                 const botaoExcluir = acessoLiberado 
                     ? `<span onclick="apagarEstaAvaliacao('${idAvaliacao}')" class="lixeira">🗑️</span>` 
                     : '';
