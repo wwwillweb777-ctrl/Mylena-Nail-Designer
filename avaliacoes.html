@@ -264,6 +264,7 @@
             
             <div id="formSenha">
                 <div class="input-wrapper">
+                    <!-- Começa com senha ESCONDIDA = olho ABERTO -->
                     <input type="password" id="senhaAdmin" class="input-senha" placeholder="Digite a senha...">
                     <button type="button" class="btn-olho" onclick="mostrarSenha()">👀</button>
                 </div>
@@ -291,14 +292,17 @@
 let acessoLiberado = false;
 const SENHA_CORRETA = "WJ@321";
 
-// 👀 MOSTRAR/ESCONDER SENHA — igual ao modelo
+// 👀 CORRIGIDO: Olho ABERTO = mostra; Olho FECHADO = esconde
 function mostrarSenha() {
     const input = document.getElementById('senhaAdmin');
     const botao = document.querySelector('.btn-olho');
+    
     if (botao.textContent === '👀') {
+        // Olho aberto → CLICA → mostra a senha → vira olho fechado
         input.type = 'text';
         botao.textContent = '🙈';
     } else {
+        // Olho fechado → CLICA → esconde a senha → vira olho aberto
         input.type = 'password';
         botao.textContent = '👀';
     }
@@ -308,8 +312,7 @@ function verificarSenha() {
     const senhaDigitada = document.getElementById('senhaAdmin').value;
     if (senhaDigitada.toLowerCase() === SENHA_CORRETA.toLowerCase()) {
         acessoLiberado = true;
-        alert("🔓 Acesso liberado! Agora você pode excluir avaliações.");
-        // Mostra botão Sair e esconde campo de senha
+        alert("🔓 Acesso liberado! Você já pode excluir avaliações.");
         document.getElementById('formSenha').style.display = 'none';
         document.getElementById('botaoSairContainer').style.display = 'block';
         document.getElementById('mensagemAcesso').style.display = 'block';
@@ -320,17 +323,17 @@ function verificarSenha() {
     }
 }
 
-// 🚪 SAIR DA ÁREA ADMINISTRATIVA
+// 🚪 SAIR — reseta tudo certinho
 function sairAdmin() {
     acessoLiberado = false;
-    // Reseta tudo
+    // Volta escondido com olho aberto
     document.getElementById('senhaAdmin').value = '';
     document.getElementById('senhaAdmin').type = 'password';
     document.querySelector('.btn-olho').textContent = '👀';
+    
     document.getElementById('formSenha').style.display = 'block';
     document.getElementById('botaoSairContainer').style.display = 'none';
     document.getElementById('mensagemAcesso').style.display = 'none';
-    // Recarrega sem as lixeiras
     carregarAvaliacoes();
 }
 </script>
@@ -386,7 +389,6 @@ function sairAdmin() {
             document.getElementById('mensagemSucesso').classList.remove('hidden');
             document.getElementById('mensagemErro').classList.add('hidden');
             formulario.reset();
-            // Reseta estrelas
             estrelas.forEach(e => {
                 e.classList.remove('estrela-preenchida');
                 e.classList.add('estrela-vazia');
@@ -410,12 +412,10 @@ function sairAdmin() {
             snapshot.forEach(item => {
                 const dados = item.val();
                 const idAvaliacao = item.key;
-                // Estrelas com BORDA PRETA visível, FUNDO INCOLOR quando vazia, FUNDO AMARELO quando preenchida
                 const estrelasVisuais = Array.from({length: 5}, (_, i) => 
                     `<i class="fa-solid fa-star estrela ${i < dados.nota ? 'estrela-preenchida' : 'estrela-vazia'}"></i>`
                 ).join('');
 
-                // Lixeira só aparece se logado
                 const botaoExcluir = acessoLiberado 
                     ? `<span onclick="apagarEstaAvaliacao('${idAvaliacao}')" class="lixeira">🗑️</span>` 
                     : '';
