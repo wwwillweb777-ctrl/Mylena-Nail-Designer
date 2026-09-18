@@ -42,12 +42,16 @@
         @layer utilities {
             .transition-custom { transition: all 0.3s ease; }
 
-            /* ⭐ Estrelas — INCOLOR quando vazia, AMARELA quando preenchida */
+            /* ⭐ Estrelas — BORDA PRETA + FUNDO INCOLOR quando vazia, FUNDO AMARELO quando preenchida */
             .estrela { 
-                @apply text-3xl cursor-pointer hover:scale-110 transition-custom; 
+                @apply text-3xl cursor-pointer hover:scale-110 transition-custom;
+                color: transparent !important;
+                -webkit-text-stroke: 1.5px #000000;
             }
-            .estrela-preenchida { color: #F59E0B !important; } /* AMARELO/DOURADO */
-            .estrela-vazia { color: transparent !important; } /* INCOLOR — SEM COR */
+            .estrela-preenchida { 
+                color: #F59E0B !important;
+                -webkit-text-stroke: 0 !important;
+            }
 
             /* Cards de Avaliação */
             .avaliacao-card {
@@ -254,7 +258,7 @@ function verificarSenha() {
     const db = getDatabase(app);
     const avaliacoesRef = ref(db, "encanto_nail_designer/avaliacoes");
 
-    // ⭐ LÓGICA DAS ESTRELAS — INCOLOR → AMARELO
+    // ⭐ LÓGICA DAS ESTRELAS — BORDA PRETA VISÍVEL, FUNDO INCOLOR; AO CLICAR FUNDO AMARELO
     const estrelas = document.querySelectorAll('#selecaoEstrelas .estrela');
     const campoEstrelas = document.getElementById('avaliacaoEstrelas');
 
@@ -286,7 +290,7 @@ function verificarSenha() {
             document.getElementById('mensagemSucesso').classList.remove('hidden');
             document.getElementById('mensagemErro').classList.add('hidden');
             formulario.reset();
-            // ⭐ Reseta para INCOLOR
+            // ⭐ Reseta para BORDA PRETA + FUNDO INCOLOR
             estrelas.forEach(e => {
                 e.classList.remove('estrela-preenchida');
                 e.classList.add('estrela-vazia');
@@ -297,7 +301,7 @@ function verificarSenha() {
         }
     });
 
-    // 📥 CARREGAR AVALIAÇÕES — estrelas AMARELAS nos comentários enviados
+    // 📥 CARREGAR AVALIAÇÕES
     window.carregarAvaliacoes = function() {
         const listaAvaliacoes = document.getElementById('listaAvaliacoes');
         onValue(query(avaliacoesRef, orderByChild('data')), (snapshot) => {
@@ -310,7 +314,7 @@ function verificarSenha() {
             snapshot.forEach(item => {
                 const dados = item.val();
                 const idAvaliacao = item.key;
-                // ⭐ AMARELO para as preenchidas, INCOLOR para as outras
+                // ⭐ Estrelas com BORDA PRETA visível, FUNDO INCOLOR quando vazia, FUNDO AMARELO quando preenchida
                 const estrelasVisuais = Array.from({length: 5}, (_, i) => 
                     `<i class="fa-solid fa-star estrela ${i < dados.nota ? 'estrela-preenchida' : 'estrela-vazia'}"></i>`
                 ).join('');
