@@ -29,7 +29,7 @@
             overflow: hidden;
         }
 
-        /* ✅ FOTO DO TOPO — inteira, sem cortes */
+        /* FOTO DO TOPO — inteira, sem cortes */
         .banner-topo {
             width: 100%;
             background: linear-gradient(135deg, #f0d9ff, #f8c8e8);
@@ -51,28 +51,28 @@
             gap: 0.8rem;
             padding: 0 1rem;
         }
-        .botao-chat-topo a {
-            display: inline-block;
+        .botao-chat-topo a,
+        .botao-avaliacoes a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
+            padding: 0.9rem 1.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1rem;
+            white-space: nowrap;
+        }
+        .botao-chat-topo a {
             background: linear-gradient(90deg, #25D366, #128C7E);
             color: white;
-            padding: 0.9rem 2rem;
-            border-radius: 50px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 1.1rem;
         }
         .botao-avaliacoes a {
-            display: inline-block;
-            width: 100%;
             background: linear-gradient(90deg, #ff66b2, #ff80c0);
             color: white;
-            padding: 0.9rem 2rem;
-            border-radius: 50px;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 1.1rem;
         }
+
         .coracao { color: #9966ff; }
         .conteudo-interno { padding: 1.5rem; }
         .titulo { text-align: center; margin-bottom: 0.5rem; }
@@ -176,6 +176,7 @@
             font-weight: bold;
             font-size: 1rem;
             flex-shrink: 0;
+            white-space: nowrap;
         }
         .acrescimo { 
             font-size: 1rem; 
@@ -191,7 +192,7 @@
             margin: 1.5rem 0;
             gap: 1rem;
         }
-        /* ✅ MESMA FOTO DO TOPO na circular antes do WhatsApp */
+        /* MESMA FOTO DO TOPO na circular antes do WhatsApp */
         .img-baixo {
             width: 110px; 
             height: 110px; 
@@ -210,7 +211,10 @@
             flex: 1; 
         }
         .botao-wpp a {
-            display: block; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(90deg, #25D366, #128C7E); 
             color: white;
             padding: 1rem; 
@@ -219,6 +223,7 @@
             text-decoration: none;
             text-align: center;
             font-size: 1rem;
+            line-height: 1.4;
         }
 
         .destaques { 
@@ -251,14 +256,17 @@
             margin-top: 1rem; 
         }
         .botao-acesso-total a {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(90deg, #ff66b2, #ff80c0);
             color: white;
-            padding: 0.9rem 2.5rem;
+            padding: 0.9rem 1.5rem;
             border-radius: 50px;
             font-weight: bold;
             text-decoration: none;
             font-size: 1.1rem;
+            white-space: nowrap;
         }
 
         @media (max-width: 380px) {
@@ -266,18 +274,21 @@
             .item-trabalho img { height: 160px; }
             .titulo-principal { font-size: 2.2rem; }
             .servico-nome { font-size: 1rem; }
+            .botao-chat-topo a,
+            .botao-avaliacoes a,
+            .botao-acesso-total a { font-size: 1rem; padding: 0.8rem 1rem; }
         }
     </style>
 </head>
 <body>
     <div class="cartaz">
-        <!-- ✅ FOTO DO TOPO — inteira, bonitinha, sem cortes -->
+        <!-- FOTO DO TOPO — inteira, sem cortes -->
         <div class="banner-topo">
             <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/logo_mylena.webp" alt="Encanto Nail Designer">
         </div>
 
         <div class="conteudo-interno">
-            <!-- ✅ Botões logo abaixo da foto -->
+            <!-- BOTÕES ALINHADOS NA MESMA LINHA -->
             <div class="botoes-topo">
                 <div class="botao-chat-topo">
                     <a href="chat.html">💬 Chat, vem bater um papo 😃</a>
@@ -344,13 +355,13 @@
             </div>
 
             <div class="area-contato">
-                <!-- ✅ MESMA FOTO DO TOPO aqui -->
+                <!-- MESMA FOTO DO TOPO aqui -->
                 <div class="img-baixo">
                     <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/logo_mylena.webp" alt="Encanto Nail Designer">
                 </div>
                 <div class="botao-wpp">
                     <a href="https://wa.me/553173449910" target="_blank">
-                        💬 WhatsApp<br><small>apenas para emergência 🚨</small>
+                        💬 WhatsApp — apenas para emergência 🚨
                     </a>
                 </div>
             </div>
