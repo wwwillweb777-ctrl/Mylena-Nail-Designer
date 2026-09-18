@@ -11,10 +11,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             min-height: 100vh;
-            background: linear-gradient(180deg, #e6ccff 0%, #d9b3ff 100%);
+            background: linear-gradient(180deg, #f8f0ff 0%, #ffe6f2 100%);
             background-image: 
-                radial-gradient(#cc99ff 1px, transparent 1px),
-                radial-gradient(#cc99ff 1px, transparent 1px);
+                radial-gradient(#d9b3ff 1px, transparent 1px),
+                radial-gradient(#ffb3d9 1px, transparent 1px);
             background-size: 25px 25px;
             background-position: 0 0, 12.5px 12.5px;
             font-family: 'Segoe UI', sans-serif;
@@ -28,61 +28,82 @@
             border: 3px solid #b366ff;
             overflow: hidden;
         }
+        /* ✅ BANNER AJUSTADO — imagem desce, rosto todo visível */
         .banner-topo {
             width: 100%;
-            height: 320px;
+            height: 380px; /* Mais altura */
             overflow: hidden;
             border-bottom-left-radius: 32px;
             border-bottom-right-radius: 32px;
+            background: linear-gradient(135deg, #f0d9ff, #f8c8e8);
+            position: relative;
         }
         .banner-topo img {
             width: 100%;
-            height: 100%;
+            height: 120%; /* Imagem maior */
             object-fit: cover;
+            object-position: center top; /* ✅ Desce a imagem → cabeça aparece certinho */
             display: block;
         }
         .botoes-topo {
             text-align: center;
-            margin: 0.8rem 0;
+            margin: 1rem 0;
             display: flex;
             flex-direction: column;
-            gap: 0.7rem;
+            gap: 0.8rem;
+            padding: 0 1rem;
         }
         .botao-chat-topo a {
             display: inline-block;
             width: 100%;
             background: linear-gradient(90deg, #25D366, #128C7E);
             color: white;
-            padding: 0.7rem 2rem;
+            padding: 0.9rem 2rem;
             border-radius: 50px;
             font-weight: bold;
             text-decoration: none;
+            font-size: 1.1rem;
         }
         .botao-avaliacoes a {
             display: inline-block;
             width: 100%;
             background: linear-gradient(90deg, #ff66b2, #ff80c0);
             color: white;
-            padding: 0.7rem 2rem;
+            padding: 0.9rem 2rem;
             border-radius: 50px;
             font-weight: bold;
             text-decoration: none;
+            font-size: 1.1rem;
         }
         .coracao { color: #9966ff; }
         .conteudo-interno { padding: 1.5rem; }
         .titulo { text-align: center; margin-bottom: 0.5rem; }
         .titulo-principal {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #9966ff;
             font-family: Georgia, serif;
             font-style: italic;
+            font-weight: bold;
         }
-        .titulo-sub { font-size: 1.4rem; font-family: cursive; color: #222; }
-        .sub-titulo { text-align: center; color: #8040cc; letter-spacing: 2px; margin: 0.5rem 0 1rem; }
+        .titulo-sub { 
+            font-size: 1.5rem; 
+            font-family: cursive; 
+            color: #b366ff; 
+            margin-bottom: 0.5rem;
+        }
+        .sub-titulo { 
+            text-align: center; 
+            color: #8040cc; 
+            letter-spacing: 2px; 
+            margin: 0.5rem 0 1rem; 
+            font-size: 1.1rem;
+        }
         .faixa-destaque {
             color: #9966ff;
-            font-weight: bold;
+            font-weight: 500;
             padding: 0.7rem 1.8rem;
+            text-align: center;
+            font-size: 1.1rem;
         }
 
         .galeria-titulo {
@@ -91,7 +112,7 @@
         }
         .galeria-titulo h3 {
             color: #9966ff;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-family: Georgia, serif;
             font-style: italic;
         }
@@ -122,53 +143,129 @@
         }
 
         .caixa-servicos {
-            border: 2px solid #b366ff; border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fff;
+            border: 2px solid #b366ff; 
+            border-radius: 20px; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            background: #fff;
         }
-        .servico { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; }
-        .servico-nome { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: #7040b3; font-size: 1.1rem; }
+        .servico { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0.7rem 0; 
+        }
+        .servico-nome { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+            font-weight: 600; 
+            color: #7040b3; 
+            font-size: 1.2rem; 
+        }
         .preco-circulo {
-            width: 70px; height: 70px; border: 2px solid #b366ff; border-radius: 50%;
-            background: #e6ccff; display: flex; align-items: center; justify-content: center;
-            color: #8040cc; font-weight: bold;
+            width: 80px; 
+            height: 80px; 
+            border: 2px solid #b366ff; 
+            border-radius: 50%;
+            background: #e6ccff; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            color: #8040cc; 
+            font-weight: bold;
+            font-size: 1rem;
         }
-        .acrescimo { font-size: 0.9rem; color: #8040cc; margin-left: 1.8rem; margin-top: -0.3rem; }
-        .area-contato { display: flex; align-items: center; justify-content: space-between; margin: 1.5rem 0; gap: 1rem; }
+        .acrescimo { 
+            font-size: 1rem; 
+            color: #8040cc; 
+            margin-left: 1.8rem; 
+            margin-top: 0.3rem; 
+        }
+        .area-contato { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin: 1.5rem 0; 
+            gap: 1rem; 
+        }
         .img-baixo {
-            width: 110px; height: 110px; border-radius: 50%; overflow: hidden; border: 3px solid #b366ff; flex-shrink: 0;
+            width: 110px; 
+            height: 110px; 
+            border-radius: 50%; 
+            overflow: hidden; 
+            border: 3px solid #b366ff; 
+            flex-shrink: 0;
         }
-        .img-baixo img { width: 100%; height: 100%; object-fit: cover; }
-        .botao-wpp { flex: 1; }
+        .img-baixo img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        .botao-wpp { 
+            flex: 1; 
+        }
         .botao-wpp a {
-            display: block; background: linear-gradient(90deg, #25D366, #128C7E); color: white;
-            padding: 1rem; border-radius: 50px; font-weight: bold; text-decoration: none; text-align: center;
+            display: block; 
+            background: linear-gradient(90deg, #25D366, #128C7E); 
+            color: white;
+            padding: 1rem; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            text-decoration: none; 
+            text-align: center;
+            font-size: 1rem;
         }
-        .destaques { display: flex; justify-content: space-around; text-align: center; margin: 1.5rem 0; color: #7040b3; font-size: 0.95rem; }
-        .em-breve { border: 2px dashed #b366ff; border-radius: 16px; padding: 1.2rem; text-align: center; color: #8040cc; margin-bottom: 1rem; }
-        .rodape { text-align: center; color: #8040cc; font-size: 0.9rem; margin-bottom: 1rem; }
+        .destaques { 
+            display: flex; 
+            justify-content: space-around; 
+            text-align: center; 
+            margin: 1.5rem 0; 
+            color: #7040b3; 
+            font-size: 1rem; 
+        }
+        .em-breve { 
+            border: 2px dashed #b366ff; 
+            border-radius: 16px; 
+            padding: 1.2rem; 
+            text-align: center; 
+            color: #8040cc; 
+            margin-bottom: 1rem; 
+        }
+        .rodape { 
+            text-align: center; 
+            color: #8040cc; 
+            font-size: 1rem; 
+            margin-bottom: 1rem; 
+        }
         
-        .botao-acesso-total { text-align: center; margin-top: 1rem; }
+        .botao-acesso-total { 
+            text-align: center; 
+            margin-top: 1rem; 
+        }
         .botao-acesso-total a {
             display: inline-block;
             background: linear-gradient(90deg, #ff66b2, #ff80c0);
             color: white;
-            padding: 0.6rem 2.5rem;
+            padding: 0.9rem 2.5rem;
             border-radius: 50px;
             font-weight: bold;
             text-decoration: none;
+            font-size: 1.1rem;
         }
         
         @media (max-width: 380px) {
             .galeria { grid-template-columns: 1fr; }
             .item-trabalho img { height: 160px; }
-            .titulo-principal { font-size: 2rem; }
-            .banner-topo { height: 260px; }
+            .titulo-principal { font-size: 2.2rem; }
+            .banner-topo { height: 320px; }
         }
     </style>
 </head>
 <body>
     <div class="cartaz">
         <div class="banner-topo">
-            <!-- ✅ LINK RÁPIDO CDN da logo -->
+            <!-- ✅ IMAGEM AJUSTADA — rosto todo visível + link CDN rápido -->
             <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/logo_mylena.webp" alt="Encanto Nail Designer">
         </div>
         <div class="conteudo-interno">
@@ -240,8 +337,9 @@
                 <p class="acrescimo">ACRÉSCIMO</p>
             </div>
             <div class="area-contato">
+                <!-- ✅ LINK CDN RÁPIDO — igual os prints -->
                 <div class="img-baixo">
-                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp?raw=true" alt="Encanto Nail Designer">
+                    <img src="https://cdn.jsdelivr.net/gh/wwwillweb777-ctrl/fotos-da-myle@main/imagens/Mylena.webp" alt="Encanto Nail Designer">
                 </div>
                 <div class="botao-wpp">
                     <a href="https://wa.me/553173449910" target="_blank">
